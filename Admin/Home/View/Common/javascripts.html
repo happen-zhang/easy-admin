@@ -1,0 +1,18 @@
+<script type="text/javascript" src="http://localhost/common_system/Public/Min/?f=/common_system/Public/Js/jquery-1.9.0.min.js|/common_system/Public/Js/jquery.lazyload.js|/common_system/Public/Js/functions.js|/common_system/Admin/Tpl/Public/Js/base.js|/common_system/Public/Js/jquery.form.js|/common_system/Public/Js/asyncbox/asyncbox.js">
+</script>
+
+<script type="text/javascript">
+    $(window).resize(autoSize);
+    $(function(){
+        autoSize();
+        $(".loginOut").click(function(){
+            var url=$(this).attr("href");
+            popup.confirm('你确定要退出吗？','你确定要退出吗',function(action){
+                if(action == 'ok'){ window.location=url; }
+            });
+            return false;
+        });
+
+        var time=self.setInterval(function(){$("#today").html(date("Y-m-d H:i:s"));},1000);
+    });
+</script>
