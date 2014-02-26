@@ -3,14 +3,15 @@ namespace Home\Controller;
 
 /**
  * PublicController
+ * 公开页面访问接口
  */
 class PublicController extends CommonController {
-	/**
-	 * 管理员登录页
-	 * @return
-	 */
+    /**
+     * 管理员登录页
+     * @return
+     */
     public function index() {
-    	layout(false);
+        layout(false);
         $this->display();
     }
 
