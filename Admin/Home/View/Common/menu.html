@@ -1,7 +1,19 @@
 <div class="menu">
     <ul>
-        <li class="fisrt_current"><span><a href="/common_system/system.php/Index/index">首页</a></span></li>
-        <li class=""><span><a href="/common_system/system.php/Index/index">数据模型</a></span></li>
-        <li class="end_current"><span><a href="/common_system/system.php/Index/index">阿斯达阿里云</a></span></li>
+        <volist name="main_menu" id="menu_item" key="i">
+            <if condition="$i eq 1">
+                <li class="fisrt {:activedLink($key, null, 'fisrt_current')}">
+                	<span><a href="{$menu_item['target']}">{$menu_item['name']}</a></span>
+                </li>
+            <elseif condition="$i eq count($main_menu)" />
+                <li class="end {:activedLink($key, null, 'end_current')}">
+                	<span><a href="{$menu_item['target']}">{$menu_item['name']}</a></span>
+                </li>
+            <else />
+                <li class="{:activedLink($key, null, 'current')}">
+                	<span><a href="{$menu_item['target']}">{$menu_item['name']}</a></span>
+                </li>
+            </if>
+        </volist>
     </ul>
 </div>

@@ -1,5 +1,5 @@
 <?php
-// $dbConfig = include('Global/Conf/db_config.php');
+$menu_config = include('menu_config.php');
 
 $appConfig =  array(
     // 调试页
@@ -18,6 +18,9 @@ $appConfig =  array(
     // 开启布局
     'LAYOUT_ON' => true,
     'LAYOUT_NAME' => 'Common/layout',
+
+    // 菜单项配置
+    'MENU' => $menu_config
 );
 
 return array_merge($appConfig);

@@ -5,9 +5,9 @@
             常用操作
         </div>
         <ul>
-            <li><a href="/common_system/system.php/Index/myInfo">修改密码</a></li>
-            <li><a href="/common_system/system.php/Index/cache">缓存清理</a></li>
-            <li><a href="/common_system/system.php/News/add">新闻发布</a></li>
+            <volist name="sub_menu" id="menu_item">
+            <li><a href="{$key}">{$menu_item}</a></li>
+            </volist>
         </ul>
     </div>
 
