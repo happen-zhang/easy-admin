@@ -18,6 +18,8 @@ class CommonController extends Controller {
 
         // 分配菜单
         $this->assignMenu();
+        // 面包屑位置
+        $this->assignBreadcrumbs();
     }
 
     /**
@@ -29,6 +31,16 @@ class CommonController extends Controller {
 
         $this->assign('main_menu', $menu['main_menu']);
         $this->assign('sub_menu', $menu['sub_menu']);
+    }
+
+    /**
+     * 分配面包屑
+     * @return
+     */
+    protected function assignBreadcrumbs() {
+        $breadcrumbs = $this->getBreadcrumbs();
+
+        $this->assign('breadcrumbs', $breadcrumbs);
     }
 
     /**
@@ -52,5 +64,19 @@ class CommonController extends Controller {
             'main_menu' => $mainMenu,
             'sub_menu' => $subMenu
         );
+    }
+
+    /**
+     * 得到面包屑
+     * @return string
+     */
+    public function getBreadcrumbs() {
+        $menu = C('MENU');
+
+        $menuItem = $menu[CONTROLLER_NAME];
+        $main = $menuItem['name'];
+        $sub = $menuItem['sub_menu'][CONTROLLER_NAME . '/' . ACTION_NAME];
+
+        return $main . ' > ' . $sub;
     }
 }
