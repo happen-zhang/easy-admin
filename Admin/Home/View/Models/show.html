@@ -1,0 +1,86 @@
+<div class="Item hr">
+    <div class="current">模型基本信息</div>
+</div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+    <tr>
+        <th width="100">模型名称：</th>
+        <td>新闻模型</td>
+    </tr>
+    <tr>
+        <th width="100">数据表名：</th>
+        <td>tbl_news</td>
+    </tr>        
+    <tr>
+        <th width="100">是否为内部表：</th>
+        <td>是</td>
+    </tr>
+    <tr>
+        <th width="100">字段数：</th>
+        <td>12</td>
+    </tr>
+    <tr>
+        <th width="100">记录行数：</th>
+        <td>100</td>
+    </tr>
+    <tr>
+        <th>模型描述：</th>
+        <td>Jobeet is an Open-Source job board software which provides you day-by-day tutorials, that will help you learn the latest Web Technolgy, Symfony 2.3.2 (for those who don’t know yet, Symfony is a framework for PHP).Each chapter/day is meant to last about one hour, and will be the occasion to learn Symfony by coding a real website, from start to finish.Every day, new features will be added to the application and we’ll take advantage of this development to introduce you to new Symfony functionalities, as well as good practices in Symfony web development.</td>
+    </tr>
+</table>
+
+<div class="Item hr">
+    <div class="current">模型字段信息</div>
+</div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+    <thead>
+        <tr>
+            <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+            <td>字段名称</td>
+            <td>字段标识符</td>
+            <td>字段类型</td>
+            <td>字段操作</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr align="center">
+            <td><input type="checkbox" name="table[]" value="pa_role"/></td>
+            <td align="left">orders_admins</td>
+            <td>管理员订单</td>
+            <td>varchar(255)</td>
+            <td>[ <a href="">编辑</a> ] [ <a href="" name="orders_admins" class="del">删除</a> ]</td>
+        </tr>
+        <tr align="center">
+            <td><input type="checkbox" name="table[]" value="pa_role"/></td>
+            <td align="left">orders_admins</td>
+            <td>管理员订单</td>
+            <td>varchar(255)</td>
+            <td>[ <a href="">编辑</a> ] [ <a href="" name="orders_admins" class="del">删除</a> ]</td>
+        </tr>
+    </tbody>    
+    <tfoot align="center">
+        <tr>
+            <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+            <td>字段名称</td>
+            <td>字段标识符</td>
+            <td>字段类型</td>
+            <td>字段操作</td>
+        </tr>
+    </tfoot> 
+</table>
+<div class="commonBtnArea" >
+    <button class="btn submit">添加字段</button>
+</div>
+
+<script type="text/javascript">
+$(function(){
+    $(".del").click(function(){
+        var delLink=$(this).attr("link");
+        popup.confirm('你真的打算删除【<b>'+$(this).attr("name")+'</b>】吗?','温馨提示',function(action){
+            if(action == 'ok'){
+                top.window.location.href=delLink;
+            }
+        });
+        return false;
+    });
+});
+</script>

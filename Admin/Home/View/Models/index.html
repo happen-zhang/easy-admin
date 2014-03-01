@@ -1,0 +1,57 @@
+<div class="Item hr">
+    <span class="fr">系统现有数据模型X个</span>
+    <div class="current">数据模型列表</div>
+</div>
+<form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+        <thead>
+            <tr>
+                <td>模型名（表名）</td>
+                <td>模型字段数</td>
+                <td>模型记录行数</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr align="center">
+                <td>新闻模型（pss_news）</td>
+                <td>6</td>
+                <td>48</td>
+                <td>[ <a href="{:U('Models/show')}">查看</a> ] [ <a href="{:U('Models/edit')}">编辑</a> ] [ <a href="" name="新闻模型（pss_news）" class="del">删除</a> ]</td>
+            </tr>
+            <tr align="center">
+                <td>新闻模型（pss_news）</td>
+                <td>6</td>
+                <td>48</td>
+                <td>[ <a href="{:U('Models/show')}">查看</a> ] [ <a href="{:U('Models/edit')}">编辑</a> ] [ <a href="" name="新闻模型（pss_news）" class="del">删除</a> ]</td>
+            </tr>
+            <tr align="center">
+                <td>新闻模型（pss_news）</td>
+                <td>6</td>
+                <td>48</td>
+                <td>[ <a href="{:U('Models/show')}">查看</a> ] [ <a href="{:U('Models/edit')}">编辑</a> ] [ <a href="" name="新闻模型（pss_news）" class="del">删除</a> ]</td>
+            </tr>
+            <tr align="center">
+                <td>新闻模型（pss_news）</td>
+                <td>6</td>
+                <td>48</td>
+                <td>[ <a href="{:U('Models/show')}">查看</a> ] [ <a href="{:U('Models/edit')}">编辑</a> ] [ <a href="" name="新闻模型（pss_news）" class="del">删除</a> ]</td>
+            </tr>                                    
+        </tbody>       
+    </table>
+    <input type="hidden" name="" value="" />
+</form>
+
+<script type="text/javascript">
+$(function(){
+    $(".del").click(function(){
+        var delLink=$(this).attr("link");
+        popup.confirm('你真的打算删除【<b>'+$(this).attr("name")+'</b>】吗?','温馨提示',function(action){
+            if(action == 'ok'){
+                top.window.location.href=delLink;
+            }
+        });
+        return false;
+    });
+});
+</script>

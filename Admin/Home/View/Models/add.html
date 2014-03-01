@@ -1,0 +1,36 @@
+<div class="Item hr">
+    <div class="current">添加模型</div>
+</div>
+<form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+        <tr>
+            <th width="100">模型名称：</th>
+            <td><input id="model_name" type="text" class="input" size="60" name="models[name]" value="新闻模型"/> <a href="javascript:void(0)" id="checkNewsTitle">检测是否重复</a>（用于在主菜单和子菜单上显示）</td>
+        </tr>
+        <tr>
+            <th width="100">数据表名：</th>
+            <td><input id="model_name" type="text" class="input" size="60" name="models[table_name]" value="news"/> <a href="javascript:void(0)" id="checkNewsTitle">检测是否重复</a>（存放该模型的数据表名称，请用小写和"_"进行命名）</td>
+        </tr>        
+        <tr>
+            <th width="100">是否为内部表：</th>
+            <td><label><input type="radio" name="model[is_inner_tbl]" value="0" <if condition="$info.status eq 0"> checked="checked"</if> /> 是</label> &nbsp; <label><input type="radio" name="model[is_inner_tbl]" value="1" <if condition="$info.status eq 1"> checked="checked"</if> /> 否</label> （内部表将不会被显示在菜单上）</td>
+        </tr>
+        <tr>
+            <th>模型描述：</th>
+            <td><textarea id="content" class="input" style="height: 200px; width: 100%;" name="model[description]">Jobeet is an Open-Source job board software which provides you day-by-day tutorials, that will help you learn the latest Web Technolgy, Symfony 2.3.2 (for those who don’t know yet, Symfony is a framework for PHP).Each chapter/day is meant to last about one hour, and will be the occasion to learn Symfony by coding a real website, from start to finish.Every day, new features will be added to the application and we’ll take advantage of this development to introduce you to new Symfony functionalities, as well as good practices in Symfony web development.</textarea></td>
+        </tr>
+    </table>
+</form>
+<div class="commonBtnArea" >
+    <button class="btn submit">提交</button>
+</div>
+
+<script type="text/javascript">
+$(function(){var  content ;
+    $("#checkNewsTitle").click(function(){
+        $.getJSON("__URL__/checkNewsTitle", { title:$("#model_name").val(),id:"{$info.id}"}, function(json){
+            $("#checkNewsTitle").css("color",json.status==1?"#0f0":"#f00").html(json.info);
+        });
+    });
+});
+</script>
