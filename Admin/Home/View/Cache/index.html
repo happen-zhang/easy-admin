@@ -1,0 +1,33 @@
+<div class="Item hr">
+    <div class="current">缓存管理</div>
+</div>
+<form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+        <thead>
+            <tr>
+                <td style="text-align: left;" colspan="4"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label>&nbsp;&nbsp;&nbsp;&nbsp; <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="30" align="center"><input type="checkbox" name="cache[]" value="{$key}" /></td>
+                <td>网站前台缓存文件<br/> (/home/happen/php_pro/common_system/Cache/Home/Cache/)</td>
+                <td width="30" align="center"><input type="checkbox" name="cache[]" value="{$key}" /></td>
+                <td>网站前台缓存文件<br/> (/home/happen/php_pro/common_system/Cache/Home/Cache/)</td>
+            </tr>
+            <tr>
+                <td width="30" align="center"><input type="checkbox" name="cache[]" value="{$key}" /></td>
+                <td>网站前台缓存文件<br/> (/home/happen/php_pro/common_system/Cache/Home/Cache/)</td>
+            </tr>            
+            <php>if(count($caches)%2==1) echo '<td>&nbsp;</td><td>&nbsp;</td></tr>';</php>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label>&nbsp;&nbsp;&nbsp;&nbsp; <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+            </tr>
+        </tfoot>
+    </table>
+</form>
+<div class="commonBtnArea" >
+    <button class="btn submit">清除已选缓存</button>
+</div>
