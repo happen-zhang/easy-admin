@@ -19,6 +19,10 @@ $appConfig =  array(
     'LAYOUT_ON' => true,
     'LAYOUT_NAME' => 'Common/layout',
 
+    // error，success跳转页面
+    'TMPL_ACTION_ERROR' => 'Common:dispatch_jump',
+    'TMPL_ACTION_SUCCESS' => 'Common:dispatch_jump',
+
     // 菜单项配置
     'MENU' => $menu_config
 );
