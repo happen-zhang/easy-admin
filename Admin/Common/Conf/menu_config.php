@@ -24,6 +24,16 @@ return array(
         )
     ),
 
+    // 字段管理
+    'Fields' => array(
+        'name' => '字段管理',
+        'target' => 'Fields/edit',
+        'sub_menu' => array(
+            'Fields/add' => '添加字段',
+            'Fields/edit' => '编辑字段'
+        )
+    ),
+
     // 数据管理
     'Data' => array(
         'name' => '数据管理',

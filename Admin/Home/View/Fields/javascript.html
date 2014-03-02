@@ -1,0 +1,44 @@
+<script type="text/javascript">
+$(function(){
+    var  content;
+    $("#checkNewsTitle").click(function(){
+        $.getJSON("__URL__/checkNewsTitle", { title:$("#model_name").val(),id:"{$info.id}"}, function(json){
+            $("#checkNewsTitle").css("color",json.status==1?"#0f0":"#f00").html(json.info);
+        });
+    });
+
+    // 表单类型
+    var dom = ['.input_text', '.input_password', '.input_select',
+               '.input_radio', '.input_checkbox', '.input_textarea',
+               '.input_editor', '.input_image', '.input_file',
+               '.input_date', '.input_linkfieldselect'];
+    var domLength = dom.length;
+  
+
+    toggle_input_field($("#input_type").val());
+    $("#input_type").change(function() {
+        toggle_input_field($(this).val());
+    });
+
+    function toggle_input_field(val) {
+        var type = ".input_" + val;
+        for (var i = 0; i < domLength; i++) {
+            if (type == dom[i]) {
+                $(dom[i]).show();
+            } else {
+                $(dom[i]).hide();
+            }
+        }
+        
+        if (type == dom[0]) {
+            $(dom[1]).show();
+        } else if (type == dom[2] || type == dom[3] || type == dom[4]) {
+            $(dom[2]).show();
+        } else if (type == dom[7] || type == dom[8]) {
+            $(dom[7]).show();
+        } else if (type == dom[6]) {
+            $(dom[6]).show();
+        }        
+    }
+});
+</script>

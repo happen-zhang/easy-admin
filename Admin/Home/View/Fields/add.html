@@ -1,0 +1,261 @@
+<form>
+    <!-- 基本属性 -->
+    <div class="Item hr">
+        <div class="current">新闻模型（tbl_news）- order_admins字段基本属性</div>
+    </div>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+        <tr>
+            <th width="100">字段名称：</th>
+            <td><input id="model_name" type="text" class="input" size="20" name="models[name]" value="order_admins"/> <a href="javascript:void(0)" id="checkNewsTitle">检测是否重复</a>（用于在数据表中作为字段名，请用小写和"_"进行命名，不能以数字开头）</td>
+        </tr>
+        <tr>
+            <th width="100">字段标识符：</th>
+            <td><input id="model_name" type="text" class="input" size="20" name="models[table_name]" value="管理员"/> <a href="javascript:void(0)" id="checkNewsTitle">检测是否重复</a>（用于在添加数据时，显示在表单前的标签信息）</td>
+        </tr>
+        <tr>
+            <th width="100">字段类型：</th>
+            <td>
+                <select name="info[cid]">
+                    <option value="VARCHAR" selected>字符型0-255字节(VARCHAR)</option>
+                    <option value="CHAR">定长字符型0-255字节(CHAR)</option>
+                    <option value="TEXT">小型字符型(TEXT)</option>
+                    <option value="MEDIUMTEXT">中型字符型(MEDIUMTEXT)</option>
+                    <option value="LONGTEXT">大型字符型(LONGTEXT)</option>
+                    <option value="TINYINT">小数值型(TINYINT)</option>
+                    <option value="SMALLINT">中数值型(SMALLINT)</option>
+                    <option value="INT">大数值型(INT)</option>
+                    <option value="BIGINT">超大数值型(BIGINT)</option>
+                    <option value="FLOAT">数值浮点型(FLOAT)</option>
+                    <option value="DOUBLE">数值双精度型(DOUBLE)</option>
+                    <option value="DATE">日期型(DATE)</option>
+                    <option value="DATETIME">日期时间型(DATETIME)</option>
+                </select>
+            </td>
+        </tr>
+        <tr id="field_length">
+            <th width="100">字段长度：</th>
+            <td>
+                <input type="text" class="input" size="20" name="models[table_name]" value="10"/>
+            </td>
+        </tr>
+        <tr>
+            <th width="100">字段默认值：</th>
+            <td>
+                <input type="text" class="input" size="20" name="models[table_name]" value="0"/>
+            </td>
+        </tr>        
+        <tr>
+            <th width="100">存放表：</th>
+            <td>
+                <label><input type="radio" name="info[status]" value="0" <if condition="$info.status eq 0"> checked="checked"</if> /> 主表</label> &nbsp; <label><input type="radio" name="info[status]" value="1" <if condition="$info.status eq 1"> checked="checked"</if> /> 副表</label>
+            </td>
+        </tr>
+        <tr>
+            <th>字段描述：</th>
+            <td><textarea id="content" class="input" style="height: 100px; width: 100%;" name="model[description]">Jobeet is an Open-Source job board software which provides you day-by-day tutorials, that will help you learn the latest Web Technolgy, Symfony 2.3.2 (for those who don’t know yet, Symfony is a framework for PHP).Each chapter/day is meant to last about one hour, and will be the occasion to learn Symfony by coding a real website, from start to finish.Every day, new features will be added to the application and we’ll take advantage of this development to introduce you to new Symfony functionalities, as well as good practices in Symfony web development.</textarea></td>
+        </tr>       
+     </table>
+
+    <!-- 特殊属性 -->
+    <div class="Item hr">
+        <div class="current">新闻模型（tbl_news）- order_admins字段特殊属性</div>
+    </div>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+        <tr>
+            <th width="100">添加索引：</th>
+            <td>
+                <label><input type="radio" name="fields[is_index]" value="0" <if condition="$info.status eq 0"> checked="checked"</if> /> 是</label> &nbsp; <label><input type="radio" name="fields[is_index]" value="1" <if condition="$info.status eq 1"> checked="checked"</if> /> 否</label>
+            </td>
+        </tr>
+        <tr>
+        <th width="100">是否唯一：</th>
+            <td>
+                <label><input type="radio" name="fields[is_unique]" value="0" <if condition="$info.status eq 0"> checked="checked"</if> /> 是</label> &nbsp; <label><input type="radio" name="fields[is_unique]" value="1" <if condition="$info.status eq 1"> checked="checked"</if> /> 否</label>
+            </td>
+        </tr>
+        <tr>
+            <th width="100">字段值显示：</th>
+            <td>
+                <label><input type="checkbox" name="fields[n_to_br]" value="1" /> 回车转为换行</label>（“\n”会转成“&lt;br/&gt;”） &nbsp; <label><input type="checkbox" name="fields[support_html]" value="0" /> 过滤HTML</label>
+            </td>
+        </tr>
+        <tr>
+            <th width="100">自动填充函数：</th>
+            <td>
+                <select name="fields[auto_exec]">
+                    <option value="VARCHAR" selected>选择函数</option>
+                    <option value="VARCHAR">datetime</option>
+                    <option value="CHAR">uuid</option>
+                    <option value="TEXT">md5</option>
+                    <option value="MEDIUMTEXT">array_sort</option>
+                </select>
+                （可自定义填充函数）
+            </td>
+        </tr>
+    </table>
+
+    <!-- 表单显示 -->
+    <div class="Item hr">
+        <div class="current">表单显示属性</div>
+    </div>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1" id="form_opts_tbl">
+        <tr>
+            <th width="100">显示表单域：</th>
+            <td>
+               <label><input type="radio" name="fields[input_is_show]" value="0" /> 是</label> &nbsp; <label><input type="radio" name="fields[input_is_show]" value="1" /> 否</label>
+               （如果选择了否，下面的表单填写将无效）
+            </td>
+        </tr>
+        <tr>
+            <th width="100">表单域类型：</th>
+            <td>
+                <select name="fields[input_type]" id="input_type">
+                  <option value="text" selected>单行文本框(text)</option>
+                  <option value="password">密码框(password)</option>
+                  <option value="select">下拉框(select)</option>
+                  <option value="radio">单选框(radio)</option>
+                  <option value="checkbox">复选框(checkbox)</option>
+                  <option value="textarea">多行文本框(textarea)</option>
+                  <option value="editor">编辑器(editor)</option>
+                  <option value="image">图片(image)</option>
+                  <option value="file">文件(file)</option>
+                  <option value="date">日期(date)</option>
+                  <option value="linkfieldselect">下拉外表关联字段(linkfieldselect)</option>
+                </select>
+            </td>
+        </tr>
+
+        <!-- 单行文本框(text)的内容 -->
+        <tr class="input_text input_password">
+            <th width="100">长度限制：</th>
+            <td>
+                <input type="text" class="input" size="20" name="models[table_name]" value="20"/>（可以限制输入表单值的长度）
+            </td>
+        </tr>
+        <!-- 单行文本框(text)的内容 -->
+        <tr class="input_text">
+            <th width="100">表单域默认值：</th>
+            <td>
+                <input type="text" class="input" size="20" name="models[table_name]" value="default"/>（表单域默认的值）
+            </td>
+        </tr>
+
+        <!-- 选择默认值 -->
+        <tr class="input_select input_radio input_checkbox">
+            <th width="100">可选择的默认值：</th>
+            <td><textarea id="content" class="input" style="height: 100px; width: 100%;" name="model[description]">1. 时事新闻
+2. 娱乐新闻
+3. 国际新闻 :default
+4. 热门焦点
+            </textarea>
+            （如果没有default的话，默认为第一项）
+            </td>
+        </tr>
+
+        <!-- 多行文本框 -->
+        <tr class="input_textarea">
+            <th width="100">表单域规格：</th>
+            <td>
+                <label for="">长度：</label><input type="text" class="input" size="20" name="models[table_name]" value="200"/>&nbsp;&nbsp;&nbsp;<label for="">宽度：</label><input type="text" class="input" size="20" name="models[table_name]" value="200"/>
+            </td>
+        </tr>
+
+        <!-- 编辑器 -->
+        <tr class="input_editor">
+            <th width="100">编辑器规格：</th>
+            <td>
+                <label for="">长度：</label><input type="text" class="input" size="20" name="models[table_name]" value="200"/>&nbsp;&nbsp;&nbsp;<label for="">宽度：</label><input type="text" class="input" size="20" name="models[table_name]" value="200"/>
+            </td>
+        </tr>
+        <tr class="input_editor">
+            <th width="100">编辑器类型：</th>
+            <td>
+               <label><input type="radio" name="fields[is_unique]" value="0" <if condition="$info.status eq 0"> checked="checked"</if> /> 富文本型</label> &nbsp; <label><input type="radio" name="fields[is_unique]" value="1" <if condition="$info.status eq 1"> checked="checked"</if> /> 简洁型</label>
+            </td>
+        </tr>
+
+        <!-- 图片、文件类型 -->
+        <tr class="input_file input_image">
+            <th width="100">上传大小：</th>
+            <td>
+                <input type="text" class="input" size="20" name="models[table_name]" value="20"/>（可以限制上传图片、文件的大小，单位Kb）
+            </td>
+        </tr>
+
+        <!-- 外联下拉 -->
+        <tr class="input_linkfieldselect">
+            <th width="100">关联级别：</th>
+            <td>
+                <select name="fields[input_type]">
+                  <option value="text">SET NULL</option>
+                  <option value="password">NOT ACTION</option>
+                  <option value="select" selected>CASCADE</option>
+                  <option value="radio">RESTRICT</option>
+                </select>
+            </td>
+        </tr>        
+        <tr class="input_linkfieldselect">
+            <th width="100">关联的模型：</th>
+            <td>
+                <select name="fields[input_type]">
+                  <option value="text">问答模型(tbl_question)</option>
+                  <option value="password">下载模型(tbl_download)</option>
+                  <option value="select" selected>影视模型（tbl_videos）</option>
+                  <option value="radio">新闻模型（tbl_news）</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="input_linkfieldselect">
+            <th width="100">关联的字段：</th>
+            <td>
+                <select name="fields[input_type]">
+                  <option value="text">id</option>
+                  <option value="password">uuid</option>
+                  <option value="select" selected>created_by</option>
+                  <option value="radio">updated_by</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="input_linkfieldselect">
+            <th width="100">显示的字段：</th>
+            <td>
+                <select name="fields[input_type]">
+                  <option value="text">name</option>
+                  <option value="password">title</option>
+                  <option value="select" selected>content</option>
+                  <option value="radio">desc</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="input_linkfieldselect">
+            <th width="100">关联默认值：</th>
+            <td><textarea id="content" class="input" style="height: 100px; width: 100%;" name="model[description]">1. 分类1
+2. 分类2
+3. 分类3 :default
+4. 分类4
+            </textarea>
+            （如果没有default的话，默认为第一项）
+            </td>
+        </tr>
+
+        <!-- 表单域替换 -->
+        <tr>
+            <th width="100">表单HTML代码：</th>
+            <td><textarea id="content" class="input" style="height: 80px; width: 100%;" name="model[description]">&lt;input type=&quot;text&quot; class=&quot;input&quot; size=&quot;60&quot; name=&quot;models[table_name]&quot; value=&quot;20&quot;/&gt;</textarea></td>
+            </td>
+        </tr>
+
+        <!-- 表单域显示顺序 -->
+        <tr>
+            <th width="100">显示顺序：</th>
+            <td>
+                <input type="text" class="input" size="20" name="models[table_name]" value="0"/>（越小表单域位置显示越前）
+            </td>
+        </tr>
+    </table>
+</form>
+<div class="commonBtnArea" >
+    <button class="btn submit">提交</button>
+</div>
+
+<include file="Fields:javascript" />
