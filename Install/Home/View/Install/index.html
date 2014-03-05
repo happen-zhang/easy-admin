@@ -109,12 +109,12 @@ function TestDbPwd() {
         success: function(status) {
             if(!status){
                 $('#dbpw').val("");
-                $('#J_install_tip_dbpw').html('<span for="dbname" generated="true" class="tips_error" style="">数据库链接配置失败</span>');
+                $('#J_install_tip_db_password').html('<span for="dbname" generated="true" class="tips_error" style="">数据库链接配置失败</span>');
             }
         },
         complete: function() {},
         error: function(){
-            $('#J_install_tip_dbpw').html('<span for="dbname" generated="true" class="tips_error" style="">数据库链接配置失败</span>');
+            $('#J_install_tip_db_password').html('<span for="dbname" generated="true" class="tips_error" style="">数据库链接配置失败</span>');
             $('#dbpw').val("");
         }
     });
