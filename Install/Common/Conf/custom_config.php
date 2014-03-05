@@ -1,6 +1,12 @@
 <?php
 
 return array(
-    'PAGE_TITLE' => 'Easy-Admin',
-    'VERSION' => 'Version 0.0.1 by Happen-Zhang',
+	// 一下配置目录都是在项目的根目录下
+    'WRITABLE_DIRECTORIES' => array(
+        '/',
+        'Common',
+        'Cache',
+        'Data',
+        'Install'
+    )
 );

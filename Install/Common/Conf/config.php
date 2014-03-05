@@ -1,5 +1,7 @@
 <?php
-return array(
+$customConfig = include('custom_config.php');
+
+$appConfig = array(
     // 调试页
     'SHOW_PAGE_TRACE' =>true,
 
@@ -11,3 +13,5 @@ return array(
     'LAYOUT_ON' => true,
     'LAYOUT_NAME' => 'Common/layout'    
 );
+
+return array_merge($appConfig, $customConfig);

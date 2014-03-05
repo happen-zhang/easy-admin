@@ -16,39 +16,45 @@
         <tr>
             <td>操作系统</td>
             <td>类UNIX</td>
-            <td><span class="correct_span">&radic;</span> Linux happen-ubuntu 3.11.0-17-generic #31-Ubuntu SMP Mon Feb 3 21:52:43 UTC 2014 x86_64</td>
+            <td>{$system_info}</td>
             <td>不限制</td>
         </tr>
         <tr>
             <td>PHP版本</td>
             <td>&gt;=5.3.x</td>
-            <td><span class="correct_span">&radic;</span> 5.5.3-1ubuntu2.1</td>
+            <td>{$php_version}</td>
             <td>5.3.0</td>
         </tr>
         <tr>
             <td>服务器</td>
             <td>主流服务器</td>
-            <td><span class="correct_span">&radic;</span> Apache/2.4.6 (Ubuntu)</td>
+            <td>{$server_info}</td>
             <td>不限制</td>
         </tr>
         <tr>
             <td>Mysql版本（client）</td>
             <td>>5.x.x</td>
-            <td><span class="correct_span">&radic;</span> 已安装</td>
+            <td>{$mysql_info}</td>
             <td>4.2</td>
         </tr>
         <tr>
             <td>附件上传</td>
             <td>>2M</td>
-            <td><span class="correct_span">&radic;</span> 2M</td>
+            <td>{$upload_info}</td>
             <td>不限制</td>
         </tr>
         <tr>
-            <td>session</td>
+            <td>Session</td>
             <td>开启</td>
-            <td><span class="correct_span">&radic;</span> 支持</td>
+            <td>{$session_info}</td>
             <td>开启</td>
         </tr>
+        <tr>
+            <td>GD库</td>
+            <td>开启</td>
+            <td>{$gd_info}</td>
+            <td>开启</td>
+        </tr>        
     </table>
     <table width="100%">
         <tr>
@@ -56,34 +62,16 @@
             <td class="td1" width="25%">写入</td>
             <td class="td1" width="25%">读取</td>
         </tr>
+        <volist name="directories_state" id="dir_state">
         <tr>
-            <td>/</td>
-            <td><span class="correct_span">&radic;</span>可写 </td>
-            <td><span class="correct_span">&radic;</span>可读</td>
+            <td>{$dir_state['dir_name']}</td>
+            <td>{$dir_state['writable']}</td>
+            <td>{$dir_state['readable']}</td>
         </tr>
-        <tr>
-            <td>Cache</td>
-            <td><span class="correct_span">&radic;</span>可写 </td>
-            <td><span class="correct_span">&radic;</span>可读</td>
-        </tr>
-        <tr>
-            <td>Common</td>
-            <td><span class="correct_span">&radic;</span>可写 </td>
-            <td><span class="correct_span">&radic;</span>可读</td>
-        </tr>
-        <tr>
-            <td>Databases</td>
-            <td><span class="correct_span">&radic;</span>可写 </td>
-            <td><span class="correct_span">&radic;</span>可读</td>
-        </tr>
-        <tr>
-            <td>install</td>
-            <td><span class="correct_span error_span">&radic;</span>不可写 </td>
-            <td><span class="correct_span">&radic;</span>可读</td>
-        </tr>
+        </volist>
     </table>
 </div>
 
 <div class="bottom tac">
-  <a href="" class="btn">重新检测</a><a href="{:U('Install/index')}" class="btn">下一步</a>
+  <a href="{:U('CheckEnv/index')}" class="btn">重新检测</a><a href="{:U('Install/index')}" class="btn">下一步</a>
 </div>
