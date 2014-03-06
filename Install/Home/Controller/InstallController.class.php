@@ -240,6 +240,7 @@ class InstallController extends CommonController {
      * @return fixed
      */
     private function saveConfig(array $systemConfig) {
+        $config['DB_TYPE'] = 'mysql';
         $config['DB_HOST'] = $systemConfig['db']['host'];
         $config['DB_NAME'] = $systemConfig['db']['name'];
         $config['DB_USER'] = $systemConfig['db']['username'];
