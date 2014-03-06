@@ -7,14 +7,6 @@ namespace Home\Controller;
  */
 class DataController extends CommonController {
     /**
-     * 数据信息
-     * @return
-     */
-    public function index(){
-        $this->display();
-    }
-
-    /**
      * 数据备份
      * @return
      */
