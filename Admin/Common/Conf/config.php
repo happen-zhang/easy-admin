@@ -1,5 +1,6 @@
 <?php
-$menu_config = include('menu_config.php');
+$menuConfig = include('menu_config.php');
+$systemConfig = include('Global/Conf/system_config.php');
 
 $appConfig =  array(
     // 调试页
@@ -24,7 +25,7 @@ $appConfig =  array(
     'TMPL_ACTION_SUCCESS' => 'Common:dispatch_jump',
 
     // 菜单项配置
-    'MENU' => $menu_config
+    'MENU' => $menuConfig
 );
 
-return array_merge($appConfig);
+return array_merge($appConfig, $systemConfig);

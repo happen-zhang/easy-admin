@@ -19,6 +19,20 @@ class DataController extends CommonController {
      * @return
      */
     public function backup() {
+        $tablesInfo = M()->query('SHOW TABLE STATUS');
+        $totalSize = 0;
+
+        // 计算数据表大小
+        foreach ($tablesInfo as $key => $tableInfo) {
+            $tableSize = $tableInfo['Data_length']
+                         + $tableInfo['Index_length'];
+            $totalSize += $tableSize;
+            $tablesInfo[$key]['size'] = bytes_format($tableSize);
+        }
+
+        $this->assign('tables_info', $tablesInfo);
+        $this->assign('total_size', bytes_format($totalSize));
+        $this->assign('table_num', count($tablesInfo));
         $this->display();
     }
 
