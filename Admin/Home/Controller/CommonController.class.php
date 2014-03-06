@@ -23,6 +23,14 @@ class CommonController extends Controller {
     }
 
     /**
+     * 空操作
+     * @return
+     */
+    public function _empty() {
+        $this->error('亲，您访问的页面不存在！');
+    }
+
+    /**
      * 分配菜单
      * @return
      */
