@@ -96,3 +96,82 @@ function dir_path($path) {
 
     return $path;
 }
+
+/**
+ * 创建数据库
+ * @param  string $db_name
+ * @param  handler $connection
+ * @return boolean
+ */
+function create_database($db_name, $connection) {
+    $sql = "CREATE DATABASE IF NOT EXISTS `{$db_name}` "
+           . "DEFAULT CHARACTER SET utf8;";
+
+    return mysql_query($sql, $connection);
+}
+
+/**
+ * 分割sql文件
+ * @param  string $sql
+ * @param  string $table_prefix
+ * @return array
+ */
+function sql_split($sql, $table_prefix) {
+    $default_prefix = C('DEFAULT_TABLE_PREFIX');
+    if ($table_prefix != $default_prefix) {
+        // 替换默认表前缀
+        $sql = str_replace($default_prefix, $table_prefix, $sql);
+    }
+
+    // 修改表的字符集为utf8
+    $pattern = "/TYPE=(InnoDB|MyISAM|MEMORY)( DEFAULT CHARSET=[^; ]+)?/";
+    $sql = preg_replace($pattern, "ENGINE=\\1 DEFAULT CHARSET=utf8", $sql);
+
+    // 回车转换为换行
+    $sql = str_replace("\r", "\n", $sql);
+
+    // 分割为每一条sql
+    $queries = explode(";\n", trim($sql));
+    unset($sql);
+
+    $result = array();
+    foreach ($queries as $key => $query) {
+        $query = explode("\n", trim($query));
+        // 删除空行
+        $query = array_filter($query);
+
+        $result[$key] = '';
+        foreach ($query as $item) {
+            $temp = substr($item, 0, 1);
+            if ($temp != '#' && $temp != '-') {
+                $result[$key] .= $item;
+            }
+        }
+    }
+
+    return $result;
+}
+
+/**
+* 生成uuid
+* @param  string $prefix
+* @return string
+*/
+function uuid($prefix = '') {
+    $str = md5(uniqid(mt_rand(), true));   
+    $uuid  = substr($str,0,8) . '-';   
+    $uuid .= substr($str,8,4) . '-';   
+    $uuid .= substr($str,12,4) . '-';   
+    $uuid .= substr($str,16,4) . '-';   
+    $uuid .= substr($str,20,12);
+
+    return $prefix . $uuid;
+}
+
+/**
+* 生成datetime
+* @return string
+*/
+function datetime() {
+    return date('Y-m-d H:i:s');
+}

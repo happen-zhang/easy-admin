@@ -12,39 +12,41 @@
 <div class="bottom tac">
     <a href="javascript:;" class="btn_old"><img src="__PUBLIC__/images/install/loading.gif" align="absmiddle" />&nbsp;正在安装...</a>
 </div>
-
 <!-- js -->
 <include file="Install:javascripts" />
 <script type="text/javascript">
-var n=0;
+
 // 得到提交的数据
-var data = <?php echo json_encode($_POST);?>;
+var data = {$data};
+var step = 0;
 $.ajaxSetup({ cache: false });
 
-function reloads(n) {
+function reloads(step) {
     // 提交数据
-    var url =  "./index.php?step=4&install=1&n="+n;
+    var url = "{:U('Install/create', array(), '')}" + "/step/" + step;
     $.ajax({
         type: "POST",
         url: url,
         data: data,
         dataType: 'json',
         beforeSend: function() { },
-        success: function(msg) {
-            if(msg.n == '999999'){
-                $('#dosubmit').attr("disabled", false);
-                $('#dosubmit').removeAttr("disabled");
-                $('#dosubmit').removeClass("nonext");
-                setTimeout('gonext()',2000);
+        success: function(data) {
+            // 安装完成
+            if(data.step == '999999'){
+                // $('#dosubmit').attr("disabled", false);
+                // $('#dosubmit').removeAttr("disabled");
+                // $('#dosubmit').removeClass("nonext");
+                setTimeout('gonext()', 3000);
             }
 
-            if(msg.n){
-                $('#loginner').append(msg.msg);
+            if(data.step){
+                $('#loginner').append(data.info);
+
                 // 递归
-                reloads(msg.n);
+                reloads(data.step);
             }else{
-                //alert('指定的数据库不存在，系统也无法创建，请先通过其他方式建立好数据库！');
-                alert(msg.msg);
+                // 连接数据库失败或者是创建数据库失败
+                alert(data.info);
             }
         }
     });
@@ -52,11 +54,11 @@ function reloads(n) {
 
 // 安装完成，跳转到5步
 function gonext(){
-    window.location.href='./index.php?step=5';
+    window.location.href="{:U('Install/complete')}";
 }
 
 // 开始提交数据
 $(document).ready(function(){
-    reloads(n);
+    reloads(step);
 })
 </script>
