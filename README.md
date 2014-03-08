@@ -6,6 +6,10 @@
 
 Easy-Admin就如其名，它就是为你提供最方便的后台数据管理，而且提供简介易用的管理界面。Easy-Admin和一般CMS系统最大的区别在于，前者只专业于后台数据管理，而后者则前后端兼顾。简而言之，Easy-Admin能够帮你轻松搞定数据的CURD、权限管理和数据库管理。手头有企业站或者需要自搭博客的小伙伴们别错过咯～
 
+## 安装 ##
+
+在浏览器中访问：`http://domain/install.php`。
+
 ## 基本功能 ##
 
 ### 数据模型 ###
@@ -25,7 +29,7 @@ Easy-Admin就如其名，它就是为你提供最方便的后台数据管理，�
 
 ### 快速的安装向导 ###
 
-* 你只需 下一步 -> 下一步 -> 完成， O(∩\_∩)O~。
+* 你只需 下一步 -> 下一步 -> 完成。
 
 ### 其他 ###
 
@@ -37,8 +41,8 @@ Easy-Admin就如其名，它就是为你提供最方便的后台数据管理，�
 
 ## 补充说明 ##
 
-1. 本系统的**页面模板**来源于 @leohdr 的[PHP-Amateur_Common_System](https://github.com/leohdr/PHP-Amateur_Common_System)，在此感谢 @leohdr 兄的分享
-2. 由于使用本后台系统出现任何安全问题、数据文件等问题与本人无关，请考虑后使用
+1. 本系统的**页面模板**来源于 @leohdr 的[PHP-Amateur_Common_System](https://github.com/leohdr/PHP-Amateur_Common_System)，在此感谢 @leohdr 兄的分享。
+2. 由于使用本后台系统出现任何安全问题、数据文件等问题与本人无关，请考虑后使用。
 
 ## TODO ##
 
