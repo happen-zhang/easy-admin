@@ -44,10 +44,9 @@ class DataController extends CommonController {
         // 防止数据库备份超时
         function_exists('set_time_limit') && set_time_limit(0);
 
-        $tables = $_POST['tables'];
-        // $tables = array('ea_admin', 'ea_field');
-
         $M = D('Common');
+        $tables = $_POST['tables'];
+        $time = time();
 
         // 备份配置
         $backupConfig = C('BACKUP');
@@ -88,10 +87,11 @@ class DataController extends CommonController {
                 $rows = $this->queryTable($table,
                                           $i * $sqlListRows,
                                           $sqlListRows);
-
+                // 
                 foreach ($rows as $row) {
                     // 得到insert sql
-                    $insertSql = $this->getInsertValueSql($table, $row) . "\r\n";
+                    $insertSql = $this->getInsertValueSql($table, $row);
+                    $insertSql .= "\r\n";
                     // sql备份文件的基本数据信息
                     $sqlInfo = $this->getSqlFileInfo($fileNo,
                                                      $tables,
@@ -105,21 +105,14 @@ class DataController extends CommonController {
                     if ($currentFileLen > $backupConfig['SQL_FILE_SIZE']) {
                         // 达到分卷大小，写出备份文件
                         $file = $sqlFile . '_' . $fileNo . '.sql';
-                        if (1 == $fileNo) {
-                            // 分卷为1,则需要写出重建表信息
-                            $output = $sqlFileHeader
-                                      . $sqlInfo
-                                      . $rebuildSql
-                                      . $output;
-                        } else {
-                            $output = $sqlFileHeader
-                                      . $sqlInfo
-                                      . $output;                        
-                        }
-
+                        // 分卷为1,则需要写出重建表信息
+                        $temp = $output;
+                        $output = $sqlFileHeader . $sqlInfo;
+                        $output .= (1 == $fileNo) ? $rebuildSql : '';
+                        $output .= $temp;
                         // 写出sql文件
                         file_put_contents($file, $output, FILE_APPEND);
-                        $rebuildSql = $output ='';
+                        $rebuildSql = $output = '';
                         $backuped = array();
                         $backuped[] = $table;
                         $fileNo++;
@@ -134,18 +127,18 @@ class DataController extends CommonController {
         if (strlen($rebuildSql . $output) > 0) {
             $sqlInfo = $this->getSqlFileInfo($fileNo, $tables, $backuped);
             $file = $sqlFile . '_' . $fileNo . '.sql';
-            if (1 == $fileNo) {
-                // 分卷为1,则需要写出重建表信息
-                $output = $sqlFileHeader . $sqlInfo . $rebuildSql . $output;
-            } else {
-                $output = $sqlFileHeader . $sqlInfo . $output;
-            }
+            // 组装output
+            $temp = $output;
+            $output = $sqlFileHeader . $sqlInfo;
+            $output .= (1 == $fileNo) ? $rebuildSql : '';
+            $output .= $temp;
+            // 写出sql文件
             file_put_contents($file, $output, FILE_APPEND);
             $fileNo++;
         }
 
-        // 反馈信息
-        $time = time() - $time;
+        // 返回备份成功信息
+        $time = (time() - $time) / 1000;
         $info = '成功备份所选数据库表结构和数据，本次备份共生成了'
                 . ($fileNo - 1) . "个SQL文件。耗时：{$time} 秒";
 
