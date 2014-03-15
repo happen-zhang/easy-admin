@@ -6,5 +6,6 @@
 
 
 /Admin/Runtime/
-/Public/images/uploads
+/Public/images/uploads/
 /Cache/
+/Backup/
