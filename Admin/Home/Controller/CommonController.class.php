@@ -87,4 +87,39 @@ class CommonController extends Controller {
 
         return $main . ' > ' . $sub;
     }
+
+    /**
+     * { status : true, info: $info}
+     * @param  string $info
+     * @param  string $url
+     * @return
+     */
+    protected function successReturn($info, $url) {
+        $this->resultReturn(true, $info, $url);
+    }
+
+    /**
+     * { status : false, info: $info}
+     * @param  string $info
+     * @param  string $url
+     * @return
+     */
+    protected function errorReturn($info, $url) {
+        $this->resultReturn(false, $info, $url);
+    }
+
+    /**
+     * 返回带有status、info键值的json数据
+     * @param  boolean $status
+     * @param  string $info
+     * @param  string $url 
+     * @return
+     */
+    protected function resultReturn($status, $info, $url) {
+        $json['status'] = $status;
+        $json['info'] = $info;
+        $json['url'] = isset($url) ? $url : '';
+
+        return $this->ajaxReturn($json);
+    }
 }

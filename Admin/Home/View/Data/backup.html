@@ -18,7 +18,7 @@
         <tbody>
             <volist name="tables_info" id="table_info">
             <tr align="center">
-                <td><input type="checkbox" name="table[]" value="pa_access"/></td>
+                <td><input type="checkbox" name="tables[]" value="{$table_info['Name']}"/></td>
                 <td align="left">{$table_info['Name']}</td>
                 <td>{$table_info['Comment']}</td>
                 <td>{$table_info['Rows']}</td>
@@ -40,7 +40,6 @@
             </tr>
         </tfoot>       
     </table>
-    <input type="hidden" name="" value="" />
 </form>
 <div class="commonBtnArea" >
     <button class="btn submit">备份所选</button>
@@ -58,7 +57,7 @@
                 popup.alert("已提交，系统在处理中...");
             }else{
                 $(this).attr("disabledSubmit",true).html("提交处理中...");
-                commonAjaxSubmit("/common_system/system.php/SysData/backup");
+                commonAjaxSubmit("__URL__/doBackup");
 //                        popup.alert("系统处理中，如果数据库中数据较多可能需要较长时间，请稍候....");
                 setTimeout(function(){
                     popup.close("asyncbox_alert");
