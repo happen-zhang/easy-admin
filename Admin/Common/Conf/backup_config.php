@@ -3,7 +3,7 @@
 // 数据库备份配置
 return array(
     // 数据库文件备份的目录路径
-    'BACKUP_DIR_PATH' => WEB_ROOT . 'Backup/',
+    'BACKUP_DIR_PATH' => WEB_ROOT . 'Data/',
 
     // 数据库文件备份名称前缀
     'BACKUP_PREFIX' => 'ea_',
