@@ -18,6 +18,9 @@ return array(
     'BACKUP_DESCRIPTION_URL' => 'Github: http://github.com/happen-zhang/'
                                 . 'easy-admin',
 
+    // 读取sql文件注释的最大字节数
+    'BACKUP_DESCRIPTION_LENGTH' => 2000,
+
     // sql每页条数
     'BACKUP_SQL_LIST_ROWS' => 10000,
 

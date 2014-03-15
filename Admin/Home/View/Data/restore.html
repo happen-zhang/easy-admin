@@ -1,5 +1,5 @@
 <div class="Item hr">
-    <span class="fr">系统数据库备份目录下共有2个SQL备份文件，共计56.73 KB</span>
+    <span class="fr">系统数据库备份目录下共有{$files_count}个SQL备份文件，共计{$total_size}</span>
     <div class="current">备份SQL文件列表</div>
 </div>
 <form>
@@ -9,39 +9,29 @@
                 <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
                 <td>SQL文件名</td>
                 <td>备份时间</td>
-                <td>类型</td>
                 <td>文件大小</td>
                 <td>文件备注</td>
                 <td>恢复</td>
             </tr>
         </thead>
         <tbody>
+            <volist name="info_list" id="info">
             <tr align="center">
-                    <td><input pre="SYSTEM_201402" type="checkbox" name="sqlFiles[]" value="SYSTEM_201402_1.sql"/></td>
-                    <td align="left"><a href="/common_system/system.php/SysData/downFile/file/SYSTEM_201402_1.sql/type/sql" target="_blank">SYSTEM_201402_1.sql</a></td>
-                    <td>2014-02-24 10:31:42</td>
-                    <td>系统自动备份</td>
-                    <td>28.37 KB</td>
-                    <td class="description" title="当前SQL文件包含了表：pa_access、pa_admin、pa_category、pa_member、pa_news、pa_node、pa_role、pa_role_user的结构信息，表：pa_access、pa_admin、pa_category、pa_member、pa_news、pa_node、pa_role、pa_role_user的数据">查看备注信息</td>
-                    <td><button class="btn restore" sqlPre="SYSTEM_201402">恢复</button></td>
-                </tr>
-                <tr align="center">
-                    <td><input pre="SYSTEM_201312" type="checkbox" name="sqlFiles[]" value="SYSTEM_201312_1.sql"/></td>
-                    <td align="left"><a href="/common_system/system.php/SysData/downFile/file/SYSTEM_201312_1.sql/type/sql" target="_blank">SYSTEM_201312_1.sql</a></td>
-                    <td>2013-12-04 21:04:31</td>
-                    <td>系统自动备份</td>
-                    <td>28.37 KB</td>
-                    <td class="description" title="当前SQL文件包含了表：pa_access、pa_admin、pa_category、pa_member、pa_news、pa_node、pa_role、pa_role_user的结构信息，表：pa_access、pa_admin、pa_category、pa_member、pa_news、pa_node、pa_role、pa_role_user的数据">查看备注信息</td>
-                    <td><button class="btn restore" sqlPre="SYSTEM_201312">恢复</button></td>
-                </tr>
+                <td><input pre="{$info['prefix']}" type="checkbox" name="sqlFiles[]" value="{$info['name']}"/></td>
+                <td align="left"><a href="/common_system/system.php/SysData/downFile/file/SYSTEM_201402_1.sql/type/sql" target="_blank">{$info['name']}</a></td>
+                <td>{$info['time']}</td>
+                <td>{$info['size']}</td>
+                <td class="description" title="{$info['description']}">查看备注信息</td>
+                <td><button class="btn restore" sqlPre="{$info['prefix']}">恢复</button></td>
+            </tr>
+            </volist>
         </tbody>
         <tfoot align="center">
             <tr>
                 <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
                 <td>SQL文件名</td>
                 <td>备份时间</td>
-                <td>类型</td>
-                <td>总计：56.73 KB</td>
+                <td>总计：{$total_size}</td>
                 <td>文件备注</td>
                 <td>恢复</td>
             </tr>

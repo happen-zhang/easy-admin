@@ -150,6 +150,11 @@ class DataController extends CommonController {
      * @return
      */
     public function restore() {
+        $info = $this->getBackupFilesInfo();
+
+        $this->assign('total_size', $info['total_size']);
+        $this->assign('info_list', $info['info_list']);
+        $this->assign('files_count', count($info['info_list']));
         $this->display();
     }
 
@@ -256,5 +261,65 @@ class DataController extends CommonController {
         }
 
         return $sqlInfo;
+    }
+
+    /**
+     * 得到备份文件的信息
+     * @return array
+     */
+    private function getBackupFilesInfo() {
+        $backupConfig = C('BACKUP');
+        $dirPath = $backupConfig['BACKUP_DIR_PATH'];
+        $readLength = $backupConfig['BACKUP_DESCRIPTION_LENGTH'];
+
+        // 备份文件目录
+        $dirHandle = opendir($dirPath);
+        $backupList = array();
+        // 备份文件的总大小
+        $totalSize = 0;
+        while ($file = readdir($dirHandle)) {
+            if (preg_match('/\.sql$/i', $file)) {
+                $filePath = $dirPath . '/' . $file;
+                // 匹配sql文件
+                $fp = fopen($filePath, 'rb');
+                // 只读出sql文件的头信息
+                $sqlFileInfo = fread($fp, $readLength);
+                fclose($fp);
+                // 取出每行数据
+                $detail = explode("\n", $sqlFileInfo);
+                $backupFile = array();
+                $backupFile['name'] = $file;
+                $backupFile['url'] = substr($detail[2], 10);
+                $backupFile['description'] = substr($detail[3], 14);
+                $backupFile['time'] = substr($detail[4], 8);
+                // 文件大小
+                $size = filesize($filePath);
+                $backupFile['size'] = bytes_format($size);
+                $backupFile['prefix'] = substr($file, 0, strrpos($file, '_'));
+                // sql文件分卷号
+                $startPos = strrpos($file, '_') + 1;
+                $fileNoLen = strrpos($file, '.') - 1 - strrpos($file, '_');
+                $backupFile['file_no'] = substr($file, $startPos, $fileNoLen);
+                // 文件创建或修改时间
+                $backupList[filemtime($filePath)][$file] = $backupFile;
+                $totalSize += $size;
+            }
+        }
+        closedir($dirHandle);
+
+        // 备份时间逆序排序
+        ksort($backupList);
+        $infoList = array();
+        foreach ($backupList as $sqlFileInfos) {
+            // 文件名排序
+            ksort($sqlFileInfos);
+            foreach ($sqlFileInfos as $sqlFileInfo) {
+                $infoList[] = $sqlFileInfo;    
+            }
+        }
+        unset($backupList);
+
+        return array('info_list' => $infoList,
+                     'total_size' => bytes_format($totalSize));
     }
 }
