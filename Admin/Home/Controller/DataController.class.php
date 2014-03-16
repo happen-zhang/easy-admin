@@ -159,6 +159,105 @@ class DataController extends CommonController {
     }
 
     /**
+     * 处理数据恢复
+     * @return
+     */
+    public function doRestore() {
+        if (!IS_POST) {
+            $this->errorReturn('访问出错');
+        }
+
+        // 设置恢复数据不超时
+        function_exists('set_time_limit') && set_time_limit(0);
+
+        $M = M();
+        $backupConfig = C('BACKUP');
+        // 得到需要恢复的文件
+        $restoreFiles = isset($_SESSION['restore_cache'])
+                        ? $_SESSION['restore_cache']['files']
+                        : $this->getRestoreFiles($_POST['file_prefix']);
+
+        if (empty($restoreFiles)) {
+            $this->errorReturn('需要恢复的文件不存在');
+        }
+
+        // 保存需要恢复的文件
+        $_SESSION['restore_cache']['files'] = $restoreFiles;
+        // 恢复开始时间
+        if (!isset($_SESSION['restore_cache']['time'])) {
+            $_SESSION['restore_cache']['time'] = time();
+        }
+        // 文件已读指针位置
+        $position = 0;
+        if (isset($_SESSION['restore_cache']['position'])) {
+            $position = $_SESSION['restore_cache']['position'];
+        }
+
+        $sql = '';
+        $exexuted = 0;
+        foreach ($restoreFiles as $key => $storeFile) {
+            $filePath = $backupConfig['BACKUP_DIR_PATH'] . $storeFile;
+            if (!file_exists($filePath)) {
+                // 需要恢复的文件不存在
+                continue ;
+            }
+            $fp = fopen($filePath, 'r');
+            // 文件指针移动
+            fseek($fp, $position);
+            // 读取文件中的sql
+            while (!feof($fp)) {
+                // 读出一行数据
+                $line = trim(fgets($fp));
+                // 是否为sql语句而不是注释
+                if (!$this->isSql($line)) {
+                    continue ;
+                }
+
+                $sql .= $line;
+                if (';' !== $line[strlen($line) - 1]) {
+                    // 不是完整的sql则不执行
+                    continue ;
+                }
+
+                // 执行完整的sql
+                $M->query($sql);
+                $sql = '';
+                $exexuted++;
+                // 如果执行sql超过或等于500行，则返回提示信息
+                if ($exexuted >= 500) {
+                    // 保存读出文件指针位置
+                    $_SESSION['restore_cache']['position'] = ftell($fp);
+                    // 已恢复行数
+                    $imported = isset($_SESSION['restore_cache']['imported'])
+                                ? $_SESSION['restore_cache']['imported'] : 0;
+                    $imported += $exexuted;
+                    $_SESSION['restore_cache']['imported'] = $imported;
+                    fclose($fp);
+
+                    $info = '如果导入SQL文件卷较大(多)导入时间可能需要几分钟甚至更久'
+                            . '请耐心等待导入完成，导入期间请勿刷新本页，当前导入进度：'
+                            . '<font color="red">已经导入' . $imported . '条Sql'
+                            . '</font>';
+                    // 防止url缓存
+                    $url = U('Data/doRestore',
+                             array('rand_code' => rand_code(5)));
+                    // 返回json
+                    return $this->successReturn($info, $url);
+                }
+            }
+            fclose($file);
+            // 删除已恢复完成的文件
+            unset($_SESSION['restore_cache']['files'][$key]);
+            $position = 0;
+        }
+        // 恢复执行时间
+        $time = time() - $_SESSION['restore_cache']['time'];
+        unset($_SESSION['restore_cache']);
+
+        $this->successReturn("导入成功，耗时：{$time} 秒钟");
+    }
+
+    /**
      * 数据压缩
      * @return
      */
@@ -321,5 +420,57 @@ class DataController extends CommonController {
 
         return array('info_list' => $infoList,
                      'total_size' => bytes_format($totalSize));
+    }
+
+    /**
+     * 检查是否为一条sql
+     * @param  string  $sql
+     * @return boolean
+     */
+    private function isSql($sql) {
+        if (empty($sql) 
+            || '#' == $sql[0]
+            || ('-' == $sql[0] && '-' == $sql[1])) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 得到需要恢复的sql文件
+     * @return array
+     */
+    private function getRestoreFiles($filePrefix) {
+        if (empty($filePrefix)) {
+            return array();
+        }
+        $backupConfig = C('BACKUP');
+        $dirHandle = opendir($backupConfig['BACKUP_DIR_PATH']);
+        $files = array();
+        while ($file = readdir($dirHandle)) {
+            if (preg_match('/\.sql$/i', $file)
+                && preg_match('/' . $filePrefix . '/i', $file)) {
+                $files[] = $file;
+            }
+        }
+        closedir($dirHandle);
+
+        // 文件没有匹配成功，则说文件不存在
+        if (0 === count($files)) {
+            return array();
+        }
+
+        $sqlFiles = array();
+        foreach ($files as $file) {
+            // 取出分卷号作为键值
+            $key = str_replace('.sql', '',
+                               str_replace($filePrefix . '_', '', $file));
+            $sqlFiles[$key] = $file;
+        }
+        unset($files, $filePrefix);
+        ksort($sqlFiles);
+
+        return $sqlFiles;
     }
 }

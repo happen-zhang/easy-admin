@@ -126,19 +126,25 @@
 
         //提交数据恢复操作
         $(".restore").click(function(){
+            // 已有恢复数据提交
             if($(this).attr("disabledSubmit")){
                 popup.alert("已提交，系统在处理中...");
                 return false;
             }
             var sqlPre=$(this).attr("sqlPre");
-            $(".restore[sqlPre='"+sqlPre+"']").attr("disabledSubmit",true).html("导入中...");
+            // 修改按钮状态
+            $(".restore[sqlPre='"+sqlPre+"']").attr("disabledSubmit",true).html("恢复中...");
+            // 禁用其他操作
             $(".btn").attr("disabledSubmit",true);
-            $.getJSON("/common_system/system.php/SysData/restoreData", {sqlPre:sqlPre}, function(json){
+            // 
+            $.post("__URL__/doRestore", {file_prefix: sqlPre}, function(json){
                 if(json.status==1){
                     if(json.url){
                         $("#opStatus").show().html(json.info);
-                        repeat(json.url,"restore");
+                        repeat(json.url, "restore");
                     }else{
+                        $(".restore").html("恢复");
+                        $(".btn").removeAttr("disabledSubmit");
                         popup.success(json.info);
                     }
                     popup.close("asyncbox_alert");
@@ -146,7 +152,7 @@
                     popup.error(json.info);
                 }
             });
-            popup.alert("系统处理中，如果导入文件较大可能需要较长时间，请稍候....");
+            popup.alert("系统处理中，如果导入文件较大可能需要较长时间，勿刷新，请稍候....");
             return false;
         });
 
