@@ -18,7 +18,7 @@
             <volist name="info_list" id="info">
             <tr align="center">
                 <td><input pre="{$info['prefix']}" type="checkbox" name="sqlFiles[]" value="{$info['name']}"/></td>
-                <td align="left"><a href="/common_system/system.php/SysData/downFile/file/SYSTEM_201402_1.sql/type/sql" target="_blank">{$info['name']}</a></td>
+                <td align="left"><a href="{:U('Data/downloadFile', array('file_name' => $info['name'], 'file_type' => 'sql'))}" target="_blank">{$info['name']}</a></td>
                 <td>{$info['time']}</td>
                 <td>{$info['size']}</td>
                 <td class="description" title="{$info['description']}">查看备注信息</td>

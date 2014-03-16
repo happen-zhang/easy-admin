@@ -5,6 +5,9 @@ return array(
     // 数据库文件备份的目录路径
     'BACKUP_DIR_PATH' => WEB_ROOT . 'Data/',
 
+    // 数据库文件zip存放目录路径
+    'BACKUP_ZIP_DIR_PATH' => WEB_ROOT . 'Data/zip/',
+
     // 数据库文件备份名称前缀
     'BACKUP_PREFIX' => 'ea_',
 

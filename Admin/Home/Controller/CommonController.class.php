@@ -122,4 +122,18 @@ class CommonController extends Controller {
 
         return $this->ajaxReturn($json);
     }
+
+    /**
+     * 下载文件
+     * @param  文件路径 $filePath
+     * @param  文件名称 $fileName
+     * @return
+     */
+    protected function download($filePath, $fileName) {
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; '
+               . 'filename="' . $filePath . '"');
+        header('Content-Length: ' . filesize($filePath));
+        readfile($filePath);
+    }
 }

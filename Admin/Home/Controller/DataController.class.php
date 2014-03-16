@@ -123,4 +123,31 @@ class DataController extends CommonController {
     public function optimize() {
         $this->display();
     }
+
+    /**
+     * 文件下载
+     * @return
+     */
+    public function downloadFile() {
+        $info = '需要的下载的文件不存在或者已经被删除了';
+        $fileType = strtolower($_GET['file_type']);
+
+        if (empty($_GET['file_name'])
+            || empty($_GET['file_type'])
+            || !in_array($fileType, array('zip', 'sql'))) {
+            $this->error($info);
+        }
+
+        $backupConfig = C('BACKUP');
+        $backupDir = ('zip' !== $fileType)
+                     ? $backupConfig['BACKUP_DIR_PATH']
+                     : $backupConfig['BACKUP_ZIP_DIR_PATH'];
+        $filePath = $backupDir . $_GET['file_name'];
+
+        if (!file_exists($filePath)) {
+            $this->error($info);
+        }
+
+        $this->download($filePath, $_GET['file_name']);
+    }
 }
