@@ -34,16 +34,13 @@
                 <td>总计：{$total_size}</td>
                 <td>文件备注</td>
                 <td>恢复</td>
-            </tr>
+            </tr
         </tfoot>
     </table>
-    <input type="hidden" name="to" id="to" value="" />
-    <input type="hidden" name="" value="" />
 </form>
 <div class="commonBtnArea" >
     <span class="fr" id="opStatus" style="width:450px; display: none; margin: -8px; line-height: 16px;"></span>
     <button class="btn delSqlFiles">删除所选</button>
-    <button class="btn sendSql">发送SQL到邮箱</button>
     <button class="btn zip">压缩SQL为ZIP</button>
 </div>
 
@@ -51,145 +48,102 @@
 <script type="text/javascript" src="__PUBLIC__/Min/?f=__PUBLIC__/javascripts/jquery-1.7.2.min.js|__PUBLIC__/javascripts/poshytip/jquery.poshytip.min.js"></script>
 
 <script type="text/javascript">
-    $(function(){
-        //刷新操作
-        var repeat=function(url,type){
-            $.post(url, function(json){
-//                        var json = eval("(" + json + ")");
-                if(json.status==1){
-                    if(json.url){
-                        $("#opStatus").html(json.info);
-                        repeat(json.url,type);
-                    }else{
-                        popup.success(json.info,'oh yeah',function(action){
-                            if(action == 'ok'){
-                                $("#opStatus").hide('solw');
-                                $("."+type).html(type=="sendSql"?"发送SQL到邮箱":"导入");
-                            }
-                        });
-                        $(".btn").removeAttr("disabledSubmit");
-                    }
+$(function(){
+    //刷新操作
+    var repeat=function(url,type){
+        $.post(url, function(json){
+            if(json.status==1){
+                if(json.url){
+                    $("#opStatus").html(json.info);
+                    repeat(json.url,type);
                 }else{
-                    popup.error(json.info);
-                }
-            });
-        }
-
-        $(".sendSql").click(function(){
-            if($(this).attr("disabledSubmit")){
-                popup.alert("已提交，系统在处理中...");
-                return false;
-            }
-            if($("tbody input[type='checkbox']:checked").size()==0){
-                popup.alert("请先选择你要发送到邮件中的数据库表吧");
-                return false;
-            }
-            popup.open({id:"ifrSendSql", url : "/common_system/system.php/SysData/sendSql", width : 400, height : 100, buttons : [{ value : '确定发送邮件',result : 'submit'},{ value : '取消',result : 'cancel'}],callback : function(btnRes,cntWin,reVal){
-                    if(btnRes == "submit"){
-                        var email=cntWin.getEmail();
-                        var Reg =/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-                        if (Reg.test(email)) {
-                            $("#to").val(email);
-                            $(".btn").attr("disabledSubmit",true);
-                            $("form").ajaxSubmit({url:"/common_system/system.php/SysData/sendSql",type:"POST",success:function(json, st) {
-//                                            var json = eval("(" + json + ")");
-                                    if(json.status==1){
-                                        if(json.url){
-                                            $("#opStatus").show().html(json.info);
-                                            repeat(json.url,"sendSql");
-                                        }else{
-                                            popup.success(json.info);
-                                        }
-                                        popup.close("asyncbox_alert");
-                                    }else{
-                                        popup.error(json.info);
-                                    }
-                                }
-                            });
-                            popup.close("ifrSendSql");
-                        }else{
-                            popup.error("你输入的电子邮件地址格式错误");
+                    popup.success(json.info,'oh yeah',function(action){
+                        if(action == 'ok'){
+                            $("#opStatus").hide('solw');
+                            $("."+type).html("导入");
                         }
-                        return false;
-                    }
+                    });
+                    $(".btn").removeAttr("disabledSubmit");
                 }
-            });
-            return false;
-        });
-
-        //显示SQL文件说明信息
-        $('.description').poshytip({className: 'tip-yellowsimple', showTimeout: 0.5,alignX: 'center',offsetY: 0,allowTipHover: true});
-        clickCheckbox();//全新反选
-
-        //同一备份版本任意一个卷选中则选中该卷所有文件
-        $("tbody input[type='checkbox']").click(function(){$("tbody input[type='checkbox'][pre='"+$(this).attr("pre")+"']").prop("checked",$(this).prop('checked'));});
-
-        //提交数据恢复操作
-        $(".restore").click(function(){
-            // 已有恢复数据提交
-            if($(this).attr("disabledSubmit")){
-                popup.alert("已提交，系统在处理中...");
-                return false;
+            }else{
+                popup.error(json.info);
             }
-            var sqlPre=$(this).attr("sqlPre");
-            // 修改按钮状态
-            $(".restore[sqlPre='"+sqlPre+"']").attr("disabledSubmit",true).html("恢复中...");
-            // 禁用其他操作
-            $(".btn").attr("disabledSubmit",true);
-            // 
-            $.post("__URL__/doRestore", {file_prefix: sqlPre}, function(json){
-                if(json.status==1){
-                    if(json.url){
-                        $("#opStatus").show().html(json.info);
-                        repeat(json.url, "restore");
-                    }else{
-                        $(".restore").html("恢复");
-                        $(".btn").removeAttr("disabledSubmit");
-                        popup.success(json.info);
-                    }
-                    popup.close("asyncbox_alert");
+        });
+    }
+
+    //显示SQL文件说明信息
+    $('.description').poshytip({className: 'tip-yellowsimple', showTimeout: 0.5,alignX: 'center',offsetY: 0,allowTipHover: true});
+    clickCheckbox();//全新反选
+
+    //同一备份版本任意一个卷选中则选中该卷所有文件
+    $("tbody input[type='checkbox']").click(function(){$("tbody input[type='checkbox'][pre='"+$(this).attr("pre")+"']").prop("checked",$(this).prop('checked'));});
+
+    //提交数据恢复操作
+    $(".restore").click(function(){
+        // 已有恢复数据提交
+        if($(this).attr("disabledSubmit")){
+            popup.alert("已提交，系统在处理中...");
+            return false;
+        }
+        var sqlPre=$(this).attr("sqlPre");
+        // 修改按钮状态
+        $(".restore[sqlPre='"+sqlPre+"']").attr("disabledSubmit",true).html("恢复中...");
+        // 禁用其他操作
+        $(".btn").attr("disabledSubmit",true);
+        // 
+        $.post("__URL__/doRestore", {file_prefix: sqlPre}, function(json){
+            if(json.status==1){
+                if(json.url){
+                    $("#opStatus").show().html(json.info);
+                    repeat(json.url, "restore");
                 }else{
-                    popup.error(json.info);
+                    $(".restore").html("恢复");
+                    $(".btn").removeAttr("disabledSubmit");
+                    popup.success(json.info);
                 }
-            });
-            popup.alert("系统处理中，如果导入文件较大可能需要较长时间，勿刷新，请稍候....");
-            return false;
+                popup.close("asyncbox_alert");
+            }else{
+                popup.error(json.info);
+            }
         });
-
-        //删除备份文件
-        $(".delSqlFiles").click(function(){
-            if($(this).attr("disabledSubmit")){
-                popup.alert("已提交，系统在处理中...");
-                return false;
-            }
-            if($("tbody input[type='checkbox']:checked").size()==0){
-                popup.alert("请先选择你要删除的数据库表吧");
-                return false;
-            }
-            popup.confirm('你确定要删除备份文件吗？','温馨提示',function(action){
-                if(action == 'ok'){
-                    $(".btn").attr("disabledSubmit",true);
-                    $(this).html("提交处理中...");
-                    commonAjaxSubmit("/common_system/system.php/SysData/delSqlFiles");
-                }
-            });
-            return false;
-        });
-
-        //删除备份文件
-        $(".zip").click(function(){
-            if($(this).attr("disabledSubmit")){
-                popup.alert("已提交，系统在处理中...");
-                return false;
-            }
-            if($("tbody input[type='checkbox']:checked").size()==0){
-                popup.alert("请先选择你要压缩的数据库表吧");
-                return false;
-            }
-            commonAjaxSubmit("/common_system/system.php/SysData/zipSql");
-            $(".btn").attr("disabledSubmit",true);
-            $(this).html("压缩中...");
-            return false;
-        });
+        popup.alert("系统处理中，如果导入文件较大可能需要较长时间，勿刷新，请稍候....");
+        return false;
     });
+
+    //删除备份文件
+    $(".delSqlFiles").click(function(){
+        if($(this).attr("disabledSubmit")){
+            popup.alert("已提交，系统在处理中...");
+            return false;
+        }
+        if($("tbody input[type='checkbox']:checked").size()==0){
+            popup.alert("请先选择你要删除的数据库表吧");
+            return false;
+        }
+        popup.confirm('你确定要删除备份文件吗？','温馨提示',function(action){
+            if(action == 'ok'){
+                $(".btn").attr("disabledSubmit",true);
+                $(this).html("提交处理中...");
+                commonAjaxSubmit("/common_system/system.php/SysData/delSqlFiles");
+            }
+        });
+        return false;
+    });
+
+    // 压缩备份文件
+    $(".zip").click(function(){
+        if($(this).attr("disabledSubmit")){
+            popup.alert("已提交，系统在处理中...");
+            return false;
+        }
+        if($("tbody input[type='checkbox']:checked").size()==0){
+            popup.alert("请先选择你要压缩的数据库表吧");
+            return false;
+        }
+        commonAjaxSubmit("/common_system/system.php/SysData/zipSql");
+        $(".btn").attr("disabledSubmit",true);
+        $(this).html("压缩中...");
+        return false;
+    });
+});
 </script>
