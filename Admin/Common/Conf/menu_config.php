@@ -40,7 +40,7 @@ return array(
         'target' => 'Data/backup',
         'sub_menu' => array(
             'Data/backup' => '数据备份',
-            'Data/restore' => '数据恢复',
+            'Data/restore' => '数据导入',
             'Data/unpack' => '数据解压',
             'Data/optimize' => '数据优化'
         )

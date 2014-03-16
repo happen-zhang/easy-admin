@@ -146,7 +146,7 @@ class DataController extends CommonController {
     }
 
     /**
-     * 数据恢复
+     * 数据导入
      * @return
      */
     public function restore() {
@@ -159,7 +159,7 @@ class DataController extends CommonController {
     }
 
     /**
-     * 处理数据恢复
+     * 处理数据导入
      * @return
      */
     public function doRestore() {
@@ -167,23 +167,23 @@ class DataController extends CommonController {
             $this->errorReturn('访问出错');
         }
 
-        // 设置恢复数据不超时
+        // 设置导入数据不超时
         function_exists('set_time_limit') && set_time_limit(0);
 
         $M = M();
         $backupConfig = C('BACKUP');
-        // 得到需要恢复的文件
+        // 得到需要导入的文件
         $restoreFiles = isset($_SESSION['restore_cache'])
                         ? $_SESSION['restore_cache']['files']
                         : $this->getRestoreFiles($_POST['file_prefix']);
 
         if (empty($restoreFiles)) {
-            $this->errorReturn('需要恢复的文件不存在');
+            $this->errorReturn('需要导入的文件不存在');
         }
 
-        // 保存需要恢复的文件
+        // 保存需要导入的文件
         $_SESSION['restore_cache']['files'] = $restoreFiles;
-        // 恢复开始时间
+        // 导入开始时间
         if (!isset($_SESSION['restore_cache']['time'])) {
             $_SESSION['restore_cache']['time'] = time();
         }
@@ -198,7 +198,7 @@ class DataController extends CommonController {
         foreach ($restoreFiles as $key => $storeFile) {
             $filePath = $backupConfig['BACKUP_DIR_PATH'] . $storeFile;
             if (!file_exists($filePath)) {
-                // 需要恢复的文件不存在
+                // 需要导入的文件不存在
                 continue ;
             }
             $fp = fopen($filePath, 'r');
@@ -227,7 +227,7 @@ class DataController extends CommonController {
                 if ($exexuted >= 500) {
                     // 保存读出文件指针位置
                     $_SESSION['restore_cache']['position'] = ftell($fp);
-                    // 已恢复行数
+                    // 已导入行数
                     $imported = isset($_SESSION['restore_cache']['imported'])
                                 ? $_SESSION['restore_cache']['imported'] : 0;
                     $imported += $exexuted;
@@ -246,11 +246,11 @@ class DataController extends CommonController {
                 }
             }
             fclose($file);
-            // 删除已恢复完成的文件
+            // 删除已导入完成的文件
             unset($_SESSION['restore_cache']['files'][$key]);
             $position = 0;
         }
-        // 恢复执行时间
+        // 导入执行时间
         $time = time() - $_SESSION['restore_cache']['time'];
         unset($_SESSION['restore_cache']);
 
@@ -438,7 +438,7 @@ class DataController extends CommonController {
     }
 
     /**
-     * 得到需要恢复的sql文件
+     * 得到需要导入的sql文件
      * @return array
      */
     private function getRestoreFiles($filePrefix) {

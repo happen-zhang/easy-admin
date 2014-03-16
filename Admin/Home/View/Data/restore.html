@@ -11,7 +11,7 @@
                 <td>备份时间</td>
                 <td>文件大小</td>
                 <td>文件备注</td>
-                <td>恢复</td>
+                <td>导入</td>
             </tr>
         </thead>
         <tbody>
@@ -22,7 +22,7 @@
                 <td>{$info['time']}</td>
                 <td>{$info['size']}</td>
                 <td class="description" title="{$info['description']}">查看备注信息</td>
-                <td><button class="btn restore" sqlPre="{$info['prefix']}">恢复</button></td>
+                <td><button class="btn restore" sqlPre="{$info['prefix']}">导入</button></td>
             </tr>
             </volist>
         </tbody>
@@ -33,7 +33,7 @@
                 <td>备份时间</td>
                 <td>总计：{$total_size}</td>
                 <td>文件备注</td>
-                <td>恢复</td>
+                <td>导入</td>
             </tr
         </tfoot>
     </table>
@@ -78,16 +78,16 @@ $(function(){
     //同一备份版本任意一个卷选中则选中该卷所有文件
     $("tbody input[type='checkbox']").click(function(){$("tbody input[type='checkbox'][pre='"+$(this).attr("pre")+"']").prop("checked",$(this).prop('checked'));});
 
-    //提交数据恢复操作
+    //提交数据导入操作
     $(".restore").click(function(){
-        // 已有恢复数据提交
+        // 已有导入数据提交
         if($(this).attr("disabledSubmit")){
             popup.alert("已提交，系统在处理中...");
             return false;
         }
         var sqlPre=$(this).attr("sqlPre");
         // 修改按钮状态
-        $(".restore[sqlPre='"+sqlPre+"']").attr("disabledSubmit",true).html("恢复中...");
+        $(".restore[sqlPre='"+sqlPre+"']").attr("disabledSubmit",true).html("导入中...");
         // 禁用其他操作
         $(".btn").attr("disabledSubmit",true);
         // 
@@ -97,7 +97,7 @@ $(function(){
                     $("#opStatus").show().html(json.info);
                     repeat(json.url, "restore");
                 }else{
-                    $(".restore").html("恢复");
+                    $(".restore").html("导入");
                     $(".btn").removeAttr("disabledSubmit");
                     popup.success(json.info);
                 }
