@@ -20,3 +20,12 @@ function activedLink($controller_name, $action_name, $style) {
 
     return '';
 }
+
+/**
+ * 得到gravatar头像
+ * @param  string $email
+ * @return string
+ */
+function getGravatar($email) {
+    return 'https://secure.gravatar.com/avatar/' . md5($email) . '.png';
+}
