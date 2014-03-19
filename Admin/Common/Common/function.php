@@ -51,3 +51,39 @@ function rand_code($length, $type) {
 
     return $code;    
 }
+
+/**
+ * 删除目录或者文件
+ * @param  string  $path
+ * @param  boolean $is_del_dir
+ * @return fixed
+ */
+function del_dir_or_file($path, $is_del_dir = FALSE) {
+    $handle = opendir($path);
+    if ($handle) {
+        // $path为目录路径
+        while (false !== ($item = readdir($handle))) {
+            // 除去..目录和.目录
+            if ($item != '.' && $item != '..') {
+                if (is_dir("$path/$item")) {
+                    // 递归删除目录
+                    del_dir_or_file("$path/$item", $is_del_dir);
+                } else {
+                    // 删除文件
+                    unlink("$path/$item");
+                }
+            }
+        }
+        closedir($handle);
+        if ($is_del_dir) {
+            // 删除目录
+            return rmdir($path);
+        }
+    }else {
+        if (file_exists($path)) {
+            return unlink($path);
+        } else {
+            return false;
+        }
+    }
+}

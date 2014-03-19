@@ -150,4 +150,26 @@ class DataController extends CommonController {
 
         $this->download($filePath, $_GET['file_name']);
     }
+
+    /**
+     * 删除sql文件
+     * @return
+     */
+    public function deleteSqlFiles() {
+        if (!IS_POST) {
+            $this->errorReturn('无效的操作');
+        }
+
+        if (!isset($_POST['sql_files'])) {
+            $this->errorReturn('请选择需要删除的sql文件');
+        }
+
+        $backupConfig = C('BACKUP');
+        foreach ($_POST['sql_files'] as $file) {
+            del_dir_or_file($backupConfig['BACKUP_DIR_PATH'] . $file);
+        }
+
+        $this->successReturn('已删除：' . implode("、", $_POST['sql_files']),
+                             U('Data/restore', array('time' => time())));
+    }
 }

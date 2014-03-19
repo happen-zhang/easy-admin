@@ -17,7 +17,7 @@
         <tbody>
             <volist name="info_list" id="info">
             <tr align="center">
-                <td><input pre="{$info['prefix']}" type="checkbox" name="sqlFiles[]" value="{$info['name']}"/></td>
+                <td><input pre="{$info['prefix']}" type="checkbox" name="sql_files[]" value="{$info['name']}"/></td>
                 <td align="left"><a href="{:U('Data/downloadFile', array('file_name' => $info['name'], 'file_type' => 'sql'))}" target="_blank">{$info['name']}</a></td>
                 <td>{$info['time']}</td>
                 <td>{$info['size']}</td>
@@ -45,7 +45,7 @@
 </div>
 
 <link rel="stylesheet" type="text/css" href="__PUBLIC__/Min/?f=__PUBLIC__/javascripts/poshytip/tip-yellow/tip-yellow.css|__PUBLIC__/javascripts/poshytip/tip-yellowsimple/tip-yellowsimple.css" />
-<script type="text/javascript" src="__PUBLIC__/Min/?f=__PUBLIC__/javascripts/jquery-1.7.2.min.js|__PUBLIC__/javascripts/poshytip/jquery.poshytip.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Min/?f=__PUBLIC__/javascripts/poshytip/jquery.poshytip.min.js"></script>
 
 <script type="text/javascript">
 $(function(){
@@ -124,7 +124,7 @@ $(function(){
             if(action == 'ok'){
                 $(".btn").attr("disabledSubmit",true);
                 $(this).html("提交处理中...");
-                commonAjaxSubmit("/common_system/system.php/SysData/delSqlFiles");
+                commonAjaxSubmit("__URL__/deleteSqlFiles");
             }
         });
         return false;
