@@ -109,22 +109,6 @@ class DataController extends CommonController {
     }
 
     /**
-     * 数据压缩
-     * @return
-     */
-    public function unpack() {
-        $this->display();
-    }
-
-    /**
-     * 数据优化
-     * @return
-     */
-    public function optimize() {
-        $this->display();
-    }
-
-    /**
      * 文件下载
      * @return
      */
@@ -171,5 +155,21 @@ class DataController extends CommonController {
 
         $this->successReturn('已删除：' . implode("、", $_POST['sql_files']),
                              U('Data/restore', array('time' => time())));
+    }
+
+    /**
+     * 数据压缩
+     * @return
+     */
+    public function unpack() {
+        $this->display();
+    }
+
+    /**
+     * 数据优化
+     * @return
+     */
+    public function optimize() {
+        $this->display();
     }
 }
