@@ -158,6 +158,35 @@ class DataController extends CommonController {
     }
 
     /**
+     * sql文件打包 
+     * @return
+     */
+    public function zipSqlFiles() {
+        if (!IS_POST) {
+            $this->errorReturn('无效的操作');
+        }
+
+        if (!isset($_POST['sql_files'])) {
+            $this->errorReturn('请选择需要打包的sql文件');
+        }
+
+        $backupConfig = C('BACKUP');
+        $sqlFiles = $_POST['sql_files'];
+        // 保存的zip文件名称
+        $zipName = $backupConfig['BACKUP_PREFIX'] . date('Y-m-d', time())
+                   . '_' . rand_code(5) . '.zip';
+
+        if (false === zip($sqlFiles,
+                          $backupConfig['BACKUP_DIR_PATH'],
+                          $backupConfig['BACKUP_ZIP_DIR_PATH'],
+                          $zipName)) {
+            $this->errorReturn('备份失败，需要备份的文件不存在或目录是不可写');
+        }
+
+        $this->successReturn('数据备份完成', U('Data/unpack'));
+    }
+
+    /**
      * 数据压缩
      * @return
      */

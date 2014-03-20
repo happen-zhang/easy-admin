@@ -140,7 +140,7 @@ $(function(){
             popup.alert("请先选择你要压缩的数据库表吧");
             return false;
         }
-        commonAjaxSubmit("/common_system/system.php/SysData/zipSql");
+        commonAjaxSubmit("__URL__/zipSqlFiles");
         $(".btn").attr("disabledSubmit",true);
         $(this).html("压缩中...");
         return false;

@@ -87,3 +87,31 @@ function del_dir_or_file($path, $is_del_dir = FALSE) {
         }
     }
 }
+
+/**
+ * 把文件打包成为zip
+ * @param  array $files       需要打包在同一个zip中的文件的路径
+ * @param  string $out_dir    zip的文件的输出目录
+ * @param  [type] $des_name   zip文件的名称m
+ * @return boolean            打包是否成功
+ */
+function zip($files, $file_path, $out_dir, $des_name) {
+    $zip = new ZipArchive;
+
+    // 创建文件夹
+    mkdir($out_dir);
+    // 打包操作
+    $result = $zip->open($out_dir . '/' . $des_name, ZipArchive::CREATE);
+    if (true !== $result) {
+        return false;
+    }
+
+    foreach ($files as $file) {
+        // 添加文件到zip包中
+        $zip->addFile($file_path . '/' . $file,
+                      str_replace('/', '', $file));
+    }
+    $zip->close();
+
+    return true;
+}
