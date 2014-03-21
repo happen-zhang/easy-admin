@@ -132,7 +132,7 @@ class CommonController extends Controller {
     protected function download($filePath, $fileName) {
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; '
-               . 'filename="' . $filePath . '"');
+               . 'filename="' . $fileName . '"');
         header('Content-Length: ' . filesize($filePath));
         readfile($filePath);
     }

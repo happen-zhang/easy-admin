@@ -17,7 +17,7 @@
             <volist name="info_list" id="info">
             <tr align="center">
                 <td><input type="checkbox" name="zip_files[]" value="{$info['file']}"/></td>
-                <td align="left"><a href="" target="_blank">{$info['file']}</a></td>
+                <td align="left"><a href="{:U('Data/downloadFile', array('file_name' => $info['file'], 'file_type' => 'zip'))}" target="_blank">{$info['file']}</a></td>
                 <td>{$info['time']}</td>
                 <td>{$info['size']}</td>
                 <td><button class="btn unzip" file="{$info['file']}">解压</button></td>
