@@ -424,9 +424,15 @@ class DataLogic extends CommonLogic {
                 $info['size'] = filesize($zipDir . $file);
                 $totalSize += $info['size'];
                 $info['size'] = bytes_format($info['size']);
-                $info['time'] = date('Y-m-d H:i:s', filectime($zipDir .$file));
-                $zipFilesInfo[] = $info;
+                $info['time'] =filectime($zipDir .$file);
+                $zipFilesInfo[$info['time']] = $info;
             }
+        }
+
+        // 时间逆序排序
+        arsort($zipFilesInfo);
+        foreach ($zipFilesInfo as $key => $info) {
+            $zipFilesInfo[$key]['time'] = date('Y-m-d H:i:s', $info['time']);
         }
 
         return array('info_list' => $zipFilesInfo,
