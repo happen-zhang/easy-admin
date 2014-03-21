@@ -263,6 +263,43 @@ class DataController extends CommonController {
      * @return
      */
     public function optimize() {
+        $tablesInfo = D('Common')->getTablesInfo();
+        $totalSize = array(
+            'table' => 0,
+            'data'  => 0,
+            'index' => 0,
+            'free'  => 0
+        );
+
+        foreach ($tablesInfo as $key => $tableInfo) {
+            // 数据表大小
+            $tableSize = $tableInfo['Data_length'] +$tableInfo['Index_length'];
+            $tablesInfo[$key]['size'] = bytes_format($tableSize);
+            $totalSize['table'] += $tableSize;
+            
+            // 数据大小
+            $dataSize = $tableInfo['Data_length'];
+            $tablesInfo[$key]['Data_length'] = bytes_format($dataSize);
+            $totalSize['data'] += $dataSize;
+
+            // 索引大小
+            $indexSize = $tableInfo['Index_length'];
+            $tablesInfo[$key]['Index_length'] = bytes_format($indexSize);
+            $totalSize['index'] += $indexSize;
+
+            // 碎片大小
+            $freeSize = $tableInfo['Data_free'];
+            $tablesInfo[$key]['Data_free'] = bytes_format($freeSize);
+            $totalSize['free'] += $freeSize;
+        }
+
+        foreach ($totalSize as $key => $size) {
+            $totalSize[$key] = bytes_format($size);
+        }
+
+        $this->assign('tables_info', $tablesInfo);
+        $this->assign('total_size', $totalSize);
+        $this->assign('tables_count', count($tablesInfo));
         $this->display();
     }
 }

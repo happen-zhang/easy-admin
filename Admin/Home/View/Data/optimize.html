@@ -1,5 +1,5 @@
 <div class="Item hr">
-    <span class="fr">数据库中共有8张表，共计38.2 KB</span>
+    <span class="fr">数据库中共有{$tables_count}张表，共计{$total_size['table']}</span>
     <div class="current">数据库优化修复</div>
 </div>
 <form>
@@ -12,109 +12,27 @@
                 <td>记录行数</td>
                 <td>引擎类型</td>
                 <td>字符集</td>
-                <td>碎片</td>
+                <td>碎片大小</td>
                 <td>表大小</td>
-                <td>数据</td>
-                <td>索引</td>
+                <td>数据大小</td>
+                <td>索引大小</td>
             </tr>
         </thead>
         <tbody>
+            <volist name='tables_info' id='table_info'>
             <tr align="center">
                 <td><input type="checkbox" name="table[]" value="pa_access"/></td>
-                <td align="left">pa_access</td>
-                <td>权限分配表</td>
-                <td>48</td>
-                <td>MyISAM</td>
-                <td>utf8_general_ci</td>
-                <td>0</td>
-                <td>3.94 KB</td>
-                <td>960 B</td>
-                <td>3 KB</td>
+                <td align="left">{$table_info['Name']}</td>
+                <td>{$table_info['Comment']}</td>
+                <td>{$table_info['Rows']}</td>
+                <td>{$table_info['Engine']}</td>
+                <td>{$table_info['Collation']}</td>
+                <td>{$table_info['Data_free']}</td>
+                <td>{$table_info['size']}</td>
+                <td>{$table_info['Data_length']}</td>
+                <td>{$table_info['Index_length']}</td>
             </tr>
-            <tr align="center">
-                <td><input type="checkbox" name="table[]" value="pa_admin"/></td>
-                <td align="left">pa_admin</td>
-                <td>网站后台管理员表</td>
-                <td>1</td>
-                <td>MyISAM</td>
-                <td>utf8_general_ci</td>
-                <td>0</td>
-                <td>2.11 KB</td>
-                <td>116 B</td>
-                <td>2 KB</td>
-            </tr>
-            <tr align="center">
-                <td><input type="checkbox" name="table[]" value="pa_category"/></td>
-                <td align="left">pa_category</td>
-                <td>新闻分类表</td>
-                <td>31</td>
-                <td>MyISAM</td>
-                <td>utf8_general_ci</td>
-                <td>0</td>
-                <td>2.81 KB</td>
-                <td>828 B</td>
-                <td>2 KB</td>
-            </tr>
-            <tr align="center">
-                <td><input type="checkbox" name="table[]" value="pa_member"/></td>
-                <td align="left">pa_member</td>
-                <td>网站前台会员表</td>
-                <td>0</td>
-                <td>MyISAM</td>
-                <td>utf8_general_ci</td>
-                <td>0</td>
-                <td>1 KB</td>
-                <td>0</td>
-                <td>1 KB</td>
-            </tr>
-            <tr align="center">
-                <td><input type="checkbox" name="table[]" value="pa_news"/></td>
-                <td align="left">pa_news</td>
-                <td>新闻表</td>
-                <td>1</td>
-                <td>MyISAM</td>
-                <td>utf8_general_ci</td>
-                <td>6.4 KB</td>
-                <td>15.19 KB</td>
-                <td>13.19 KB</td>
-                <td>2 KB</td>
-            </tr>
-            <tr align="center">
-                <td><input type="checkbox" name="table[]" value="pa_node"/></td>
-                <td align="left">pa_node</td>
-                <td>权限节点表</td>
-                <td>44</td>
-                <td>MyISAM</td>
-                <td>utf8_general_ci</td>
-                <td>0</td>
-                <td>7.88 KB</td>
-                <td>1.88 KB</td>
-                <td>6 KB</td>
-            </tr>
-            <tr align="center">
-                <td><input type="checkbox" name="table[]" value="pa_role"/></td>
-                <td align="left">pa_role</td>
-                <td>权限角色表</td>
-                <td>4</td>
-                <td>MyISAM</td>
-                <td>utf8_general_ci</td>
-                <td>0</td>
-                <td>4.27 KB</td>
-                <td>272 B</td>
-                <td>4 KB</td>
-            </tr>
-            <tr align="center">
-                <td><input type="checkbox" name="table[]" value="pa_role_user"/></td>
-                <td align="left">pa_role_user</td>
-                <td>用户角色表</td>
-                <td>0</td>
-                <td>MyISAM</td>
-                <td>utf8_general_ci</td>
-                <td>0</td>
-                <td>1 KB</td>
-                <td>0</td>
-                <td>1 KB</td>
-            </tr>
+            </volist>
         </tbody>
         <tfoot align="center">
             <tr>
@@ -124,10 +42,10 @@
                 <td>记录行数</td>
                 <td>引擎类型</td>
                 <td>字符集</td>
-                <td><b>6.4 KB</b></td>
-                <td><b>38.2 KB</b></td>
-                <td><b>17.2 KB</b></td>
-                <td><b>21 KB</b></td>
+                <td><b>{$total_size['free']}</b></td>
+                <td><b>{$total_size['table']}</b></td>
+                <td><b>{$total_size['data']}</b></td>
+                <td><b>{$total_size['index']}</b></td>
             </tr>
         </tfoot>
     </table>
