@@ -200,6 +200,43 @@ class DataController extends CommonController {
     }
 
     /**
+     * 解压zip文件
+     * @return
+     */
+    public function unzipFiles() {
+        if (!IS_POST) {
+            return $this->errorReturn('无效的操作');
+        }
+
+        $dataLogic = D('Data', 'Logic');
+        $result = $dataLogic->unzipFiles($_POST['zip_files']);
+
+        switch ($result['status']) {
+            case $dataLogic::FILE_NOT_FOUND:
+                $this->errorReturn('请选择需要解压的zip文件');
+                break ;
+
+            case $dataLogic::EXECUTE_NOT_FINISH:
+                $info = '正在解压缩请耐心等待，解压期间请勿刷新本页 '
+                        . '<font color="red">当前已经解压完'
+                        . "{$result['data']['file']}</font>";
+                $url = U('Data/unzipFiles',
+                         array('rand_code' => rand_code(5)));
+                $this->successReturn($info, $url);
+                break ;
+
+            case $dataLogic::EXECUTE_FINISH:
+                $info = "已解压完成，耗时：{$result['data']['time']} 秒";
+                $this->successReturn($info);
+                break ;
+
+            default:
+                $this->errorReturn('无效的操作');
+                break ;
+        }
+    }
+
+    /**
      * 数据优化
      * @return
      */

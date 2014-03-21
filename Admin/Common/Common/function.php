@@ -115,3 +115,21 @@ function zip($files, $file_path, $out_dir, $des_name) {
 
     return true;
 }
+
+/**
+ * 解压zip文件
+ * @param  string $zip_file 需要解压的zip文件
+ * @param  string $out_dir  解压文件的输出目录
+ * @return boolean          解压是否成功
+ */
+function unzip($zip_file, $out_dir) {
+    $zip = new ZipArchive();
+    if (true !== $zip->open($zip_file)) {
+        return false;
+    }
+
+    $zip->extractTo($out_dir);
+    $zip->close();
+
+    return true;
+}

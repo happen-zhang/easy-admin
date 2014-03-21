@@ -16,7 +16,7 @@
         <tbody>
             <volist name="info_list" id="info">
             <tr align="center">
-                <td><input type="checkbox" name="zipFiles[]" value="{$info['file']}"/></td>
+                <td><input type="checkbox" name="zip_files[]" value="{$info['file']}"/></td>
                 <td align="left"><a href="" target="_blank">{$info['file']}</a></td>
                 <td>{$info['time']}</td>
                 <td>{$info['size']}</td>
@@ -49,7 +49,6 @@
 
         var repeat=function(url){
             $.post(url, function(json){
-//                        var json = eval("(" + json + ")");
                 if(json.status==1){
                     if(json.url){
                         $("#opStatus").html(json.info);
@@ -69,21 +68,21 @@
             });
         }
 
+        // 解压所选择的zip文件
         $(".unzipSelect").click(function(){
             if($(this).attr("disabledSubmit")){
                 popup.alert("已提交，系统在处理中...");
                 return false;
             }
             if($("tbody input[type='checkbox']:checked").size()==0){
-                popup.alert("请先选择你要删除的数据库表吧");
+                popup.alert("请先选择你需要解压的zip文件吧");
                 return false;
             }
             var files=[];
-            $("tbody input[type='checkbox'][name='zipFiles[]']:checked").each(function(i){
+            $("tbody input[type='checkbox'][name='zip_files[]']:checked").each(function(i){
                 files[i]=$(this).val();
             });
-            $.post("/common_system/system.php/SysData/unzipSqlfile", {'zipFiles':files}, function(json){
-//                        var json = eval("(" + json + ")");
+            $.post("__URL__/unzipFiles", {'zip_files[]':files}, function(json){
                 if(json.status==1){
                     if(json.url){
                         $("#opStatus").show().html(json.info);
@@ -101,8 +100,7 @@
         });
 
         $(".unzip").click(function(){
-            $.post("/common_system/system.php/SysData/unzipSqlfile",{'zipFiles[]':$(this).attr("file")},function(json){
-//                        var json = eval("(" + json + ")");
+            $.post("__URL__/unzipFiles",{'zip_files[]':$(this).attr("file")},function(json){
                 json.status==1?popup.success(json.info):popup.error(json.info);
                 $(".btn").removeAttr("disabledSubmit");
                 if(json.url&&json.url!=''){

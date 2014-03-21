@@ -440,6 +440,43 @@ class DataLogic extends CommonLogic {
     }
 
     /**
+     * 解压zip文件到备份目录
+     * @param  array $zipFiles 需要解压的zip文件
+     * @return array
+     */
+    public function unzipFiles($zipFiles) {
+        if (!isset($_SESSION['unzip']) && !isset($zipFiles)) {
+            return $this->resultReturn(self::FILE_NOT_FOUND);
+        }
+
+        $backupConfig = C('BACKUP');
+        if (isset($_SESSION['unzip'])) {
+            $zipFiles = $_SESSION['unzip']['files'];
+        } else {
+            $_SESSION['unzip']['time'] = time();
+            $zipFiles = $_POST['zip_files'];
+            $_SESSION['unzip']['files'] = $zipFiles;
+            $_SESSION['unzip']['count'] = count($zipFiles);
+        }
+
+        // 解压zip文件到备份目录
+        $zipFile = array_shift($zipFiles);
+        unzip($backupConfig['BACKUP_ZIP_DIR_PATH'] . $zipFile,
+              $backupConfig['BACKUP_DIR_PATH']);
+
+        if (count($zipFiles) > 0) {
+            $_SESSION['unzip']['files'] = $zipFiles;
+            return $this->resultReturn(self::EXECUTE_NOT_FINISH,
+                                       array('file' => $zipFile));
+        }
+
+        $time = time() - $_SESSION['unzip']['time'];
+        unset($_SESSION['unzip']);
+        return $this->resultReturn(self::EXECUTE_FINISH,
+                                   array('time' => $time));
+    }
+
+    /**
      * 检查是否为一条sql
      * @param  string  $sql
      * @return boolean
