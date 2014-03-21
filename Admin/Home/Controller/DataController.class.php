@@ -237,6 +237,28 @@ class DataController extends CommonController {
     }
 
     /**
+     * 删除sql文件
+     * @return
+     */
+    public function deleteZipFiles() {
+        if (!IS_POST) {
+            $this->errorReturn('无效的操作');
+        }
+
+        if (!isset($_POST['zip_files'])) {
+            $this->errorReturn('请选择需要删除的zip文件');
+        }
+
+        $backupConfig = C('BACKUP');
+        foreach ($_POST['zip_files'] as $file) {
+            del_dir_or_file($backupConfig['BACKUP_ZIP_DIR_PATH'] . $file);
+        }
+
+        $this->successReturn('已删除：' . implode("、", $_POST['zip_files']),
+                             U('Data/zipList', array('time' => time())));
+    }
+
+    /**
      * 数据优化
      * @return
      */
