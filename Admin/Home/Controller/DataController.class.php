@@ -180,10 +180,10 @@ class DataController extends CommonController {
                           $backupConfig['BACKUP_DIR_PATH'],
                           $backupConfig['BACKUP_ZIP_DIR_PATH'],
                           $zipName)) {
-            $this->errorReturn('备份失败，需要备份的文件不存在或目录是不可写');
+            $this->errorReturn('文件打包失败，需要打包的文件不存在或目录是不可写');
         }
 
-        $this->successReturn('数据备份完成', U('Data/zipList'));
+        $this->successReturn('文件打包完成', U('Data/zipList'));
     }
 
     /**
