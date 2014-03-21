@@ -21,7 +21,7 @@
         <tbody>
             <volist name='tables_info' id='table_info'>
             <tr align="center">
-                <td><input type="checkbox" name="table[]" value="pa_access"/></td>
+                <td><input type="checkbox" name="tables[]" value="{$table_info['Name']}"/></td>
                 <td align="left">{$table_info['Name']}</td>
                 <td>{$table_info['Comment']}</td>
                 <td>{$table_info['Rows']}</td>
@@ -49,8 +49,7 @@
             </tr>
         </tfoot>
     </table>
-    <input type="hidden" name="act" id="act" />
-    <input type="hidden" name="" value="" />
+    <input type="hidden" name="action" id="action" />
 </form>
 <div class="commonBtnArea" >
     <button class="btn optimize">优化所选</button>
@@ -65,8 +64,8 @@
                 popup.alert("请先选择你要优化的数据库表吧");
                 return false;
             }
-            $("#act").val(act);
-            commonAjaxSubmit();
+            $("#action").val(act);
+            commonAjaxSubmit("__URL__/doOptimize");
         }
         $(".optimize").click(function(){ handle("optimize"); });
         $(".repair").click(function(){  handle("repair"); });

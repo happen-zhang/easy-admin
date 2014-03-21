@@ -67,6 +67,34 @@ class CommonModel extends Model {
     }
 
     /**
+     * 优化数据表
+     * @param  string $tableName 数据表名称
+     * @return boolean           是否优化成功
+     */
+    public function optimizeTables($tableName) {
+        if (!isset($tableName)) {
+            return false;
+        }
+
+        $this->query("OPTIMIZE TABLE {$tableName}");
+        return true;
+    }
+
+    /**
+     * 修复数据表
+     * @param  string $tableName 数据表名称
+     * @return boolean           是否修复成功
+     */
+    public function repairTables($tableName) {
+        if (!isset($tableName)) {
+            return false;
+        }
+
+        $this->query("REPAIR TABLE {$tableName}");
+        return true;
+    }
+
+    /**
      * 得到删除数据库的sql
      * @param  string $tableName
      * @return string

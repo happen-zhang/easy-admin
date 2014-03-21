@@ -302,4 +302,30 @@ class DataController extends CommonController {
         $this->assign('tables_count', count($tablesInfo));
         $this->display();
     }
+
+    /**
+     * 优化、修复数据表
+     * @return
+     */
+    public function doOptimize() {
+        if (!IS_POST
+            || !isset($_POST['action'])
+            || !in_array($_POST['action'], array('optimize', 'repair'))) {
+            $this->errorReturn('无效的操作');
+        }
+
+        $M = D('Common');
+        $tables = implode(',', $_POST['tables']);
+        if ('optimize' == $_POST['action']) {
+            if ($M->optimizeTables($tables)) {
+                return $this->successReturn("优化表 {$tables} 成功");
+            }
+        } else if ('repair' == $_POST['action']) {
+            if ($M->repairTables($tables)) {
+                return $this->successReturn("修复表 {$tables} 成功");
+            }
+        }
+
+        $this->errorReturn("操作失败");
+    }
 }
