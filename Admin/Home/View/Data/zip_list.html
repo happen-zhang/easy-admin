@@ -1,5 +1,5 @@
 <div class="Item hr">
-    <span class="fr">共有4个压缩包文件，共计30.52 KB</span>
+    <span class="fr">共有{$files_count}个压缩包文件，共计{$total_size}</span>
     <div class="current">数据库压缩包文件列表</div>
 </div>
 <form>
@@ -14,41 +14,22 @@
             </tr>
         </thead>
         <tbody>
+            <volist name="info_list" id="info">
             <tr align="center">
-                <td><input type="checkbox" name="zipFiles[]" value="\CUSTOM_20140224_afTI2.zip"/></td>
-                <td align="left"><a href="/common_system/system.php/SysData/downFile/file/%5CCUSTOM_20140224_afTI2.zip/type/zip" target="_blank">\CUSTOM_20140224_afTI2.zip</a></td>
-                <td>2014-02-26 19:21:31</td>
-                <td>6.38 KB</td>
-                <td><button class="btn unzip" file="\CUSTOM_20140224_afTI2.zip">解压</button></td>
+                <td><input type="checkbox" name="zipFiles[]" value="{$info['file']}"/></td>
+                <td align="left"><a href="" target="_blank">{$info['file']}</a></td>
+                <td>{$info['time']}</td>
+                <td>{$info['size']}</td>
+                <td><button class="btn unzip" file="{$info['file']}">解压</button></td>
             </tr>
-            <tr align="center">
-                <td><input type="checkbox" name="zipFiles[]" value="\SYSTEM_201402.zip"/></td>
-                <td align="left"><a href="/common_system/system.php/SysData/downFile/file/%5CSYSTEM_201402.zip/type/zip" target="_blank">\SYSTEM_201402.zip</a></td>
-                <td>2014-02-26 19:23:47</td>
-                <td>8.88 KB</td>
-                <td><button class="btn unzip" file="\SYSTEM_201402.zip">解压</button></td>
-            </tr>
-            <tr align="center">
-                <td><input type="checkbox" name="zipFiles[]" value="\SYSTEM_201312.zip"/></td>
-                <td align="left"><a href="/common_system/system.php/SysData/downFile/file/%5CSYSTEM_201312.zip/type/zip" target="_blank">\SYSTEM_201312.zip</a></td>
-                <td>2014-02-26 19:23:47</td>
-                <td>8.87 KB</td>
-                <td><button class="btn unzip" file="\SYSTEM_201312.zip">解压</button></td>
-            </tr>
-            <tr align="center">
-                <td><input type="checkbox" name="zipFiles[]" value="\CUSTOM_20140224_eH24E.zip"/></td>
-                <td align="left"><a href="/common_system/system.php/SysData/downFile/file/%5CCUSTOM_20140224_eH24E.zip/type/zip" target="_blank">\CUSTOM_20140224_eH24E.zip</a></td>
-                <td>2014-02-26 19:23:47</td>
-                <td>6.38 KB</td>
-                <td><button class="btn unzip" file="\CUSTOM_20140224_eH24E.zip">解压</button></td>
-            </tr>
+            </volist>
         </tbody>
         <tfoot align="center">
             <tr>
                 <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
                 <td>压缩包名称</td>
                 <td>备份时间</td>
-                <td>总计：30.52 KB</td>
+                <td>总计：{$total_size}</td>
                 <td>解压</td>
             </tr>
         </tfoot>

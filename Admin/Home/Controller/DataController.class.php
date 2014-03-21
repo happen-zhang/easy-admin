@@ -183,15 +183,20 @@ class DataController extends CommonController {
             $this->errorReturn('备份失败，需要备份的文件不存在或目录是不可写');
         }
 
-        $this->successReturn('数据备份完成', U('Data/unpack'));
+        $this->successReturn('数据备份完成', U('Data/zipList'));
     }
 
     /**
-     * 数据压缩
+     * 压缩文件列表
      * @return
      */
-    public function unpack() {
-        $this->display();
+    public function zipList() {
+        $zipFilesInfo = D('Data', 'Logic')->getZipFilesInfo();
+
+        $this->assign('info_list', $zipFilesInfo['info_list']);
+        $this->assign('total_size', $zipFilesInfo['total_size']);
+        $this->assign('files_count', count($zipFilesInfo['info_list']));
+        $this->display('zip_list');
     }
 
     /**

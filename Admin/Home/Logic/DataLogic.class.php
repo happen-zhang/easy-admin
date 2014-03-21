@@ -406,6 +406,34 @@ class DataLogic extends CommonLogic {
     }
 
     /**
+     * 得到zip文件列表信息
+     * @return array
+     */
+    public function getZipFilesInfo() {
+        $backupConfig = C('BACKUP');
+        $zipDir = $backupConfig['BACKUP_ZIP_DIR_PATH'];
+        $dirHandle = opendir($zipDir);
+
+        $zipFilesInfo = array();
+        $totalSize = 0;
+        while ($file = readdir($dirHandle)) {
+            // 是否为zip文件
+            if (preg_match('/\.zip$/i', $file)) {
+                $info = array();
+                $info['file'] = $file;
+                $info['size'] = filesize($zipDir . $file);
+                $totalSize += $info['size'];
+                $info['size'] = bytes_format($info['size']);
+                $info['time'] = date('Y-m-d H:i:s', filectime($zipDir .$file));
+                $zipFilesInfo[] = $info;
+            }
+        }
+
+        return array('info_list' => $zipFilesInfo,
+                     'total_size' => bytes_format($totalSize));        
+    }
+
+    /**
      * 检查是否为一条sql
      * @param  string  $sql
      * @return boolean
