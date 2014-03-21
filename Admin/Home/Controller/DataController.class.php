@@ -11,7 +11,7 @@ class DataController extends CommonController {
      * @return
      */
     public function backup() {
-        $tablesInfo = M()->query('SHOW TABLE STATUS');
+        $tablesInfo = D('Common')->getTablesInfo();
         $totalSize = 0;
 
         // 计算数据表大小
