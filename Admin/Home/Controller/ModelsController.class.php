@@ -11,6 +11,12 @@ class ModelsController extends CommonController {
      * @return
      */
     public function index(){
+        $modelService = D('Model', 'Service');
+        $models = $modelService->getModels();
+        $models_count = $modelService->getCount();
+
+        $this->assign('models', $models);
+        $this->assign('models_count', $models_count);
         $this->display();
     }
 
@@ -20,7 +26,7 @@ class ModelsController extends CommonController {
      */
     public function show() {
         $this->display();
-    }    
+    }
 
     /**
      * 添加模型

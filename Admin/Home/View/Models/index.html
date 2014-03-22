@@ -1,5 +1,5 @@
 <div class="Item hr">
-    <span class="fr">系统现有数据模型X个</span>
+    <span class="fr">系统现有数据模型{$models_count}个</span>
     <div class="current">数据模型列表</div>
 </div>
 <form>
@@ -9,35 +9,21 @@
                 <td>模型名（表名）</td>
                 <td>模型字段数</td>
                 <td>模型记录行数</td>
+                <td>内部表</td>
                 <td>操作</td>
             </tr>
         </thead>
         <tbody>
+            <volist name="models" id="model">
             <tr align="center">
-                <td>新闻模型（pss_news）</td>
-                <td>6</td>
-                <td>48</td>
+                <td>{$model['name']}（{$model['tbl_name']}）</td>
+                <td>{$model['fields_count']}</td>
+                <td>{$model['rows']}</td>
+                <td><if condition="$model['is_inner'] == 1">是<else/>否</if></td>
                 <td>[ <a href="{:U('Models/show')}">查看</a> ] [ <a href="{:U('Models/edit')}">编辑</a> ] [ <a href="" name="新闻模型（pss_news）" class="del">删除</a> ]</td>
             </tr>
-            <tr align="center">
-                <td>新闻模型（pss_news）</td>
-                <td>6</td>
-                <td>48</td>
-                <td>[ <a href="{:U('Models/show')}">查看</a> ] [ <a href="{:U('Models/edit')}">编辑</a> ] [ <a href="" name="新闻模型（pss_news）" class="del">删除</a> ]</td>
-            </tr>
-            <tr align="center">
-                <td>新闻模型（pss_news）</td>
-                <td>6</td>
-                <td>48</td>
-                <td>[ <a href="{:U('Models/show')}">查看</a> ] [ <a href="{:U('Models/edit')}">编辑</a> ] [ <a href="" name="新闻模型（pss_news）" class="del">删除</a> ]</td>
-            </tr>
-            <tr align="center">
-                <td>新闻模型（pss_news）</td>
-                <td>6</td>
-                <td>48</td>
-                <td>[ <a href="{:U('Models/show')}">查看</a> ] [ <a href="{:U('Models/edit')}">编辑</a> ] [ <a href="" name="新闻模型（pss_news）" class="del">删除</a> ]</td>
-            </tr>                                    
-        </tbody>       
+            </volist>
+        </tbody>
     </table>
     <input type="hidden" name="" value="" />
 </form>

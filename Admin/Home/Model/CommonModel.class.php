@@ -24,6 +24,21 @@ class CommonModel extends Model {
     }
 
     /**
+     * 得到数据表的行数
+     * @param  string $tableName 数据表名称
+     * @return int               行数
+     */
+    public function getTableRows($tableName) {
+        if (!isset($tableName)) {
+            return 0;
+        }
+
+        $sql = "SELECT COUNT(*) FROM {$tableName}";
+        $result = $this->query($sql);
+        return $result[0]['COUNT(*)'];
+    }
+
+    /**
      * 得到重建数据表的sql
      * @param  string $tableName
      * @return string
