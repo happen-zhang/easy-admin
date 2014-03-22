@@ -64,8 +64,24 @@ class CommonController extends Controller {
             $mainMenu[$key]['name'] = $menuItem['name'];
             $mainMenu[$key]['target'] = $menuItem['target'];
         }
+
         // 子菜单
-        $subMenu = $menu[CONTROLLER_NAME]['sub_menu'];
+        $subMenu = array();
+        foreach ($menu[CONTROLLER_NAME]['sub_menu'] as $item) {
+            // 子菜单是需要显示
+            if (isset($item['hidden']) && true === $item['hidden']) {
+                continue ;
+            }
+            
+            // 子菜单是否有配置
+            if (!isset($item['item']) || empty($item['item'])) {
+                continue ;
+            }
+
+            $routes = array_keys($item['item']);
+            $itemNames = array_values($item['item']);
+            $subMenu[$routes[0]] = $itemNames[0];
+        }
 
         unset($menu);
         return array(
@@ -82,8 +98,17 @@ class CommonController extends Controller {
         $menu = C('MENU');
 
         $menuItem = $menu[CONTROLLER_NAME];
+        // 主菜单显示名称
         $main = $menuItem['name'];
-        $sub = $menuItem['sub_menu'][CONTROLLER_NAME . '/' . ACTION_NAME];
+        // 子菜单显示名称
+        $sub = 'unkonwn';
+        $route = CONTROLLER_NAME . '/' . ACTION_NAME;
+        foreach ($menuItem['sub_menu'] as $item) {
+            // 以键值匹配路由
+            if (array_key_exists($route, $item['item'])) {
+                $sub = $item['item'][$route];
+            }
+        }
 
         return $main . ' > ' . $sub;
     }

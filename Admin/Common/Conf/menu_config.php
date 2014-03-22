@@ -6,9 +6,9 @@ return array(
         'name' => '首页',
         'target' => 'Index/index',
         'sub_menu' => array(
-            'Index/index' => '系统信息',
-            'Admins/edit' => '修改密码',
-            'Cache/index' => '清除缓存',
+            array('item' => array('Index/index' => '系统信息')),
+            array('item' => array('Admins/edit' => '修改密码')),
+            array('item' => array('Cache/index' => '清除缓存'))
         )
     ),
 
@@ -17,10 +17,10 @@ return array(
         'name' => '模型管理',
         'target' => 'Models/index',
         'sub_menu' => array(
-            'Models/index' => '模型列表',
-            'Models/show' => '模型信息',
-            'Models/add' => '添加模型',
-            'Models/edit' => '编辑模型',
+            array('item' => array('Models/index' => '模型列表')),
+            array('item' => array('Models/add' => '添加模型')),
+            array('item' => array('Models/show' => '模型信息'),'hidden' => true),
+            array('item' => array('Models/edit' => '编辑模型'),'hidden' => true),
         )
     ),
 
@@ -29,8 +29,8 @@ return array(
         'name' => '字段管理',
         'target' => 'Fields/edit',
         'sub_menu' => array(
-            'Fields/add' => '添加字段',
-            'Fields/edit' => '编辑字段'
+            array('item' => array('Fields/add' => '添加字段')),
+            array('item' => array('Fields/edit' => '编辑字段')),
         )
     ),
 
@@ -39,10 +39,10 @@ return array(
         'name' => '数据管理',
         'target' => 'Data/backup',
         'sub_menu' => array(
-            'Data/backup' => '数据备份',
-            'Data/restore' => '数据导入',
-            'Data/zipList' => '数据解压',
-            'Data/optimize' => '数据优化'
+            array('item' => array('Data/backup' => '数据备份')),
+            array('item' => array('Data/restore' => '数据导入')),
+            array('item' => array('Data/zipList' => '数据解压')),
+            array('item' => array('Data/optimize' => '数据优化'))
         )
     ),
 );
