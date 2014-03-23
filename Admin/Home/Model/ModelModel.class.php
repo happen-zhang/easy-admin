@@ -44,7 +44,7 @@ class ModelModel extends RelationModel {
         array('tbl_name', '1, 24', '数据表名称长度只能少于24个字符！',
               1, 'length', 1),
         // 数据表名正确性验证
-        array('tbl_name', 'validateName', '数据表名称只能由_、a~z、0~9组成!',
+        array('tbl_name', 'isNumLower', '数据表名称只能由_、a~z、0~9组成!',
               1, 'callback', 1),
         // 数据表名唯一性验证
         array('tbl_name', '', '数据表名称已经存在！', 1, 'unique', 1),
