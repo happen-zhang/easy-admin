@@ -133,3 +133,18 @@ function unzip($zip_file, $out_dir) {
 
     return true;
 }
+
+/**
+ * 检查是否包含特殊字符
+ * @param  string  $subject 需要检查的字符串
+ * @return boolean          是否包含
+ */
+function hasSpecialChar($subject) {
+    $pattern = "/^(([^\^\.<>%&',;=?$\"':#@!~\]\[{}\\/`\|])*)$/";
+    
+    if (preg_match($pattern, $subject)) {
+        return false;
+    }
+
+    return true;
+}
