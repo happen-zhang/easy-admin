@@ -46,6 +46,7 @@ class ModelService extends CommonService {
         $model = array_map('trim', $model);
         $model['tbl_name'] = C('DB_PREFIX') . $model['tbl_name'];
         $Model->startTrans();
+        $model = $Model->create($model);
         $addStatus = $Model->add($model);
         // 创建数据表
         $createTblStatus = D('Model', 'Logic')

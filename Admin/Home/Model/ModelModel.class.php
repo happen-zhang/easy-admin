@@ -76,6 +76,16 @@ class ModelModel extends RelationModel {
     );
 
     /**
+     * 字段自动完成
+     */
+    protected $_auto = array(
+        // 创建时间
+        array('created_at', 'datetime', 1, 'function'),
+        // 更新时间
+        array('updated_at', 'datetime', 3, 'function'),
+    );
+
+    /**
      * 模型名是否可用
      * @param  array  $model Model数组
      * @return boolean       是否可用
