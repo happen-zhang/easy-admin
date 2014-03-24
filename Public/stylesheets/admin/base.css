@@ -244,3 +244,41 @@ option{ height: 16px;}
 }
 }
 */
+
+/**
+ * pagination
+ */
+div.page {
+    padding: 3px;
+    margin: 3px;
+}
+
+div.page a {
+    padding: 3px 7px;
+    border: #ddd 1px solid;
+    color: #417eb7;
+    margin-right: 2px;
+    text-decoration: none;
+}
+
+div.page a:hover {
+    border: #2b66a5 1px solid;
+    color: #000;
+    background-color: #eee;
+}
+
+div.page span.current {
+    border: navy 1px solid;
+    padding: 3px 7px;
+    font-weight: bold;
+    color: #fff;
+    margin-right: 2px;
+    background-color: #417eb7;
+}
+
+div.page span.disabled {
+    padding: 3px 7px;
+    border: #929292 1px solid;
+    color: #929292;
+    margin-right: 2px;
+}
