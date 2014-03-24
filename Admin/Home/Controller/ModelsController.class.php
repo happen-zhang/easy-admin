@@ -11,12 +11,11 @@ class ModelsController extends CommonController {
      * @return
      */
     public function index(){
-        $modelService = D('Model', 'Service');
-        $models = $modelService->getModels();
-        $models_count = $modelService->getCount();
+        $result = $this->getPagination('Model');
 
-        $this->assign('models', $models);
-        $this->assign('models_count', $models_count);
+        $this->assign('models', $result['data']);
+        $this->assign('models_count', $result['total_rows']);
+        $this->assign('page', $result['show']);
         $this->display();
     }
 
