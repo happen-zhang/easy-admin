@@ -15,8 +15,8 @@ class ModelService extends CommonService {
     public function getModels($where = null, $fields = null) {
         $M = $this->getD()->relation(true);
         if (isset($fields)) {
-        	// 确保ralation可用
-        	$fields = 'id,' . $fields;
+            // 确保ralation可用
+            $fields = 'id,' . $fields;
             $M = $M->field($fields);
         }
 
@@ -26,7 +26,7 @@ class ModelService extends CommonService {
 
         $models = $M->select();
         foreach ($models as $key => $model) {
-        	// 模型拥有的字段数目
+            // 模型拥有的字段数目
             $models[$key]['fields_count'] = count($model['fields']);
             // 记录行数
             $rows = D('Common')->getTableRows($model['tbl_name']);
