@@ -31,6 +31,30 @@ class CommonController extends Controller {
     }
 
     /**
+     * 得到数据分页
+     * @param  string $modelName 模型名称
+     * @param  array  $where     分页条件
+     * @return array
+     */
+    protected function getPagination($modelName, $where, $fields, $order) {
+        $service = D($modelName, 'Service');
+        // 总数据行数
+        $totalRows = $service->getCount($where);
+        // 实例化分页
+        $page = new \Org\Util\Page($totalRows, C('PAGE_LIST_ROWS'));
+        $result['show'] = $page->show();
+        // 得到分页数据
+        $data = $service->getPagination($where,
+                                        $fields,
+                                        $order,
+                                        $page->firstRow,
+                                        $page->listRows);
+        $result['data'] = $data;
+        $result['total_rows'] = $totalRows;
+        return $result;
+    }
+
+    /**
      * 分配菜单
      * @return
      */

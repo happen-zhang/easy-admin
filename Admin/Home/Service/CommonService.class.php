@@ -15,6 +15,41 @@ abstract class CommonService {
     }
 
     /**
+     * 得到分页数据
+     * @param  array $where    分页条件
+     * @param  int   $firstRow 起始行
+     * @param  int   $listRows 行数
+     * @return array           
+     */
+    public function getPagination($where, $fields,$order,$firstRow,$listRows) {
+        // 关联模型
+        $M = $this->getD()->relation(true);
+        // 需要查找的字段
+        if (isset($fields)) {
+            $M = $M->field($fields);
+        }
+
+        // 条件查找
+        if (isset($where)) {
+            $M = $M->where($where);
+        }
+
+        // 数据排序
+        if (isset($order)) {
+            $M = $M->order($order);
+        }
+
+        // 查询限制
+        if (isset($firstRow) && isset($listRows)) {
+            $M = $M->limit($firstRow . ',' . $listRows);
+        } else if (isset($listRows) && isset($firstRow)) {
+            $M = $M->limit($listRows);
+        }
+
+        return $M->select();
+    }
+
+    /**
      * 返回结果值
      * @param  int   $status
      * @param  fixed $data
