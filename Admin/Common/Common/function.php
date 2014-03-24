@@ -1,5 +1,5 @@
 <?php
-include 'Global/Common/function.php';
+include 'Common/Common/function.php';
 include 'helper.php';
 
 /**

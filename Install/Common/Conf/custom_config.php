@@ -17,12 +17,12 @@ return array(
     'SYSTEM_SQL_PATH' => WEB_ROOT . 'Install/Data/database.sql',
 
     // 系统配置文件位置
-    'SYSTEM_CONFIG_PATH' => WEB_ROOT . 'Global/Conf/system_config.php',
+    'SYSTEM_CONFIG_PATH' => WEB_ROOT . 'Common/Conf/system_config.php',
 
 	// 一下配置目录都是在项目的根目录下
     'WRITABLE_DIRECTORIES' => array(
         '/',
-        'Global/Conf',
+        'Common/Conf',
         'Cache',
         'Data',
         'Install'

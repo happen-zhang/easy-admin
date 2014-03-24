@@ -1,5 +1,5 @@
 <?php
-$systemConfig = include('Global/Conf/system_config.php');
+$systemConfig = include('Common/Conf/system_config.php');
 $menuConfig = include('menu_config.php');
 $backupConfig = include('backup_config.php');
 
@@ -15,7 +15,7 @@ $appConfig =  array(
     'DEFAULT_CONTROLLER' => 'Public',
 
     // 分页列表数
-    'PAGINATION_NUM' => 20,
+    'PAGE_LIST_ROWS' => 20,
 
     // 开启布局
     'LAYOUT_ON' => true,
