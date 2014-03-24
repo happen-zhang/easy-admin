@@ -43,7 +43,7 @@ function commonAjaxSubmit(url,formObj){
                     top.window.location.href=data.url;
                 },2000);
             }
-            if(data.url==''){
+            if(data.status==1&&data.url==''){
                 setTimeout(function(){
                     top.window.location.reload();
                 },1000);

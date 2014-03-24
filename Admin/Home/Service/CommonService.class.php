@@ -15,6 +15,26 @@ abstract class CommonService {
     }
 
     /**
+     * 返回结果值
+     * @param  int   $status
+     * @param  fixed $data
+     * @return array
+     */
+    protected function resultReturn($status, $data) {
+        return array('status' => $status,
+                     'data' => $data);
+    }
+
+    /**
+     * 返回错误的结果值
+     * @param  string $error 错误信息
+     * @return array         带'error'键值的数组
+     */
+    protected function errorResultReturn($error) {
+        return $this->resultReturn(false, array('error' => $error));
+    }
+
+    /**
      * 得到M
      * @return Model
      */
