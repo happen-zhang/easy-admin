@@ -29,6 +29,23 @@ class ModelService extends CommonService {
     }
 
     /**
+     * 按id得到model数据
+     * @param  int     $id
+     * @return array
+     */
+    public function getById($id) {
+        $model = $this->getD()->relation(true)->getById($id);
+        if (empty($model)) {
+            return null;
+        }
+
+        $model['fields_count'] = count($model['fields']);
+        $model['rows'] = $this->getD()->getTableRows($model['tbl_name']);
+
+        return $model;
+    }
+
+    /**
      * 添加模型并创建数据表
      * @param array $model
      * @return array

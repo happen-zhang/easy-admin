@@ -24,6 +24,16 @@ class ModelsController extends CommonController {
      * @return
      */
     public function show() {
+        if (!isset($_GET['id'])) {
+            $this->error('您需要查看的模型不存在');
+        }
+
+        $model = D('Model', 'Service')->getById($_GET['id']);
+        if (empty($model)) {
+            $this->error('您需要查看的模型不存在');
+        }
+
+        $this->assign('model', $model);
         $this->display();
     }
 

@@ -4,27 +4,27 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
     <tr>
         <th width="100">模型名称：</th>
-        <td>新闻模型</td>
+        <td>{$model['name']}</td>
     </tr>
     <tr>
         <th width="100">数据表名：</th>
-        <td>tbl_news</td>
+        <td>{$model['tbl_name']}</td>
     </tr>        
     <tr>
         <th width="100">是否为内部表：</th>
-        <td>是</td>
+        <td><if condition="$model['is_inner'] == 1">是<else/>否</if></td>
     </tr>
     <tr>
         <th width="100">字段数：</th>
-        <td>12</td>
+        <td>{$model['fields_count']}</td>
     </tr>
     <tr>
         <th width="100">记录行数：</th>
-        <td>100</td>
+        <td>{$model['rows']}</td>
     </tr>
     <tr>
         <th>模型描述：</th>
-        <td>Jobeet is an Open-Source job board software which provides you day-by-day tutorials, that will help you learn the latest Web Technolgy, Symfony 2.3.2 (for those who don’t know yet, Symfony is a framework for PHP).Each chapter/day is meant to last about one hour, and will be the occasion to learn Symfony by coding a real website, from start to finish.Every day, new features will be added to the application and we’ll take advantage of this development to introduce you to new Symfony functionalities, as well as good practices in Symfony web development.</td>
+        <td>{$model['description']}</td>
     </tr>
 </table>
 
@@ -42,21 +42,16 @@
         </tr>
     </thead>
     <tbody>
+        <volist name="model['fields']" id="field">
         <tr align="center">
             <td><input type="checkbox" name="table[]" value="pa_role"/></td>
-            <td align="left">orders_admins</td>
-            <td>管理员订单</td>
-            <td>varchar(255)</td>
+            <td>{$field['name']}</td>
+            <td>{$field['title']}</td>
+            <td>{$field['type']}</td>
             <td>[ <a href="">编辑</a> ] [ <a href="" name="orders_admins" class="del">删除</a> ]</td>
         </tr>
-        <tr align="center">
-            <td><input type="checkbox" name="table[]" value="pa_role"/></td>
-            <td align="left">orders_admins</td>
-            <td>管理员订单</td>
-            <td>varchar(255)</td>
-            <td>[ <a href="">编辑</a> ] [ <a href="" name="orders_admins" class="del">删除</a> ]</td>
-        </tr>
-    </tbody>    
+        </volist>
+    </tbody>
     <tfoot align="center">
         <tr>
             <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>

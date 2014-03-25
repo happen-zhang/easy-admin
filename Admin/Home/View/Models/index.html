@@ -20,7 +20,7 @@
                 <td>{$model['fields_count']}</td>
                 <td>{$model['rows']}</td>
                 <td><if condition="$model['is_inner'] == 1">是<else/>否</if></td>
-                <td>[ <a href="{:U('Models/show')}">查看</a> ] [ <a href="{:U('Models/edit', array('id' => $model['id']))}">编辑</a> ] [ <a href="" name="新闻模型（pss_news）" class="del">删除</a> ]</td>
+                <td>[ <a href="{:U('Models/show', array('id' => $model['id']))}">查看</a> ] [ <a href="{:U('Models/edit', array('id' => $model['id']))}">编辑</a> ] [ <a href="" name="新闻模型（pss_news）" class="del">删除</a> ]</td>
             </tr>
             </volist>
         </tbody>
