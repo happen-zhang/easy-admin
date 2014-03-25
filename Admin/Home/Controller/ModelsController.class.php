@@ -103,6 +103,22 @@ class ModelsController extends CommonController {
      * @return
      */
     public function edit() {
+        if (!isset($_GET['id'])) {
+            $this->error('您需要编辑的模型不存在');
+        }
+
+        $model = M('Model')->getById($_GET['id']);
+        if (empty($model)) {
+            $this->error('您需要编辑的模型不存在');
+        }
+
+        // 检查唯一性的id
+        $_SESSION['update_id'] = $_GET['id'];
+
+        $start = strpos($model['tbl_name'], '_') + 1;
+        $model['tbl_name'] = substr($model['tbl_name'], $start);
+
+        $this->assign('model', $model);
         $this->display();
     }
 }
