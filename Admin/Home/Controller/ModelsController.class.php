@@ -121,4 +121,35 @@ class ModelsController extends CommonController {
         $this->assign('model', $model);
         $this->display();
     }
+
+    /**
+     * 更新模型
+     * @return
+     */
+    public function update() {
+        if (!IS_POST || !isset($_POST['model'])) {
+            $this->errorReturn('无效的操作');
+        }
+
+        $model = array_map('trim', $_POST['model']);
+        if (0 == M('Model')->where(array('id' => $model['id']))->count()) {
+            $this->errorReturn('您需要更新的模型不存在');
+        }
+
+        $modelService = D('Model', 'Service');
+        // 检查数据是否合法
+        $_SESSION['update_id'] = $model['id'];
+        $result = $modelService->checkModel($model);
+        if (false === $result['status']) {
+            return $this->errorReturn($result['data']['error']);
+        }
+
+        // 更新数据
+        $result = $modelService->update($model);
+        if (false === $result['status']) {
+            return $this->errorReturn('系统出错了');
+        }
+
+        $this->successReturn("更新模型成功", U('Models/index'));
+    }
 }

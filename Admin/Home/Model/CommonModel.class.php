@@ -82,6 +82,28 @@ class CommonModel extends RelationModel {
     }
 
     /**
+     * 修改表名
+     * @param  string  $tableName    需要修改的表名
+     * @param  string  $newTableName 新表名
+     * @return boolean
+     */
+    public function updateTableName($tableName, $newTableName) {
+        $sql = "ALTER TABLE `{$tableName}` RENAME TO `{$newTableName}`";
+        return $this->query($sql);
+    }
+
+    /**
+     * 修改表注释
+     * @param  string  $tableName 需要修改的表名
+     * @param  string  $comment   注释
+     * @return boolean
+     */
+    public function updateTableComment($tableName, $comment) {
+        $sql = "ALTER TABLE `{$tableName}` COMMENT '{$comment}'";
+        return $this->query($sql);
+    }
+
+    /**
      * 优化数据表
      * @param  string $tableName 数据表名称
      * @return boolean           是否优化成功

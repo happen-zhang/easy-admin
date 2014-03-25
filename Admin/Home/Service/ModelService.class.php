@@ -55,6 +55,41 @@ class ModelService extends CommonService {
         return $this->resultReturn(true);
     }
 
+    /**
+     * 更新模型并更新数据表
+     * @param array $model
+     * @return array
+     */
+    public function update($model) {
+        $Model = D('Model');
+        $model = array_map('trim', $model);
+        $model['tbl_name'] = C('DB_PREFIX') . $model['tbl_name'];
+
+        // 取出旧数据
+        $old = $Model->field('tbl_name')->getById($model['id']);
+
+        $Model->startTrans();
+        $model = $Model->create($model);
+        // 更新数据
+        $updateStatus = $Model->save($model);
+        // 更新数据表名
+        $utnStatus = $Model->updateTableName($old['tbl_name'],
+                                             $model['tbl_name']);
+        // 更新数据表注释
+        $utcStatus = $Model->updateTableComment($model['tbl_name'],
+                                                $model['description']);
+
+        if (false === $updateStatus
+            || false === $utnStatus
+            || false === $utcStatus) {
+            $Model->rollback();
+            return $this->resultReturn(false);
+        }
+        $Model->commit();
+
+        return $this->resultReturn(true);        
+    }
+
     public function getFieldsOfModelById($modelId, $fields = null) {
         return M('Field')->getByModelId($modelId);
     }
