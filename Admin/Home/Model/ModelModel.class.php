@@ -2,13 +2,11 @@
 
 namespace Home\Model;
 
-use Think\Model\RelationModel;
-
 /**
  * ModelsModel
  * 数据模型
  */
-class ModelModel extends RelationModel {
+class ModelModel extends CommonModel {
     // realtions
     protected $_link = array(
         // 一个模型拥有多个字段
@@ -31,7 +29,7 @@ class ModelModel extends RelationModel {
         // 模型名长度验证
         array('name', '1, 24', '模型名称长度只能少于24个字符！', 1, 'length', 1),
         // 模型名唯一性验证
-        array('name', '', '模型名称已经存在！', 1, 'unique', 1),
+        array('name', 'uniqueName', '模型名称已经存在！', 1, 'callback', 1),
     );
 
     /**
@@ -47,7 +45,8 @@ class ModelModel extends RelationModel {
         array('tbl_name', 'isNumLower', '数据表名称只能由_、a~z、0~9组成!',
               1, 'callback', 1),
         // 数据表名唯一性验证
-        array('tbl_name', '', '数据表名称已经存在！', 1, 'unique', 1),
+        array('tbl_name', 'uniqueTblName', '数据表名称已经存在！',
+              1 , 'callback', 1),
     );
 
     /**
@@ -84,6 +83,14 @@ class ModelModel extends RelationModel {
         // 更新时间
         array('updated_at', 'datetime', 3, 'function'),
     );
+
+    public function uniqueName($value) {
+        return parent::isUnique('name', $value);
+    }
+
+    public function uniqueTblName($value) {
+        return parent::isUnique('tbl_name', $value);
+    }
 
     /**
      * 模型名是否可用

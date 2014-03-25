@@ -2,13 +2,13 @@
 
 namespace Home\Model;
 
-use Think\Model;
+use Think\Model\RelationModel;
 
 /**
  * CommonModel
  * 数据库、数据表信息操作
  */
-class CommonModel extends Model {
+class CommonModel extends RelationModel {
     /**
      * 得到数据表表信息
      * @params $tableName 数据表名称
@@ -116,5 +116,25 @@ class CommonModel extends Model {
      */
     private function getDropTableSql($tableName) {
         return "DROP TABLE IF EXISTS `{$tableName}`;";
+    }
+
+    /**
+     * 验证字段值是否唯一
+     * @param  string $fieldName 需要检查的字段名
+     * @param  string $value     字段值
+     * @return boolean           是否唯一
+     */
+    public function isUnique($fieldName, $value) {
+        $where = array($fieldName => $value);
+        if (isset($_SESSION['update_id'])) {
+            $where['id'] = array('neq', $_SESSION['update_id']);
+        }
+
+        unset($_SESSION['update_id']);
+        if (0 == $this->where($where)->count()) {
+            return true;
+        }
+
+        return false;
     }
 }

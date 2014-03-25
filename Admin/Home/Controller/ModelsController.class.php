@@ -67,6 +67,10 @@ class ModelsController extends CommonController {
      * @return
      */
     public function checkModelName() {
+        if (isset($_GET['id'])) {
+            $_SESSION['update_id'] = $_GET['id'];
+        }
+
         $result = D('Model', 'Service')->checkModelName($_GET['model_name']);
         if ($result['status']) {
             return $this->successReturn('模型名称可用');
@@ -80,6 +84,10 @@ class ModelsController extends CommonController {
      * @return
      */
     public function checkTblName($tableName = null) {
+        if (isset($_GET['id'])) {
+            $_SESSION['update_id'] = $_GET['id'];
+        }
+
         $tblName = isset($tableName) ? $tableName : $_GET['tbl_name'];
         $result = D('Model', 'Service')->checkTblName($tblName);
 

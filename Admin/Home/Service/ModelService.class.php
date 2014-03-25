@@ -87,13 +87,15 @@ class ModelService extends CommonService {
 
         $Model = D('Model');
         $model['tbl_name'] = trim($name);
-        // 验证表明是否空
+        // 验证表名是否空
+        if (empty($model['tbl_name'])) {
+            return $this->errorResultReturn('数据表名不能为空');
+        }
+
+        // 验证表名是否已存在
+        $model['tbl_name'] = C('DB_PREFIX') . $model['tbl_name'];
         if ($Model->isValidTblName($model)) {
-            // 验证表名是否已存在
-            $model['tbl_name'] = C('DB_PREFIX') . $model['tbl_name'];
-            if ($Model->isValidTblName($model)) {
-                return $this->resultReturn(true);
-            }
+            return $this->resultReturn(true);
         }
 
         return $this->errorResultReturn($Model->getError());
