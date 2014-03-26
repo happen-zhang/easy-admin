@@ -42,7 +42,7 @@ class ModelModel extends CommonModel {
         array('tbl_name', '1, 24', '数据表名称长度只能少于24个字符！',
               1, 'length', 1),
         // 数据表名正确性验证
-        array('tbl_name', 'isNumLower', '数据表名称只能由_、a~z、0~9组成!',
+        array('tbl_name', 'isLower', '数据表名称只能由"_"、a~z组成!',
               1, 'callback', 1),
         // 数据表名唯一性验证
         array('tbl_name', 'uniqueTblName', '数据表名称已经存在！',
@@ -135,12 +135,12 @@ class ModelModel extends CommonModel {
     }
 
     /**
-     * 名称是否只包含_、小写字母和数字
+     * 名称是否只包含_、小写字母
      * @param  string $name 需要检查的名称
      * @return boolean      是否有效的名称       
      */
-    protected function isNumLower($name) {
-        if (preg_match("/^[a-z0-9_]+$/", $name)) {
+    protected function isLower($name) {
+        if (preg_match("/^[a-z_]+$/", $name)) {
             return true;
         }
 
