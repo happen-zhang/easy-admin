@@ -58,11 +58,10 @@ class ModelService extends CommonService {
         $model = $Model->create($model);
         $addStatus = $Model->add($model);
         // 创建数据表
-        $createTblStatus = D('Model', 'Logic')
-                            ->createTable($model['tbl_name'],
-                                          $model['has_pk'],
-                                          $model['tbl_engine'],
-                                          $model['description']);
+        $createTblStatus = $Model->createTable($model['tbl_name'],
+                                               $model['has_pk'],
+                                               $model['tbl_engine'],
+                                               $model['description']);
         if (false === $addStatus || false === $createTblStatus) {
             $Model->rollback();
             return $this->resultReturn(false);
