@@ -162,4 +162,26 @@ class ModelsController extends CommonController {
 
         $this->successReturn("更新模型成功", U('Models/index'));
     }
+
+    /**
+     * 删除模型
+     * @return
+     */
+    public function delete() {
+        if (!isset($_GET['id'])) {
+            $this->errorReturn('您需要删除的模型不存在');
+        }
+
+        $model = M('Model')->getById($_GET['id']);
+        if (empty($model)) {
+            $this->errorReturn('您需要删除的模型不存在');
+        }
+
+        $result = D('Model', 'Service')->delete($model['id']);
+        if (false === $result['status']) {
+            return $this->errorReturn('系统出错了');
+        }
+
+        $this->successReturn("删除模型 [{$model['name']}] 成功");
+    }
 }

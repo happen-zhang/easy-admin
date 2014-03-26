@@ -47,6 +47,20 @@ class CommonModel extends RelationModel {
     }
 
     /**
+     * 删除数据表
+     * @param  string  $tableName 表名
+     * @return boolean
+     */
+    public function dropTable($tableName) {
+        $sql = "DROP TABLE IF EXISTS `{$tableName}`";
+        if (false === $this->query($sql)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * 得到数据表表信息
      * @params $tableName 数据表名称
      * @return array

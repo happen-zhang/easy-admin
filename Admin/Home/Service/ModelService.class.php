@@ -106,6 +106,34 @@ class ModelService extends CommonService {
         return $this->resultReturn(true);        
     }
 
+    /**
+     * 删除模型并且删除数据表
+     * @param  int     $id 需要删除模型的id
+     * @return boolean
+     */
+    public function delete($id) {
+        $Model = D('Model');
+
+        $model = $Model->getById($id);
+        if (empty($model)) {
+            return $this->resultReturn(false);
+        }
+
+        $Model->startTrans();
+        // 删除数据表
+        $dropStatus = $Model->dropTable($model['tbl_name']);
+        // 删除模型数据
+        $delStatus = $Model->delete($id);
+
+        if (false === $dropStatus || false === $delStatus) {
+            $Modle->rollback();
+            return $this->resultReturn(false);
+        }
+
+        $Model->commit();
+        return $this->resultReturn(true);
+    }
+
     public function getFieldsOfModelById($modelId, $fields = null) {
         return M('Field')->getByModelId($modelId);
     }
