@@ -1,6 +1,10 @@
 <script type="text/javascript">
 $(function(){
-    var  content;
+    toggle_type_length("VARCHAR");
+    $("#field_type").click(function() {
+        toggle_type_length($(this).val());
+    });
+
     $("#checkNewsTitle").click(function(){
         $.getJSON("__URL__/checkNewsTitle", { title:$("#model_name").val(),id:"{$info.id}"}, function(json){
             $("#checkNewsTitle").css("color",json.status==1?"#0f0":"#f00").html(json.info);
@@ -13,12 +17,38 @@ $(function(){
                '.input_editor', '.input_image', '.input_file',
                '.input_date', '.input_linkfieldselect'];
     var domLength = dom.length;
-  
 
     toggle_input_field($("#input_type").val());
     $("#input_type").change(function() {
         toggle_input_field($(this).val());
     });
+
+    var current = null;
+    $(".input_is_show").change(function() {
+        if (1 == $(this).val()) {
+            current.show();
+        } else {
+            current = $("#td_is_show").siblings(":visible");
+            current.hide();
+        }
+    });
+
+    function toggle_type_length(type) {
+        if ("TEXT" == type
+            || "MEDIUMTEXT" == type
+            || "LONGTEXT" == type
+            || "DATE" == type
+            || "DATETIME" == type) {
+            $("#field_precision").hide();
+            $("#field_length").hide();
+        } else if ("FLOAT" == type || "DOUBLE" == type) {
+            $("#field_precision").show();
+            $("#field_length").hide();            
+        } else {
+            $("#field_precision").hide();
+            $("#field_length").show();            
+        }        
+    }
 
     function toggle_input_field(val) {
         var type = ".input_" + val;
