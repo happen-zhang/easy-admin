@@ -42,31 +42,9 @@
     <button class="btn submit">提交</button>
 </div>
 
+<include file="Models/javascript" />
 <script type="text/javascript">
 $(function(){
-    $(".submit").click(function(){
-        if ("" == $("#model_name").val().trim()) {
-            popup.alert("模型名称不能为空");
-            return false;
-        } else if ("" == $("#tbl_name").val().trim()) {
-            popup.alert("数据表名称不能为空");
-            return false;
-        }
-
-        commonAjaxSubmit("__URL__/create");
-        return false;
-    });
-
-    $("#check_model_name").click(function(){
-        $.getJSON("__URL__/checkModelName", { model_name: $("#model_name").val() }, function(json){
-            $("#check_model_name").css("color",json.status==1?"#0f0":"#f00").html(json.info);
-        });
-    });
-
-    $("#check_tal_name").click(function(){
-        $.getJSON("__URL__/checkTblName", { tbl_name:$("#tbl_name").val()}, function(json){
-            $("#check_tal_name").css("color",json.status==1?"#0f0":"#f00").html(json.info);
-        });
-    });
+    submitForm("create");
 });
 </script>
