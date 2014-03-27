@@ -79,9 +79,9 @@ class ModelModel extends CommonModel {
      */
     protected $_auto = array(
         // 创建时间
-        array('created_at', 'datetime', 1, 'function'),
+        array('created_at', 'time', 1, 'function'),
         // 更新时间
-        array('updated_at', 'datetime', 3, 'function'),
+        array('updated_at', 'time', 3, 'function'),
     );
 
     public function uniqueName($value) {
