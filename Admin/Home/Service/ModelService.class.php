@@ -62,7 +62,12 @@ class ModelService extends CommonService {
                                                $model['has_pk'],
                                                $model['tbl_engine'],
                                                $model['description']);
-        if (false === $addStatus || false === $createTblStatus) {
+        // 添加系统字段
+        $addFieldStatus = $this->addSystemFields($Model->getLastInsID());
+
+        if (false === $addStatus
+            || false === $createTblStatus
+            || false === $addFieldStatus) {
             $Model->rollback();
             return $this->resultReturn(false);
         }
@@ -200,6 +205,44 @@ class ModelService extends CommonService {
         }
 
         return $this->errorResultReturn($Model->getError());
+    }
+
+    /**
+     * 添加系统字段：id、created_at、updated_at
+     * @param  int     $modelId  模型id
+     * @return boolean 是否添加成功
+     */
+    private function addSystemFields($modelId) {
+        $Field = D('Field');
+        // id字段
+        $id = array('model_id' => $modelId,
+                    'name' => 'id',
+                    'comment' => '表主键',
+                    'type' => 'INT',
+                    'is_requier' => 1,
+                    'is_unique' => 1,
+                    'is_index' => 1,
+                    'is_system' => 1);
+        $id = $Field->create($id);
+        $status = false !== $Field->add($id) ? true : false;
+
+        // created_at updated_at
+        $timestamp = array('model_id' => $modelId,
+                           'type' => 'INT',
+                           'is_index' => 1,
+                           'is_system' => 1,
+                           'auto_fill' => 'time');
+        $timestamp = $Field->create($timestamp);
+        // created_at字段
+        $timestamp['name'] = 'created_at';
+        $timestamp['comment'] = '创建时间';
+        $status = false !== $Field->add($timestamp) ? true : false;
+        // updated_at字段
+        $timestamp['name'] = 'updated_at';
+        $timestamp['comment'] = '更新时间';
+        $status = false !== $Field->add($timestamp) ? true : false;
+
+        return $status;
     }
 
     protected function getModelName() {

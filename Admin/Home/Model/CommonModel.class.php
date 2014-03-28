@@ -29,15 +29,14 @@ class CommonModel extends RelationModel {
         if ($hasPk) {
             // id主键的sql
             $pkSql = "`id` int PRIMARY KEY NOT NULL "
-                     . "AUTO_INCREMENT COMMENT  '主键',";
+                     . "AUTO_INCREMENT COMMENT '表主键',";
         }
 
         $sql = "CREATE TABLE `{$tableName}` ("
                 . $pkSql
-                . "`created_at` datetime NOT NULL COMMENT '创建时间',"
-                . "`updated_at` datetime NOT NULL COMMENT '更新时间'"
+                . "`created_at` int NOT NULL COMMENT '创建时间',"
+                . "`updated_at` int NOT NULL COMMENT '更新时间'"
                 . ") ENGINE={$engine} CHARSET=utf8 COMMENT='{$comment}'";
-
         // 创建数据表
         if (false === M()->query($sql)) {
             return false;
