@@ -34,36 +34,33 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
     <thead>
         <tr>
-            <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
             <td>字段名称</td>
             <td>字段标签</td>
             <td>字段类型</td>
+            <td>是否必填</td>
+            <td>是否唯一</td>
+            <td>是否索引</td>
+            <td>系统字段</td>
             <td>字段操作</td>
         </tr>
     </thead>
     <tbody>
         <volist name="model['fields']" id="field">
         <tr align="center">
-            <td><input type="checkbox" name="table[]" value="pa_role"/></td>
             <td>{$field['name']}</td>
             <td>{$field['comment']}</td>
             <td>{$field['type']}</td>
+            <td><if condition="$field['is_require'] eq 1">是<else/>否</if></td>
+            <td><if condition="$field['is_unique'] eq 1">是<else/>否</if></td>
+            <td><if condition="$field['is_index'] eq 1">是<else/>否</if></td>
+            <td><if condition="$field['is_index'] eq 1">是<else/>否</if></td>
             <td>[ <a href="">编辑</a> ] [ <a href="" name="orders_admins" class="del">删除</a> ]</td>
         </tr>
         </volist>
     </tbody>
-    <tfoot align="center">
-        <tr>
-            <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
-            <td>字段名称</td>
-            <td>字段标签</td>
-            <td>字段类型</td>
-            <td>字段操作</td>
-        </tr>
-    </tfoot> 
 </table>
 <div class="commonBtnArea" >
-    <button class="btn submit">添加字段</button>
+    <button class="btn submit" onclick="window.location.href='Fields/add'">添加字段</button>
 </div>
 
 <script type="text/javascript">
