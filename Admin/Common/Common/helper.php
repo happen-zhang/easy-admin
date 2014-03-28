@@ -8,13 +8,13 @@
  */
 function activedLink($controller_name, $action_name, $style) {
     if (isset($action_name)
-        && CONTROLLER_NAME == $controller_name
+        && (false !== strpos($controller_name, CONTROLLER_NAME))
         && ACTION_NAME == $action_name) {
         return $style;
     }
 
     if (!isset($action_name)
-        && CONTROLLER_NAME == $controller_name) {
+        && (false !== strpos($controller_name, CONTROLLER_NAME))) {
         return $style;
     }
 

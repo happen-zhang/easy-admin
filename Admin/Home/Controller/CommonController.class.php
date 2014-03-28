@@ -85,18 +85,40 @@ class CommonController extends Controller {
         // 主菜单
         $mainMenu = array();
         foreach ($menu as $key => $menuItem) {
+            // 主菜单是否存在映射
+            if (isset($menuItem['mapping'])) {
+                // 映射名
+                $mapping = $menuItem['mapping'];
+                // 新的菜单键值
+                $key = $menuItem['mapping'] . '-' . $key;
+                // 需要映射的键值已存在，则删除
+                if (isset($mainMenu[$mapping])) {
+                    $mainMenu[$key]['name'] = $mainMenu[$mapping]['name'];
+                    $mainMenu[$key]['target'] = $mainMenu[$mapping]['target'];
+                    unset($mainMenu[$mapping]);
+                }
+
+                continue ;
+            }
+
             $mainMenu[$key]['name'] = $menuItem['name'];
             $mainMenu[$key]['target'] = $menuItem['target'];
         }
 
         // 子菜单
         $subMenu = array();
-        foreach ($menu[CONTROLLER_NAME]['sub_menu'] as $item) {
+        $ctrlName = CONTROLLER_NAME;
+        if (isset($menu[$ctrlName]['mapping'])) {
+            $ctrlName = $menu[$ctrlName]['mapping'];
+        }
+
+        // 主菜单如果为隐藏，则子菜单也不被显示
+        foreach ($menu[$ctrlName]['sub_menu'] as $item) {
             // 子菜单是需要显示
             if (isset($item['hidden']) && true === $item['hidden']) {
                 continue ;
             }
-            
+
             // 子菜单是否有配置
             if (!isset($item['item']) || empty($item['item'])) {
                 continue ;
@@ -105,7 +127,7 @@ class CommonController extends Controller {
             $routes = array_keys($item['item']);
             $itemNames = array_values($item['item']);
             $subMenu[$routes[0]] = $itemNames[0];
-        }
+        }            
 
         unset($menu);
         return array(
