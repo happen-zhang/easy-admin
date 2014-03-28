@@ -135,6 +135,58 @@ function unzip($zip_file, $out_dir) {
 }
 
 /**
+ * 快速文件缓存
+ * @param  string $name  缓存文件名
+ * @param  mixed  $value 需要保存的值，为''则表示获取数据
+ * @param  strign $path  缓存保存目录
+ * @return mixed
+ */
+function fastCache($name, $value = '', $path = DATA_PATH) {
+    // 全局缓存
+    static $_cache = array();
+    // 文件名称
+    $filename = $path . $name . '.php';
+
+    // 缓存数据
+    if ('' !== $value) {
+        if (is_null($value)) {
+            // 删除缓存
+            false === strpos($name, '*') ? array_map('unlink', glob($filename))
+                                         : unlink($filename);
+        } else {
+            // 缓存数据
+            $dir = dirname($filename);
+            if (!is_dir($dir)) {
+                // 创建目录
+                mkdir($dir, 0777, true);
+                // 创建文件
+                touch();
+            }
+            $_cache[$name] = $value;
+
+            // 以php的方式写出数据
+            $content = "<?php\r\nreturn " . var_export($value, true) . ";\r\n";
+            file_put_contents($filename, $content);
+            chmod($filename, 0777);
+            return ;
+        }
+    }
+
+    if (isset($_cache[$name])) {
+        return $_cache[$name];
+    }
+
+    // 获取缓存文件
+    if (is_file($filename)) {
+        $value = include($filename);
+        $_cache[$name] = $value;
+        return $_cache[$name];
+    }
+
+    return false;
+}
+
+/**
  * 检查是否包含特殊字符
  * @param  string  $subject 需要检查的字符串
  * @return boolean          是否包含

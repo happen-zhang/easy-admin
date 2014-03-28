@@ -65,6 +65,15 @@ class ModelService extends CommonService {
         // 添加系统字段
         $addFieldStatus = $this->addSystemFields($Model->getLastInsID());
 
+        $modelLogic = D('Model', 'Logic');
+        // 得到英文的模型名称
+        $modelName = ucfirst(substr($model['tbl_name'],
+                             strpos($model['tbl_name'], '_') + 1));
+        // 生成菜单
+        $menu = $modelLogic->generateMenu($model['menu_name'], $modelName);
+        // 写入菜单配置
+        $modelLogic->writeMenu($menu);
+
         if (false === $addStatus
             || false === $createTblStatus
             || false === $addFieldStatus) {

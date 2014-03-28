@@ -1,6 +1,13 @@
 <?php
+
+$modelMenu = include('model_menu.php');
+
+if (false === $modelMenu) {
+    $modelMenu = array();
+}
+
 // 菜单项配置
-return array(
+$systemMenu = array(
     // 
     'Index' => array(
         'name' => '首页',
@@ -47,3 +54,5 @@ return array(
         )
     ),
 );
+
+return array_merge($systemMenu, $modelMenu);

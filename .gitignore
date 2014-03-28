@@ -6,6 +6,7 @@
 
 
 /Admin/Runtime/
+/Admin/Common/Conf/model_menu.php
 /Public/images/uploads/
 /Cache/
 /Data/
