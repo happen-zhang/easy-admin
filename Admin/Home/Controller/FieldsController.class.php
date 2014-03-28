@@ -27,6 +27,16 @@ class FieldsController extends CommonController {
      * @return
      */
     public function add() {
+        if (!isset($_GET['model_id'])) {
+            return $this->error('您需要添加字段的模型不存在');
+        }
+
+        $model = M('Model')->getById($_GET['model_id']);
+        if (empty($model)) {
+            return $this->error('您需要添加字段的模型不存在');
+        }
+
+        $this->assign('model', $model);
         $this->display();
     }
 

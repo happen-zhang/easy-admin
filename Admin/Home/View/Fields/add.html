@@ -1,20 +1,20 @@
 <form>
     <!-- 基本属性 -->
     <div class="Item hr">
-        <div class="current">新闻模型（tbl_news）- order_admins字段基本属性</div>
+        <div class="current">{$model['name']}（{$model['tbl_name']}）- 字段基本属性</div>
     </div>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
         <tr>
             <th width="100">字段名称：</th>
-            <td><input id="field_name" type="text" class="input" size="20" name="field[name]" value="order_admins"/> <a href="javascript:void(0)" id="check_field_name">检测是否重复</a>（用在数据表中作为字段名，只能由"_"、a~z、0~9组成）</td>
+            <td><input id="field_name" type="text" class="input" size="20" name="field[name]" /> <a href="javascript:void(0)" id="check_field_name">检测是否重复</a>（用在数据表中作为字段名，只能由"_"、a~z、0~9组成）</td>
         </tr>
         <tr>
             <th width="100">字段标签：</th>
-            <td><input id="field_title" type="text" class="input" size="20" name="field[title]" value="文章标题"/> <a href="javascript:void(0)" id="check_field_title">检测是否重复</a>（用在添加数据时，显示在表单前的标签信息）</td>
+            <td><input id="field_title" type="text" class="input" size="20" name="field[title]" /> <a href="javascript:void(0)" id="check_field_title">检测是否重复</a>（用在添加数据时，显示在表单前的标签信息）</td>
         </tr>
         <tr>
             <th width="100">字段备注：</th>
-            <td><input type="text" class="input" size="35" name="field[remark]" value="填写整数"/>（用于描述字段域的意义或填写规则）</td>
+            <td><input type="text" class="input" size="29" name="field[remark]" />（用于描述字段域的意义或填写规则）</td>
         </tr>        
         <tr>
             <th width="100">字段类型：</th>
@@ -39,13 +39,13 @@
         <tr id="field_length">
             <th width="100">字段长度：</th>
             <td>
-                <input type="text" class="input" size="20" name="field[length]" value="10"/>（字段长度为整数）
+                <input type="text" class="input" size="20" name="field[length]" />（字段长度为整数）
             </td>
         </tr>
         <tr id="field_precision">
             <th width="100">字段精度：</th>
             <td>
-                <label for="">长度：</label><input type="text" class="input" size="20" name="field[length]" value="8"/>&nbsp;&nbsp;&nbsp;<label for="">保留位数：</label><input type="text" class="input" size="20" name="field[precision]" value="2"/>（字段长度、保留位数均为整数）
+                <label for="">长度：</label><input type="text" class="input" size="20" name="field[length]" />&nbsp;&nbsp;&nbsp;<label for="">保留位数：</label><input type="text" class="input" size="20" name="field[precision]" />（字段长度、保留位数均为整数）
             </td>
         </tr>
         <tr>
@@ -58,7 +58,7 @@
 
     <!-- 特殊属性 -->
     <div class="Item hr">
-        <div class="current">新闻模型（tbl_news）- order_admins字段特殊属性</div>
+        <div class="current">{$model['name']}（{$model['tbl_name']}）- 字段特殊属性</div>
     </div>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
         <tr>
@@ -108,7 +108,7 @@
 
     <!-- 表单显示 -->
     <div class="Item hr">
-        <div class="current">表单显示属性</div>
+        <div class="current">{$model['name']}（{$model['tbl_name']}）- 表单显示属性</div>
     </div>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1" id="form_opts_tbl">
         <tr id="td_is_show">
@@ -154,11 +154,7 @@
         <!-- 选择默认值 -->
         <tr class="input_select input_radio input_checkbox">
             <th width="100">可选择的默认值：</th>
-            <td><textarea id="content" class="input" style="height: 100px; width: 100%;" name="field[input_value]">1. 时事新闻
-2. 娱乐新闻
-3. 国际新闻 :default
-4. 热门焦点
-            </textarea>
+            <td><textarea id="content" class="input" style="height: 100px; width: 100%;" name="field[input_value]"></textarea>
             （如果没有default的话，默认为第一项）
             </td>
         </tr>
@@ -175,7 +171,7 @@
         <tr class="input_editor">
             <th width="100">编辑器规格：</th>
             <td>
-                <label for="">长度：</label><input type="text" class="input" size="20" name="field[input_height]" value="200"/>&nbsp;&nbsp;&nbsp;<label for="">宽度：</label><input type="text" class="input" size="20" name="field[input_width]" value="200"/>
+                <label for="">长度：</label><input type="text" class="input" size="20" name="field[input_height]" />&nbsp;&nbsp;&nbsp;<label for="">宽度：</label><input type="text" class="input" size="20" name="field[input_width]" />
             </td>
         </tr>
         <tr class="input_editor">
@@ -189,7 +185,7 @@
         <tr class="input_file input_image">
             <th width="100">上传大小：</th>
             <td>
-                <input type="text" class="input" size="20" name="field[upload_field]" value="20"/>（可以限制上传图片、文件的大小，单位Kb）
+                <input type="text" class="input" size="20" name="field[upload_field]" />（可以限制上传图片、文件的大小，单位Kb）
             </td>
         </tr>
 
@@ -209,10 +205,11 @@
             <th width="100">关联的模型：</th>
             <td>
                 <select name="field[relation]">
-                  <option value="text">问答模型(tbl_question)</option>
-                  <option value="password">下载模型(tbl_download)</option>
-                  <option value="select" selected>影视模型（tbl_videos）</option>
-                  <option value="radio">新闻模型（tbl_news）</option>
+                    <option value="" selected>请选择关联模型</option>
+                    <option value="text">问答模型(tbl_question)</option>
+                    <option value="password">下载模型(tbl_download)</option>
+                    <option value="select">影视模型（tbl_videos）</option>
+                    <option value="radio">新闻模型（tbl_news）</option>
                 </select>
             </td>
         </tr>
@@ -240,11 +237,7 @@
         </tr>
         <tr class="input_linkfieldselect">
             <th width="100">关联默认值：</th>
-            <td><textarea id="content" class="input" style="height: 100px; width: 100%;" name="field[value]">1. 分类1
-2. 分类2
-3. 分类3 :default
-4. 分类4
-            </textarea>
+            <td><textarea id="content" class="input" style="height: 100px; width: 100%;" name="field[value]"></textarea>
             （如果没有default的话，默认为第一项）
             </td>
         </tr>
