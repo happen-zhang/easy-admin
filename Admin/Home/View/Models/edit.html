@@ -12,6 +12,10 @@
             <td><input id="tbl_name" type="text" class="input" size="20" name="model[tbl_name]" value="{$model['tbl_name']}" /> <a href="javascript:void(0)" id="check_tal_name">检测是否可用</a>（存放该模型的数据表名称，只能由"_"、a~z组成）</td>
         </tr>
         <tr>
+            <th width="100">主菜单名：</th>
+            <td><input id="menu_name" type="text" class="input" size="20" name="model[menu_name]" value="{$model['menu_name']}" /> <a href="javascript:void(0)" id="check_menu_name">检测是否可用</a>（用于在主菜单和子菜单上显示）</td>
+        </tr>
+        <tr>
             <th>模型描述：</th>
             <td><textarea id="content" class="input" style="height: 80px; width: 50%;" name="model[description]">{$model['description']}</textarea></td>
         </tr>

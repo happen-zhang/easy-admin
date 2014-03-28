@@ -26,5 +26,11 @@ $(function(){
             $("#check_tal_name").css("color",json.status==1?"#0f0":"#f00").html(json.info);
         });
     });
+
+    $("#check_menu_name").click(function(){
+        $.getJSON("__URL__/checkMenuName/id/{$model['id']}", { menu_name:$("#menu_name").val()}, function(json){
+            $("#check_menu_name").css("color",json.status==1?"#0f0":"#f00").html(json.info);
+        });
+    });
 });
 </script>

@@ -186,6 +186,21 @@ class ModelService extends CommonService {
     }
 
     /**
+     * 检查菜单名称是否可用
+     * @param  string $name 菜单名称
+     * @return array
+     */
+    public function checkMenuName($name) {
+        $Model = D('Model');
+        $model['menu_name'] = trim($name);
+        if ($Model->isValidMenuName($model)) {
+            return $this->resultReturn(true);
+        }
+
+        return $this->errorResultReturn($Model->getError());
+    }
+
+    /**
      * 检查模型是否可用
      * @param  array $model 需要检查的模型
      * @return array

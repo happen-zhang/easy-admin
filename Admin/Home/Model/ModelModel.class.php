@@ -50,6 +50,18 @@ class ModelModel extends CommonModel {
     );
 
     /**
+     * menu_name
+     */
+    protected $validateMenuName = array(
+        // 菜单名为空验证
+        array('menu_name', 'require', '菜单名称不能为空！', 1, 'regex', 1),
+        // 菜单名长度验证
+        array('menu_name', '1, 16', '菜单名称长度只能少于16个字符！', 1, 'length',1),
+        // 菜单名唯一性验证
+        array('menu_name', 'uniqueMenuName', '菜单名称已经存在！', 1,'callback',1),
+    );
+
+    /**
      * is_inner
      */
     protected $validateIsInner = array(
@@ -92,6 +104,10 @@ class ModelModel extends CommonModel {
         return parent::isUnique('tbl_name', $value);
     }
 
+    public function uniqueMenuName($value) {
+        return parent::isUnique('menu_name', $value);
+    }    
+
     /**
      * 模型名是否可用
      * @param  array  $model Model数组
@@ -111,6 +127,15 @@ class ModelModel extends CommonModel {
     }
 
     /**
+     * 菜单名是否可用
+     * @param  array  $model Model数组
+     * @return boolean       是否可用
+     */
+    public function isValidMenuName($model) {
+        return $this->validateConditions($this->validateMenuName, $model);
+    }
+
+    /**
      * 模型是否可用
      * @param  array   $model Model数组
      * @return boolean        是否可用
@@ -118,6 +143,7 @@ class ModelModel extends CommonModel {
     public function isValid($model) {
         $validate = array_merge($this->validateModelName,
                                 $this->validateTblName,
+                                $this->validateMenuName,
                                 $this->validateIsInner,
                                 $this->validateHasPk,
                                 $this->validateTblEngine);

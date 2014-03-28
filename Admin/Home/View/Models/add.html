@@ -5,11 +5,15 @@
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
         <tr>
             <th width="100">模型名称：</th>
-            <td><input id="model_name" type="text" class="input" size="20" name="model[name]" /> <a href="javascript:void(0)" id="check_model_name">检测是否可用</a>（用于在主菜单和子菜单上显示，不能包含特殊字符）</td>
+            <td><input id="model_name" type="text" class="input" size="20" name="model[name]" /> <a href="javascript:void(0)" id="check_model_name">检测是否可用</a>（不能包含特殊字符）</td>
         </tr>
         <tr>
             <th width="100">数据表名：</th>
             <td><input id="tbl_name" type="text" class="input" size="20" name="model[tbl_name]" /> <a href="javascript:void(0)" id="check_tal_name">检测是否可用</a>（存放该模型的数据表名称，只能由"_"、a~z组成）</td>
+        </tr>
+        <tr>
+            <th width="100">主菜单名：</th>
+            <td><input id="menu_name" type="text" class="input" size="20" name="model[menu_name]" /> <a href="javascript:void(0)" id="check_menu_name">检测是否可用</a>（用于在主菜单和子菜单上显示）</td>
         </tr>
         <tr>
             <th width="100">是否为内部表：</th>

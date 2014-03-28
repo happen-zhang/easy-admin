@@ -109,6 +109,23 @@ class ModelsController extends CommonController {
     }
 
     /**
+     * 检查菜单名可用性
+     * @return
+     */
+    public function checkMenuName() {
+        if (isset($_GET['id'])) {
+            $_SESSION['update_id'] = $_GET['id'];
+        }
+
+        $result = D('Model', 'Service')->checkMenuName($_GET['menu_name']);
+        if ($result['status']) {
+            return $this->successReturn('菜单名称可用');
+        }
+
+        return $this->errorReturn($result['data']['error']);
+    }
+
+    /**
      * 编辑模型
      * @return
      */

@@ -7,6 +7,7 @@
         <thead>
             <tr>
                 <td>模型名（表名）</td>
+                <td>菜单名</td>
                 <td>模型字段数</td>
                 <td>模型记录行数</td>
                 <td>内部表</td>
@@ -17,6 +18,7 @@
             <volist name="models" id="model">
             <tr align="center">
                 <td>{$model['name']}（{$model['tbl_name']}）</td>
+                <td>{$model['menu_name']}</td>
                 <td>{$model['fields_count']}</td>
                 <td>{$model['rows']}</td>
                 <td><if condition="$model['is_inner'] == 1">是<else/>否</if></td>
