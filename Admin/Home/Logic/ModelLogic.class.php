@@ -12,7 +12,7 @@ class ModelLogic extends CommonLogic {
      * @return
      */
     public function writeMenu(array $menu) {
-        $modelMenu = fastCache('model_menu', '', APP_PATH . '/Common/Conf/');
+        $modelMenu = fast_cache('model_menu', '', APP_PATH . '/Common/Conf/');
 
         if (false === $modelMenu) {
             $modelMenu = array();
@@ -20,9 +20,9 @@ class ModelLogic extends CommonLogic {
 
         // 删除缓存
         del_dir_or_file(RUNTIME_PATH . '~runtime.php');
-        return fastCache('model_menu',
-                         array_merge($modelMenu, $menu),
-                         APP_PATH . '/Common/Conf/');
+        return fast_cache('model_menu',
+                          array_merge($modelMenu, $menu),
+                          APP_PATH . '/Common/Conf/');
     }
 
     /**

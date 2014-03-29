@@ -141,7 +141,7 @@ function unzip($zip_file, $out_dir) {
  * @param  strign $path  缓存保存目录
  * @return mixed
  */
-function fastCache($name, $value = '', $path = DATA_PATH) {
+function fast_cache($name, $value = '', $path = DATA_PATH) {
     // 全局缓存
     static $_cache = array();
     // 文件名称
@@ -159,8 +159,6 @@ function fastCache($name, $value = '', $path = DATA_PATH) {
             if (!is_dir($dir)) {
                 // 创建目录
                 mkdir($dir, 0777, true);
-                // 创建文件
-                touch();
             }
             $_cache[$name] = $value;
 
