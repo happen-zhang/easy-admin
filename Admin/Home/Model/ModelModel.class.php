@@ -22,14 +22,14 @@ class ModelModel extends CommonModel {
      */
     protected $validateModelName = array(
         // 模型名为空验证
-        array('name', 'require', '模型名称不能为空！', 1, 'regex', 1),
+        array('name', 'require', '模型名称不能为空！', 1, 'regex', 3),
         // 模型名正确性验证
         array('name', 'isNotExistSpecialChar', '模型名称不能包含特殊字符！',
-              1, 'callback', 1),
+              1, 'callback', 3),
         // 模型名长度验证
-        array('name', '1, 24', '模型名称长度只能少于24个字符！', 1, 'length', 1),
+        array('name', '1, 24', '模型名称长度只能少于24个字符！', 1, 'length', 3),
         // 模型名唯一性验证
-        array('name', 'uniqueName', '模型名称已经存在！', 1, 'callback', 1),
+        array('name', 'uniqueName', '模型名称已经存在！', 1, 'callback', 3),
     );
 
     /**
@@ -37,16 +37,16 @@ class ModelModel extends CommonModel {
      */
     protected $validateTblName = array(
         // 数据表名为空验证
-        array('tbl_name', 'require', '数据表名称不能为空！', 1, 'regex', 1),
+        array('tbl_name', 'require', '数据表名称不能为空！', 1, 'regex', 3),
         // 数据表名长度验证
         array('tbl_name', '1, 24', '数据表名称长度只能少于24个字符！',
-              1, 'length', 1),
+              1, 'length', 3),
         // 数据表名正确性验证
         array('tbl_name', 'isLower', '数据表名称只能由"_"、a~z组成!',
-              1, 'callback', 1),
+              1, 'callback', 3),
         // 数据表名唯一性验证
         array('tbl_name', 'uniqueTblName', '数据表名称已经存在！',
-              1 , 'callback', 1),
+              1 , 'callback', 3),
     );
 
     /**
@@ -54,11 +54,13 @@ class ModelModel extends CommonModel {
      */
     protected $validateMenuName = array(
         // 菜单名为空验证
-        array('menu_name', 'require', '菜单名称不能为空！', 1, 'regex', 1),
+        array('menu_name', 'require', '菜单名称不能为空！', 1, 'regex', 3),
         // 菜单名长度验证
-        array('menu_name', '1, 16', '菜单名称长度只能少于16个字符！', 1, 'length',1),
+        array('menu_name', '1, 16', '菜单名称长度只能少于16个字符！',
+              1, 'length', 3),
         // 菜单名唯一性验证
-        array('menu_name', 'uniqueMenuName', '菜单名称已经存在！', 1,'callback',1),
+        array('menu_name', 'uniqueMenuName', '菜单名称已经存在！',
+              1, 'callback', 3),
     );
 
     /**
