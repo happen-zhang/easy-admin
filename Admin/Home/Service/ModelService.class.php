@@ -65,14 +65,8 @@ class ModelService extends CommonService {
         // 添加系统字段
         $addFieldStatus = $this->addSystemFields($Model->getLastInsID());
 
-        $modelLogic = D('Model', 'Logic');
-        // 得到英文的模型名称
-        $modelName = ucfirst(substr($model['tbl_name'],
-                             strpos($model['tbl_name'], '_') + 1));
-        // 生成菜单
-        $menu = $modelLogic->generateMenu($model['menu_name'], $modelName);
-        // 写入菜单配置
-        $modelLogic->writeMenu($menu);
+        // 生成菜单项
+        $this->addMenuItem($model);
 
         if (false === $addStatus
             || false === $createTblStatus
@@ -267,6 +261,44 @@ class ModelService extends CommonService {
         $status = false !== $Field->add($timestamp) ? true : false;
 
         return $status;
+    }
+
+    /**
+     * 添加菜单项
+     * @param array $model
+     */
+    private function addMenuItem(array $model) {
+        $modelLogic = D('Model', 'Logic');
+        // 得到模型的控制器名称
+        $ctrlName = $this->getCtrlName($model['tbl_name']);
+        // 生成菜单项
+        $item = $modelLogic->genMenuItem($model['menu_name'], $ctrlName);
+        // 添加菜单项
+        $menu = $modelLogic->addMenuItem($item);
+    }
+
+    /**
+     * 删除菜单项
+     * @param  string $ctrlName 菜单项对应的控制器名称
+     * @return mixed
+     */
+    private function delMenuItem($ctrlName) {
+        return D('Model', 'Logic')->delMenuItem($ctrlName);
+    }
+
+    /**
+     * 以数据表名得到控制器名称
+     * @param  string $tblName
+     * @return string
+     */
+    private function getCtrlName($tblName) {
+        // 去掉表前缀
+        $tblName = substr($tblName, strpos($tblName, '_') + 1);
+        $tblName = str_replace('_', ' ', $tblName);
+        // 单词首字母转为大写
+        $tblName = ucwords($tblName);
+
+        return str_replace(' ', '', $tblName);    
     }
 
     protected function getModelName() {
