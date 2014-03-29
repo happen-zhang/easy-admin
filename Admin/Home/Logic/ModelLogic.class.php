@@ -60,6 +60,29 @@ class ModelLogic extends CommonLogic {
     }
 
     /**
+     * 替换指定的菜单项
+     * @param  array  $menuItem 新菜单项
+     * @param  string $ctrlName 菜单项名称
+     * @return array
+     */
+    public function replaceMenuItem(array $menuItem, $ctrlName) {
+        $menu = $this->getMenu();
+
+        $newMenu = array();
+        foreach ($menu as $key => $item) {
+            if ($key == $ctrlName && is_array($menuItem)) {
+                $newMenu = array_merge($newMenu, $menuItem);
+                continue ;
+            }
+
+            $newMenu[$key] = $item;
+        }
+
+        $this->writeMenu($newMenu);
+        return $newMenu;
+    }
+
+    /**
      * 生成菜单项
      * @param  string $itemName  菜单名称
      * @param  string $ctrlName 模型名称

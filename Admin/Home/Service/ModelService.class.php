@@ -97,16 +97,27 @@ class ModelService extends CommonService {
         // 更新数据
         $updateStatus = $Model->save($model);
         // 更新数据表名
-        $utnStatus = $Model->updateTableName($old['tbl_name'],
-                                             $model['tbl_name']);
+        if ($model['tbl_name'] != $old['tbl_name']) {
+            $utnStatus = $Model->updateTableName($old['tbl_name'],
+                                                 $model['tbl_name']);
+        }
         // 更新数据表注释
-        $utcStatus = $Model->updateTableComment($model['tbl_name'],
-                                                $model['description']);
+        if ($model['description'] != $old['description']) {
+            $utcStatus = $Model->updateTableComment($model['tbl_name'],
+                                                    $model['description']);
+        }
+        // 更新菜单
+        if ($model['menu_name'] != $old['menu_name']
+            || $model['tbl_name'] != $old['tbl_name']) {
+            $this->replaceMenuItem($model, $old);
+        }
 
         if (false === $updateStatus
             || false === $utnStatus
             || false === $utcStatus) {
             $Model->rollback();
+            // 撤回更新
+            $this->replaceMenuItem($old, $model);
             return $this->resultReturn(false);
         }
         $Model->commit();
@@ -284,6 +295,23 @@ class ModelService extends CommonService {
      */
     private function delMenuItem($ctrlName) {
         return D('Model', 'Logic')->delMenuItem($ctrlName);
+    }
+
+    /**
+     * 替换菜单项
+     * @param  array $model
+     * @param  array $old
+     * @return array
+     */
+    private function replaceMenuItem($model, $old) {
+        $modelLogic = D('Model', 'Logic');
+        $oldCtrlName = $this->getCtrlName($old['tbl_name']);
+        $ctrlName = $this->getCtrlName($model['tbl_name']);
+
+        // 生成新菜单项
+        $item = $modelLogic->genMenuItem($model['menu_name'], $ctrlName);
+        // 替换旧的菜单项
+        return $modelLogic->replaceMenuItem($item, $oldCtrlName);
     }
 
     /**
