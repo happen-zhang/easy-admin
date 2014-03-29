@@ -143,9 +143,13 @@ class ModelService extends CommonService {
         $dropStatus = $Model->dropTable($model['tbl_name']);
         // 删除模型数据
         $delStatus = $Model->delete($id);
+        // 删除菜单项
+        $this->delMenuItem($this->getCtrlName($model['tbl_name']));
 
         if (false === $dropStatus || false === $delStatus) {
             $Modle->rollback();
+            // 还原菜单项
+            $this->addMenuItem($model);
             return $this->resultReturn(false);
         }
 
