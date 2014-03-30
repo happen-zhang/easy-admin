@@ -44,6 +44,9 @@ class ModelModel extends CommonModel {
         // 数据表名正确性验证
         array('tbl_name', 'isLower', '数据表名称只能由"_"、a~z组成!',
               1, 'callback', 3),
+        // 系统数据表名验证
+        array('tbl_name', 'isNotSysTblName', '不能使用系统保留表名!',
+              1, 'callback', 3),
         // 数据表名唯一性验证
         array('tbl_name', 'uniqueTblName', '数据表名称已经存在！',
               1 , 'callback', 3),
@@ -58,6 +61,9 @@ class ModelModel extends CommonModel {
         // 菜单名长度验证
         array('menu_name', '1, 16', '菜单名称长度只能少于16个字符！',
               1, 'length', 3),
+        // 系统数据菜单名验证
+        array('menu_name', 'isNotSysMenuName', '不能使用系统保留菜单名!',
+              1, 'callback', 3),
         // 菜单名唯一性验证
         array('menu_name', 'uniqueMenuName', '菜单名称已经存在！',
               1, 'callback', 3),
@@ -197,6 +203,42 @@ class ModelModel extends CommonModel {
      */
     protected function isNotExistSpecialChar($name) {
         if (hasSpecialChar($name)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 检查是否系统保留数据表名称
+     * @param  string  $tblName
+     * @return boolean
+     */
+    protected function isNotSysTblName($tblName) {
+        $tblNames = explode(',', C('SYSTEM_TBL_NAME'));
+        // 带前缀的系统表名
+        $prefixTblNames = array();
+        $prefix = C('DB_PREFIX');
+        foreach ($tblNames as $name) {
+            $prefixTblNames[] = $prefix . $name;
+        }
+
+        if (in_array($tblName, $tblNames)
+            || in_array($tblName, $prefixTblNames)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 检查是否系统保留菜单名称
+     * @return boolean
+     */
+    protected function isNotSysMenuName($tblName) {
+        $menuNames = explode(',', C('SYSTEM_MENU_NAME'));
+
+        if (in_array($tblName, $menuNames)) {
             return false;
         }
 

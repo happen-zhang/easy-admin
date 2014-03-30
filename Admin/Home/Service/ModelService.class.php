@@ -184,11 +184,6 @@ class ModelService extends CommonService {
      * @return array
      */
     public function checkTblName($name, $id) {
-        $systemTbls = array('model', 'fields', 'admin');
-        if (in_array($name, $systemTbls)) {
-            return $this->errorResultReturn('不能使用系统保留表名');
-        }
-
         $Model = D('Model');
         $model['tbl_name'] = trim($name);
         // 验证表名是否空
