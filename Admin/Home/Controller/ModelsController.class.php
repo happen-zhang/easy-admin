@@ -77,11 +77,8 @@ class ModelsController extends CommonController {
      * @return
      */
     public function checkModelName() {
-        if (isset($_GET['id'])) {
-            $_SESSION['update_id'] = $_GET['id'];
-        }
-
-        $result = D('Model', 'Service')->checkModelName($_GET['model_name']);
+        $result = D('Model', 'Service')->checkModelName($_GET['model_name'],
+                                                        $_GET['id']);
         if ($result['status']) {
             return $this->successReturn('模型名称可用');
         }
@@ -94,12 +91,8 @@ class ModelsController extends CommonController {
      * @return
      */
     public function checkTblName($tableName = null) {
-        if (isset($_GET['id'])) {
-            $_SESSION['update_id'] = $_GET['id'];
-        }
-
         $tblName = isset($tableName) ? $tableName : $_GET['tbl_name'];
-        $result = D('Model', 'Service')->checkTblName($tblName);
+        $result = D('Model', 'Service')->checkTblName($tblName, $_GET['id']);
 
         if ($result['status']) {
             return $this->successReturn('数据表名称可用');
@@ -113,11 +106,8 @@ class ModelsController extends CommonController {
      * @return
      */
     public function checkMenuName() {
-        if (isset($_GET['id'])) {
-            $_SESSION['update_id'] = $_GET['id'];
-        }
-
-        $result = D('Model', 'Service')->checkMenuName($_GET['menu_name']);
+        $result = D('Model', 'Service')->checkMenuName($_GET['menu_name'],
+                                                       $_GET['id']);
         if ($result['status']) {
             return $this->successReturn('菜单名称可用');
         }
@@ -138,9 +128,6 @@ class ModelsController extends CommonController {
         if (empty($model)) {
             $this->error('您需要编辑的模型不存在');
         }
-
-        // 检查唯一性的id
-        $_SESSION['update_id'] = $_GET['id'];
 
         $start = strpos($model['tbl_name'], '_') + 1;
         $model['tbl_name'] = substr($model['tbl_name'], $start);
@@ -164,9 +151,7 @@ class ModelsController extends CommonController {
         }
 
         $modelService = D('Model', 'Service');
-        // 检查数据是否合法
-        $_SESSION['update_id'] = $model['id'];
-        $result = $modelService->checkModel($model);
+        $result = $modelService->checkModel($model, $model['id']);
         if (false === $result['status']) {
             return $this->errorReturn($result['data']['error']);
         }

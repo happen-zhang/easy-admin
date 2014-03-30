@@ -164,12 +164,13 @@ class ModelService extends CommonService {
     /**
      * 检查模型名称是否可用
      * @param  string $name 模型名称
+     * @param  int    $id   需要更新模型的id
      * @return array
      */
-    public function checkModelName($name) {
+    public function checkModelName($name, $id) {
         $Model = D('Model');
         $model['name'] = trim($name);
-        if ($Model->isValidModelName($model)) {
+        if ($Model->isValidModelName($model, $id)) {
             return $this->resultReturn(true);
         }
 
@@ -179,9 +180,10 @@ class ModelService extends CommonService {
     /**
      * 检查数据表名称是否可用
      * @param  string $name 数据表名称
+     * @param  int    $id   需要更新模型的id
      * @return array
      */
-    public function checkTblName($name) {
+    public function checkTblName($name, $id) {
         $systemTbls = array('model', 'fields', 'admin');
         if (in_array($name, $systemTbls)) {
             return $this->errorResultReturn('不能使用系统保留表名');
@@ -196,7 +198,7 @@ class ModelService extends CommonService {
 
         // 验证表名是否已存在
         $model['tbl_name'] = C('DB_PREFIX') . $model['tbl_name'];
-        if ($Model->isValidTblName($model)) {
+        if ($Model->isValidTblName($model, $id)) {
             return $this->resultReturn(true);
         }
 
@@ -206,12 +208,13 @@ class ModelService extends CommonService {
     /**
      * 检查菜单名称是否可用
      * @param  string $name 菜单名称
+     * @param  int    $id   需要更新模型的id
      * @return array
      */
-    public function checkMenuName($name) {
+    public function checkMenuName($name, $id) {
         $Model = D('Model');
         $model['menu_name'] = trim($name);
-        if ($Model->isValidMenuName($model)) {
+        if ($Model->isValidMenuName($model, $id)) {
             return $this->resultReturn(true);
         }
 
@@ -221,19 +224,22 @@ class ModelService extends CommonService {
     /**
      * 检查模型是否可用
      * @param  array $model 需要检查的模型
+     * @param  int   $id    需要更新模型的id
      * @return array
      */
-    public function checkModel($model) {
+    public function checkModel($model, $id) {
         $Model = D('Model');
 
         // 检查表名是否合法
         $model = array_map('trim', $model);
-        $resutl = $this->checkTblName($model['tbl_name']);
+        $resutl = $this->checkTblName($model['tbl_name'], $id);
+        // // 需要检查的模型id
+        // $_SESSION['update_id'] = $model['id'];
         if (false === $resutl['status']) {
             return $this->errorResultReturn($resutl['data']['error']);
         }
 
-        if ($Model->isValid($model)) {
+        if ($Model->isValid($model, $id)) {
             return $this->resultReturn(true);
         }
 

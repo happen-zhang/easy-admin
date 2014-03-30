@@ -202,7 +202,6 @@ class CommonModel extends RelationModel {
             $where['id'] = array('neq', $_SESSION['update_id']);
         }
 
-        unset($_SESSION['update_id']);
         if (0 == $this->where($where)->count()) {
             return true;
         }

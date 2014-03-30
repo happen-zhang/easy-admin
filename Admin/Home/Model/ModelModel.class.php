@@ -113,53 +113,68 @@ class ModelModel extends CommonModel {
     /**
      * 模型名是否可用
      * @param  array  $model Model数组
+     * @param  int    $id    需要更新模型的id
      * @return boolean       是否可用
      */
-    public function isValidModelName($model) {
-        return $this->validateConditions($this->validateModelName, $model);
+    public function isValidModelName($model, $id) {
+        return $this->validateConditions($this->validateModelName, $model,$id);
     }
 
     /**
      * 数据表名是否可用
      * @param  array   $model Model数组
+     * @param  int     $id   需要更新模型的id
      * @return boolean        是否可用
      */
-    public function isValidTblName($model) {
-        return $this->validateConditions($this->validateTblName, $model);
+    public function isValidTblName($model, $id) {
+        return $this->validateConditions($this->validateTblName, $model, $id);
     }
 
     /**
      * 菜单名是否可用
      * @param  array  $model Model数组
+     * @param  int    $id    需要更新模型的id
      * @return boolean       是否可用
      */
-    public function isValidMenuName($model) {
-        return $this->validateConditions($this->validateMenuName, $model);
+    public function isValidMenuName($model, $id) {
+        return $this->validateConditions($this->validateMenuName, $model, $id);
     }
 
     /**
      * 模型是否可用
      * @param  array   $model Model数组
+     * @param  int     $id    需要更新模型的id
      * @return boolean        是否可用
      */
-    public function isValid($model) {
+    public function isValid($model, $id) {
         $validate = array_merge($this->validateModelName,
                                 $this->validateTblName,
                                 $this->validateMenuName,
                                 $this->validateIsInner,
                                 $this->validateHasPk,
                                 $this->validateTblEngine);
-        return $this->validateConditions($validate, $model);
+        return $this->validateConditions($validate, $model, $id);
     }
 
     /**
      * 验证条件
-     * @param  array  $conditions 验证条件
-     * @param  array  $model      Model数组
-     * @return boolean            是否可用
+     * @param  array   $conditions 验证条件
+     * @param  array   $model      Model数组
+     * @param  int     $id         需要更新模型的id
+     * @return boolean             是否可用
      */
-    private function validateConditions(array $conditions, $model) {
-        return $this->validate($conditions)->create($model);
+    private function validateConditions(array $conditions, $model,$id = null) {
+        if (isset($id) && !is_null($id)) {
+            $_SESSION['update_id'] = $id;
+        }
+
+        $result =  $this->validate($conditions)->create($model);
+        
+        if (isset($_SESSION['update_id'])) {
+            unset($_SESSION['update_id']);
+        }
+
+        return $result;
     }
 
     /**
