@@ -1,0 +1,59 @@
+<div class="Item hr">
+    <span class="fr">系统现有数据50行</span>
+    <div class="current">新闻模型列表</div>
+</div>
+<form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+        <thead>
+            <tr>
+                <td>新闻标题</td>
+                <td>发布时间</td>
+                <td>更新时间</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr align="center">
+                <td>Ruby代码块实现</td>
+                <td>2014-04-15</td>
+                <td>2014-04-15</td>
+                <td>[ <a href="{:U('Models/show', array('id' => $model['id']))}">查看</a> ] [ <a href="{:U('Models/edit', array('id' => $model['id']))}">编辑</a> ] [ <a href="javascript:void(0);" value="{:U('Models/delete', array('id' => $model['id']))}" name="{$model['name']}({$model['tbl_name']})" class="del">删除</a> ]</td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+<div class="page">
+    {$page}
+</div>
+
+<script type="text/javascript">
+$(function(){
+    $(".del").click(function(){
+        var del_link = $(this).attr("value");
+        popup.confirm('你真的打算删除 ['+$(this).attr("name")+'] 吗?','温馨提示',function(action){
+            if(action == 'ok'){
+                $.getJSON(del_link, function(json){
+                    if (json.status) {
+                        popup.success(json.info);
+                        setTimeout(function(){
+                            popup.close("asyncbox_success");
+                        },2000);
+                    } else {
+                        popup.error(json.info);
+                        setTimeout(function(){
+                            popup.close("asyncbox_error");
+                        },2000);
+                    }
+
+                    setTimeout(function(){
+                        top.window.location.reload();
+                    },1000);
+                });                
+            }
+        });
+
+        return false;
+    });
+});
+</script>
