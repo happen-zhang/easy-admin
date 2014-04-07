@@ -41,6 +41,20 @@ class FieldsController extends CommonController {
     }
 
     /**
+     * 检查字段名称可用性
+     * @return
+     */
+    public function checkFieldName() {
+        $result = D('Field', 'Service')->checkFieldName($_GET['field_name'],
+                                                        $_GET['model_id']);
+        if ($result['status']) {
+            return $this->successReturn('字段名称可用');
+        }
+
+        return $this->errorReturn($result['data']['error']);
+    }
+
+    /**
      * 编辑字段
      * @return
      */

@@ -5,9 +5,9 @@ $(function(){
         toggle_type_length($(this).val());
     });
 
-    $("#checkNewsTitle").click(function(){
-        $.getJSON("__URL__/checkNewsTitle", { title:$("#model_name").val(),id:"{$info.id}"}, function(json){
-            $("#checkNewsTitle").css("color",json.status==1?"#0f0":"#f00").html(json.info);
+    $("#check_field_name").click(function(){
+        $.getJSON("__URL__/checkFieldName", { field_name: $("#field_name").val(), model_id: "{$model['id']}" }, function(json){
+            $("#check_field_name").css("color",json.status==1?"#0f0":"#f00").html(json.info);
         });
     });
 
