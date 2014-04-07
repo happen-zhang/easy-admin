@@ -105,15 +105,15 @@ class ModelModel extends CommonModel {
     );
 
     public function uniqueName($value) {
-        return parent::isUnique('name', $value);
+        return $this->isUnique('name', $value);
     }
 
     public function uniqueTblName($value) {
-        return parent::isUnique('tbl_name', $value);
+        return $this->isUnique('tbl_name', $value);
     }
 
     public function uniqueMenuName($value) {
-        return parent::isUnique('menu_name', $value);
+        return $this->isUnique('menu_name', $value);
     }    
 
     /**

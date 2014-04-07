@@ -25,6 +25,9 @@ class FieldModel extends CommonModel {
         return $this->isUnique('name', $value);
     }
 
+    /**
+     * 重写parent::isUnique
+     */
     public function isUnique($fieldName, $value) {
         $where = array($fieldName => $value,
                        'model_id' => $this->getUpdateSession('model_id'));
