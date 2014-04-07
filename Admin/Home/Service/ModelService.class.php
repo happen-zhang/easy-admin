@@ -51,7 +51,7 @@ class ModelService extends CommonService {
      * @return array
      */
     public function add($model) {
-        $Model = D('Model');
+        $Model = $this->getD();
         $model = array_map('trim', $model);
         $model['tbl_name'] = C('DB_PREFIX') . $model['tbl_name'];
         $Model->startTrans();
@@ -85,7 +85,7 @@ class ModelService extends CommonService {
      * @return array
      */
     public function update($model) {
-        $Model = D('Model');
+        $Model = $this->getD();
         $model = array_map('trim', $model);
         $model['tbl_name'] = C('DB_PREFIX') . $model['tbl_name'];
 
@@ -131,7 +131,7 @@ class ModelService extends CommonService {
      * @return boolean
      */
     public function delete($id) {
-        $Model = D('Model');
+        $Model = $this->getD();
 
         $model = $Model->getById($id);
         if (empty($model)) {
@@ -168,7 +168,7 @@ class ModelService extends CommonService {
      * @return array
      */
     public function checkModelName($name, $id) {
-        $Model = D('Model');
+        $Model = $this->getD();
         $model['name'] = trim($name);
         if ($Model->isValidModelName($model, $id)) {
             return $this->resultReturn(true);
@@ -184,7 +184,7 @@ class ModelService extends CommonService {
      * @return array
      */
     public function checkTblName($name, $id) {
-        $Model = D('Model');
+        $Model = $this->getD();
         $model['tbl_name'] = trim($name);
         // 验证表名是否空
         if (empty($model['tbl_name'])) {
@@ -207,7 +207,7 @@ class ModelService extends CommonService {
      * @return array
      */
     public function checkMenuName($name, $id) {
-        $Model = D('Model');
+        $Model = $this->getD();
         $model['menu_name'] = trim($name);
         if ($Model->isValidMenuName($model, $id)) {
             return $this->resultReturn(true);
@@ -223,7 +223,7 @@ class ModelService extends CommonService {
      * @return array
      */
     public function checkModel($model, $id) {
-        $Model = D('Model');
+        $Model = $this->getD();
 
         // 检查表名是否合法
         $model = array_map('trim', $model);
