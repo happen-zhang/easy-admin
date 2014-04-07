@@ -55,6 +55,21 @@ class FieldsController extends CommonController {
     }
 
     /**
+     * 检查字段标签可用性
+     * @return
+     */
+    public function checkFieldLabel() {
+        $result = D('Field', 'Service')
+                   ->checkFieldComment($_GET['field_label'],
+                                       $_GET['model_id']);
+        if ($result['status']) {
+            return $this->successReturn('字段标签可用');
+        }
+
+        return $this->errorReturn($result['data']['error']);    
+    }
+
+    /**
      * 编辑字段
      * @return
      */

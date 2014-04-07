@@ -11,6 +11,12 @@ $(function(){
         });
     });
 
+    $("#check_field_label").click(function(){
+        $.getJSON("__URL__/checkFieldLabel", { field_label: $("#field_label").val(), model_id: "{$model['id']}" }, function(json){
+            $("#check_field_label").css("color",json.status==1?"#0f0":"#f00").html(json.info);
+        });
+    });
+
     // 表单类型
     var dom = ['.input_text', '.input_password', '.input_select',
                '.input_radio', '.input_checkbox', '.input_textarea',

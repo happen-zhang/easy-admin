@@ -21,8 +21,24 @@ class FieldModel extends CommonModel {
         array('name', 'uniqueName', '字段名称已经存在！', 1, 'callback', 3),
     );
 
+    /**
+     * comment
+     */
+    protected $validateFieldComment = array(
+        // 字段标签为空验证
+        array('comment', 'require', '字段标签不能为空！', 1, 'regex', 3),
+        // 字段标签长度验证
+        array('comment', '1, 24', '字段标签长度只能少于24个字符！', 1, 'length', 3),
+        // 字段标签唯一性验证
+        array('comment', 'uniqueComment', '字段标签已经存在！', 1, 'callback', 3),
+    );
+
     public function uniqueName($value) {
         return $this->isUnique('name', $value);
+    }
+
+    public function uniqueComment($value) {
+        return $this->isUnique('comment', $value);
     }
 
     /**
@@ -53,6 +69,18 @@ class FieldModel extends CommonModel {
         return $this->validateConditions($this->validateFieldName,
                                          $field,
                                          $id);
+    }
+
+    /**
+     * 字段标签是否可用
+     * @param  array  $field Field数组
+     * @param  int    $id    需要更新字段的id
+     * @return boolean       是否可用
+     */
+    public function isValidFieldComment($field, $id) {
+        return $this->validateConditions($this->validateFieldComment,
+                                         $field,
+                                         $id);        
     }
 
     protected function preUpdate($field, $id) {
