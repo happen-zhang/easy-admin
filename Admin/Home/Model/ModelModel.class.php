@@ -162,25 +162,12 @@ class ModelModel extends CommonModel {
         return $this->validateConditions($validate, $model, $id);
     }
 
-    /**
-     * 验证条件
-     * @param  array   $conditions 验证条件
-     * @param  array   $model      Model数组
-     * @param  int     $id         需要更新模型的id
-     * @return boolean             是否可用
-     */
-    private function validateConditions(array $conditions, $model,$id = null) {
-        if (isset($id) && !is_null($id)) {
-            $_SESSION['update_id'] = $id;
-        }
+    protected function preUpdate($model, $id) {
+        $this->setUpdateSession('update_id', $id);
+    }
 
-        $result =  $this->validate($conditions)->create($model);
-        
-        if (isset($_SESSION['update_id'])) {
-            unset($_SESSION['update_id']);
-        }
-
-        return $result;
+    protected function afterUpdate($model, $id) {
+        $this->unsetUpdateSession('update_id');
     }
 
     /**

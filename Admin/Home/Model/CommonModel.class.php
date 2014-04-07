@@ -10,6 +10,11 @@ use Think\Model\RelationModel;
  */
 class CommonModel extends RelationModel {
     /**
+     * 更新session的键值
+     */
+    const UPDATE_SESSION_KEY = 'ea_record_update';
+
+    /**
      * 为模型创建数据表
      * 自动生成created_at、updated_at字段
      * @param  string  $tableName 数据表名称
@@ -191,6 +196,21 @@ class CommonModel extends RelationModel {
     }
 
     /**
+     * 验证条件
+     * @param  array   $conditions 验证条件
+     * @param  array   $marray     模型数组
+     * @param  int     $id         需要更新字段的id
+     * @return boolean             是否可用
+     */
+    protected function validateConditions(array $conditions, $marray, $id) {
+        $this->preUpdate($marray, $id);
+        $result =  $this->validate($conditions)->create($marray);
+        $this->afterUpdate($marray, $id);
+
+        return $result;
+    }
+
+    /**
      * 验证字段值是否唯一
      * @param  string $fieldName 需要检查的字段名
      * @param  string $value     字段值
@@ -198,8 +218,9 @@ class CommonModel extends RelationModel {
      */
     public function isUnique($fieldName, $value) {
         $where = array($fieldName => $value);
-        if (isset($_SESSION['update_id'])) {
-            $where['id'] = array('neq', $_SESSION['update_id']);
+        $updateId = $this->getUpdateSession('update_id');
+        if (isset($updateId)) {
+            $where['id'] = array('neq', $updateId);
         }
 
         if (0 == $this->where($where)->count()) {
@@ -207,5 +228,52 @@ class CommonModel extends RelationModel {
         }
 
         return false;
+    }
+
+    /**
+     * 设置更新外键或者id
+     * @param String $key
+     * @param  mixed $value
+     * @return
+     */
+    protected function setUpdateSession($key, $value) {
+        if (isset($key) && !is_null($key) && !is_null($value)) {
+            $_SESSION[self::UPDATE_SESSION_KEY][$key] = $value;
+        }
+    }
+
+    /**
+     * 得到更新外键或者id的值
+     * @param  String $key
+     * @return
+     */
+    protected function getUpdateSession($key) {
+        return $_SESSION[self::UPDATE_SESSION_KEY][$key];
+    }
+
+    /**
+     * 销毁更新外键或者id
+     * @param String $key
+     * @return
+     */
+    protected function unsetUpdateSession($key) {
+        unset($_SESSION[self::UPDATE_SESSION_KEY][$key]);
+    }
+
+    /**
+     * 更新前的操作
+     * 
+     * @return
+     */
+    protected function preUpdate($marray, $id) {
+        // to do something...
+    }
+
+    /**
+     * 更新完成后的操作
+     * @return
+     */
+    protected function afterUpdate($marray, $id) {
+        // to do something...
     }
 }
