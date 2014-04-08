@@ -132,9 +132,9 @@ class FieldService extends CommonService {
                     return $this->errorResultReturn('默认值只能为有效的数字');
                 }
                 break ;
-
-            return $this->resultReturn(true);
         }
+
+        return $this->resultReturn(true);
     }
 
     /**
