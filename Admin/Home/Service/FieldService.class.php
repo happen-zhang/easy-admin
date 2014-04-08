@@ -56,6 +56,7 @@ class FieldService extends CommonService {
      * @return mixed
      */
     public function checkField($field, $id) {
+        // 字段类型约束验证
         $result = $this->checkTypeConstraint($field);
         if (!$result['status']) {
             return $result;
@@ -74,7 +75,7 @@ class FieldService extends CommonService {
      * @param  array $field
      * @return array
      */
-    public function checkTypeConstraint($field) {
+    public function checkTypeConstraint(&$field) {
         switch ($field['type']) {
             case 'CHAR':
             case 'VARCHAR':
