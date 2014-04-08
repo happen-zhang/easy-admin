@@ -38,7 +38,13 @@ class FieldModel extends CommonModel {
         array('type', 'CHAR,VARCHAR,TINYINT,SMALLINT,INT,BIGINT,FLOAT,DOUBLE,TEXT,MEDIUMTEXT,LONGTEXT,DATE,DATETIME',
               '非法字段类型!', 1, 'in', 3),
         // 字段长度
-        array('length', 'isValidFieldLength', '无效的类型长度!', 2, 'callback', 3)
+        array('length', 'isValidFieldLength', '无效的类型长度!', 2, 'callback',3),
+        // 是否必需
+        array('is_require', '0, 1', '字段必需值只能为0或1', 1, 'in', 1),
+        // 是否唯一
+        array('is_unique', '0, 1', '字段唯一值只能为0或1', 1, 'in', 1),
+        // 是否索引
+        array('is_index', '0, 1', '字段索引值只能为0或1', 1, 'in', 1),
     );
 
     public function uniqueName($value) {
