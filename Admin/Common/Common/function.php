@@ -200,6 +200,15 @@ function hasSpecialChar($subject) {
 }
 
 /**
+ * 是否整数
+ * @param  mixed   $var
+ * @return boolean
+ */
+function isint($var) {
+    return (preg_match('/^\d*$/', $var) == 1);
+}
+
+/**
 * 生成datetime
 * @return string
 */

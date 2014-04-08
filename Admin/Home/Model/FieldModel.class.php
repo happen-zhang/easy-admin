@@ -33,6 +33,14 @@ class FieldModel extends CommonModel {
         array('comment', 'uniqueComment', '字段标签已经存在！', 1, 'callback', 3),
     );
 
+    protected $validateField = array(
+        // 字段类型
+        array('type', 'CHAR,VARCHAR,TINYINT,SMALLINT,INT,BIGINT,FLOAT,DOUBLE,TEXT,MEDIUMTEXT,LONGTEXT,DATE,DATETIME',
+              '非法字段类型!', 1, 'in', 3),
+        // 字段长度
+        array('length', 'isValidFieldLength', '无效的类型长度!', 2, 'callback', 3)
+    );
+
     public function uniqueName($value) {
         return $this->isUnique('name', $value);
     }
@@ -83,6 +91,19 @@ class FieldModel extends CommonModel {
                                          $id);        
     }
 
+    /**
+     * 字段是否可用
+     * @param  array   $field Field数组
+     * @param  int     $id    需要更新字段的id
+     * @return boolean        是否可用
+     */
+    public function isValid($field, $id) {
+        $validate = array_merge($this->validateFieldName,
+                                $this->validateFieldComment,
+                                $this->validateField);
+        return $this->validateConditions($validate, $field, $id);
+    }
+
     protected function preUpdate($field, $id) {
         $this->setUpdateSession('update_id', $id);
         $this->setUpdateSession('model_id', $field['model_id']);
@@ -100,6 +121,19 @@ class FieldModel extends CommonModel {
      */
     protected function isAlpha($name) {
         if (preg_match("/^[a-zA-Z_]+$/", $name)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 是否有效的字段长度
+     * @param  string  $length
+     * @return boolean
+     */
+    protected function isValidFieldLength($length) {
+        if (preg_match("/^[0-9,]+$/", $length)) {
             return true;
         }
 
