@@ -17,6 +17,30 @@ $(function(){
         });
     });
 
+    $(".sub_linkfieldselect").hide();
+    $("#relation_model").change(function() {
+        // 所有可选择的model
+        var models = eval('{:json_encode($models)}');
+        var selected = $(this).val();
+
+        if (!selected) {
+            $(".sub_linkfieldselect").hide();
+            return ;
+        }
+
+        $("#relation_field option").remove();
+        $("#relation_value option").remove();
+        for (i = 0; i < models.length; i++) {
+            if (models[i].id == selected) {
+                for (j = 0; j < models[i].fields.length; j++) {
+                    $("#relation_field").append('<option value="' + models[i].fields[j].name +'">' + models[i].fields[j].name + '</option>');
+                    $("#relation_value").append('<option value="' + models[i].fields[j].name +'">' + models[i].fields[j].name + '</option>');
+                }
+            }
+        }
+        $(".sub_linkfieldselect").show();
+    });
+
     // 表单类型
     var dom = ['.input_text', '.input_password', '.input_select',
                '.input_radio', '.input_checkbox', '.input_textarea',

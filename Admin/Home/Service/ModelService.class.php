@@ -29,6 +29,16 @@ class ModelService extends CommonService {
     }
 
     /**
+     * 得到所有的模型
+     * @param  string $fields 查询字段
+     * @param  string  $order 排序
+     * @return array
+     */
+    public function getAll($fields, $order) {
+        return $this->getPagination(null, $fields, $order, null, null);
+    }
+
+    /**
      * 按id得到model数据
      * @param  int     $id
      * @return array

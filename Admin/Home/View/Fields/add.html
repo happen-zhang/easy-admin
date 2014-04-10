@@ -14,7 +14,7 @@
         </tr>
         <tr>
             <th width="100">字段备注：</th>
-            <td><input type="text" class="input" size="29" name="field[remark]" />（用于描述字段域的意义或填写规则）</td>
+            <td><input type="text" class="input" size="29" name="input[remark]" />（用于描述字段域的意义或填写规则）</td>
         </tr>        
         <tr>
             <th width="100">字段类型：</th>
@@ -39,13 +39,13 @@
         <tr id="field_length">
             <th width="100">字段长度：</th>
             <td>
-                <input type="text" class="input" size="20" name="field[length]" />（字段长度为整数）
+                <input type="text" class="input" size="20" name="field[length][intchar]" />（字段长度为整数，CHAR、VARCHAR长度不能为空）
             </td>
         </tr>
         <tr id="field_precision">
             <th width="100">字段精度：</th>
             <td>
-                <label for="">长度：</label><input type="text" class="input" size="20" name="field[length]" />&nbsp;&nbsp;&nbsp;<label for="">保留位数：</label><input type="text" class="input" size="20" name="field[precision]" />（字段长度、保留位数均为整数）
+                <label for="pre_length">长度：</label><input type="text" class="input" size="20" name="field[length][real]" id="pre_length" />&nbsp;&nbsp;&nbsp;<label for="precision">保留位数：</label><input type="text" class="input" size="20" name="field[precision]" id="precision" />（字段长度、保留位数均为整数）
             </td>
         </tr>
         <tr>
@@ -83,7 +83,7 @@
             <th width="100">自动过滤函数：</th>
             <td>
                 <select name="field[auto_filter]" width="180">
-                    <option value="VARCHAR" selected>选择自动过滤函数</option>
+                    <option value="" selected>选择自动过滤函数</option>
                     <option value="VARCHAR">substr</option>
                     <option value="CHAR">uuid</option>
                     <option value="TEXT">md5</option>
@@ -95,11 +95,11 @@
             <th width="100">自动填充函数：</th>
             <td>
                 <select name="field[auto_fill]"  width="180">
-                    <option value="VARCHAR" selected>选择自动填充函数</option>
-                    <option value="VARCHAR">datetime</option>
-                    <option value="CHAR">uuid</option>
-                    <option value="TEXT">md5</option>
-                    <option value="MEDIUMTEXT">array_sort</option>
+                    <option value="" selected>选择自动填充函数</option>
+                    <option value="datetime">datetime</option>
+                    <option value="uuid">uuid</option>
+                    <option value="md5">md5</option>
+                    <option value="array_sort">array_sort</option>
                 </select>
                 （可自定义填充函数）
             </td>
@@ -114,13 +114,13 @@
         <tr id="td_is_show">
             <th width="100">是否显示表单域：</th>
             <td>
-               <label><input type="radio" name="field[is_show]" value="0" class="input_is_show" /> 否</label> &nbsp; <label><input type="radio" name="field[is_show]" value="1" checked="checked" class="input_is_show" /> 是</label>
+               <label><input type="radio" name="input[is_show]" value="0" class="input_is_show" /> 否</label> &nbsp; <label><input type="radio" name="input[is_show]" value="1" checked="checked" class="input_is_show" /> 是</label>
             </td>
         </tr>
         <tr>
             <th width="100">表单域类型：</th>
             <td>
-                <select name="field[input_type]" id="input_type">
+                <select name="input[type]" id="input_type">
                   <option value="text" selected>单行文本框(text)</option>
                   <option value="password">密码框(password)</option>
                   <option value="select">下拉框(select)</option>
@@ -138,23 +138,23 @@
 
         <!-- 单行文本框(text)的内容 -->
         <tr class="input_text input_password">
-            <th width="100">长度限制：</th>
+            <th width="100">表单域长度：</th>
             <td>
-                <input type="text" class="input" size="20" name="field[input_size]" value="20"/>（可以限制输入表单值的长度）
+                <input type="text" class="input" size="20" name="input[width]" value="20"/>（可以限制输入表单值的长度）
             </td>
         </tr>
         <!-- 单行文本框(text)的内容 -->
         <tr class="input_text">
             <th width="100">表单域默认值：</th>
             <td>
-                <input type="text" class="input" size="20" name="field[input_value]" value="default"/>（表单域默认的值）
+                <input type="text" class="input" size="20" name="input[value]" />（表单域默认的值）
             </td>
         </tr>
 
         <!-- 选择默认值 -->
         <tr class="input_select input_radio input_checkbox">
             <th width="100">可选择的默认值：</th>
-            <td><textarea id="content" class="input" style="height: 100px; width: 100%;" name="field[input_value]"></textarea>
+            <td><textarea id="content" class="input" style="height: 100px; width: 100%;" name="input[opt_value]"></textarea>
             （如果没有default的话，默认为第一项）
             </td>
         </tr>
@@ -163,7 +163,7 @@
         <tr class="input_textarea">
             <th width="100">表单域规格：</th>
             <td>
-                <label for="">长度：</label><input type="text" class="input" size="20" name="field[input_height]" value="200"/>&nbsp;&nbsp;&nbsp;<label for="">宽度：</label><input type="text" class="input" size="20" name="field[input_width]" value="200"/>
+                <label for="">长度：</label><input type="text" class="input" size="20" name="input[width]" value="200"/>&nbsp;&nbsp;&nbsp;<label for="">宽度：</label><input type="text" class="input" size="20" name="input[height]" value="200"/>
             </td>
         </tr>
 
@@ -171,13 +171,13 @@
         <tr class="input_editor">
             <th width="100">编辑器规格：</th>
             <td>
-                <label for="">长度：</label><input type="text" class="input" size="20" name="field[input_height]" />&nbsp;&nbsp;&nbsp;<label for="">宽度：</label><input type="text" class="input" size="20" name="field[input_width]" />
+                <label for="">长度：</label><input type="text" class="input" size="20" name="input[width]" />&nbsp;&nbsp;&nbsp;<label for="">宽度：</label><input type="text" class="input" size="20" name="input[height]" />
             </td>
         </tr>
         <tr class="input_editor">
             <th width="100">编辑器类型：</th>
             <td>
-               <label><input type="radio" name="field[editor_type]" value="0" checked="checked" /> 富文本型</label> &nbsp; <label><input type="radio" name="field[editor_type]" value="1" /> Markdown</label>
+               <label><input type="radio" name="input[editor]" value="fulltext" checked="checked" /> 富文本型</label> &nbsp; <label><input type="radio" name="input[editor]" value="markdown" /> Markdown</label>
             </td>
         </tr>
 
@@ -185,15 +185,26 @@
         <tr class="input_file input_image">
             <th width="100">上传大小：</th>
             <td>
-                <input type="text" class="input" size="20" name="field[upload_field]" />（可以限制上传图片、文件的大小，单位Kb）
+                <input type="text" class="input" size="20" name="input[width]" />（可以限制上传图片、文件的大小，单位Kb）
             </td>
         </tr>
 
         <!-- 外联下拉 -->
         <tr class="input_linkfieldselect">
+            <th width="100">关联的模型：</th>
+            <td>
+                <select id="relation_model" name="input[relation_model]">
+                    <option value="" selected>请选择关联模型</option>
+                    <volist name="models" id="model">
+                    <option value="{$model['id']}">{$model['name']}（{$model['tbl_name']}）</option>
+                    </volist>
+                </select>
+            </td>
+        </tr>        
+        <tr class="sub_linkfieldselect">
             <th width="100">关联级别：</th>
             <td>
-                <select name="field[relation_level]">
+                <select name="input[relation_level]">
                   <option value="text">SET NULL</option>
                   <option value="password">NOT ACTION</option>
                   <option value="select" selected>CASCADE</option>
@@ -201,22 +212,10 @@
                 </select>
             </td>
         </tr>
-        <tr class="input_linkfieldselect">
-            <th width="100">关联的模型：</th>
-            <td>
-                <select name="field[relation]">
-                    <option value="" selected>请选择关联模型</option>
-                    <option value="text">问答模型(tbl_question)</option>
-                    <option value="password">下载模型(tbl_download)</option>
-                    <option value="select">影视模型（tbl_videos）</option>
-                    <option value="radio">新闻模型（tbl_news）</option>
-                </select>
-            </td>
-        </tr>
-        <tr class="input_linkfieldselect">
+        <tr class="sub_linkfieldselect">
             <th width="100">关联的字段：</th>
             <td>
-                <select name="field[relation_field]">
+                <select id="relation_field" name="input[relation_field]">
                   <option value="text">id</option>
                   <option value="password">uuid</option>
                   <option value="select" selected>created_by</option>
@@ -224,10 +223,10 @@
                 </select>
             </td>
         </tr>
-        <tr class="input_linkfieldselect">
+        <tr class="sub_linkfieldselect">
             <th width="100">显示的字段：</th>
             <td>
-                <select name="field[relation_show]">
+                <select id="relation_value" name="input[relation_value]">
                   <option value="text">name</option>
                   <option value="password">title</option>
                   <option value="select" selected>content</option>
@@ -235,17 +234,17 @@
                 </select>
             </td>
         </tr>
-        <tr class="input_linkfieldselect">
+        <tr class="sub_linkfieldselect">
             <th width="100">关联默认值：</th>
-            <td><textarea id="content" class="input" style="height: 100px; width: 100%;" name="field[value]"></textarea>
+            <td><textarea id="content" class="input" style="height: 100px; width: 100%;" name="input[opt_value]"></textarea>
             （如果没有default的话，默认为第一项）
             </td>
         </tr>
 
         <!-- 表单域替换 -->
         <tr>
-            <th width="100">表单HTML代码：</th>
-            <td><textarea id="content" class="input" style="height: 80px; width: 100%;" name="field[html]">&lt;input type=&quot;text&quot; class=&quot;input&quot; size=&quot;60&quot; name=&quot;models[table_name]&quot; value=&quot;20&quot;/&gt;</textarea></td>
+            <th width="100">表单域HTML代码：</th>
+            <td><textarea id="content" class="input" style="height: 80px; width: 100%;" name="input[html]">&lt;input type=&quot;text&quot; class=&quot;input&quot; size=&quot;60&quot; name=&quot;models[table_name]&quot; value=&quot;20&quot;/&gt;</textarea></td>
             </td>
         </tr>
 
@@ -253,10 +252,11 @@
         <tr>
             <th width="100">显示顺序：</th>
             <td>
-                <input type="text" class="input" size="20" name="field[show_order]" value="0"/>（越小表单域位置显示越前）
+                <input type="text" class="input" size="20" name="input[show_order]" value="0"/>（越小表单域位置显示越前）
             </td>
         </tr>
     </table>
+    <input type="hidden" name="field[model_id]" value="{$model['id']}" />
 </form>
 <div class="commonBtnArea" >
     <button class="btn submit">提交</button>
