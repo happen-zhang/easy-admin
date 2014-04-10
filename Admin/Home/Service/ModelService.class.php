@@ -157,10 +157,6 @@ class ModelService extends CommonService {
         return $this->resultReturn(true);
     }
 
-    public function getFieldsOfModelById($modelId, $fields = null) {
-        return M('Field')->getByModelId($modelId);
-    }
-
     /**
      * 检查模型名称是否可用
      * @param  string $name 模型名称
