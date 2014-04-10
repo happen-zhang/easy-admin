@@ -3,6 +3,27 @@ include 'Common/Common/function.php';
 include 'helper.php';
 
 /**
+ * 生成验证码
+ * @param  array  $config
+ * @return
+ */
+function create_verify_code(array $config) {
+    $Verify = new \Think\Verify($config);
+    return $Verify->entry();
+}
+
+/**
+ * 检查验证码
+ * @param  string $code
+ * @param  int $verify_code_id
+ * @return boolean
+ */
+function check_verify_code($code, $verify_code_id) {
+    $Verify = new \Think\Verify($config);
+    return $Verify->check($code, $verify_code_id);
+}
+
+/**
  * 格式化的文件大小
  * @param  int $bytes
  * @return string
@@ -49,7 +70,7 @@ function rand_code($length, $type) {
         $code .= $rand_src[rand(0, $count)];
     }
 
-    return $code;    
+    return $code;
 }
 
 /**
@@ -191,7 +212,7 @@ function fast_cache($name, $value = '', $path = DATA_PATH) {
  */
 function hasSpecialChar($subject) {
     $pattern = "/^(([^\^\.<>%&',;=?$\"':#@!~\]\[{}\\/`\|])*)$/";
-    
+
     if (preg_match($pattern, $subject)) {
         return false;
     }
