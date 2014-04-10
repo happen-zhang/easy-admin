@@ -80,35 +80,4 @@ class FieldsController extends CommonController {
     public function edit() {
         $this->display();
     }
-
-    public function test() {
-        $field = array(
-            'model_id' => 1,
-            'name' => 'titles',
-            'comment' => 'sss',
-            'type' => 'DOUBLE',
-            'length' => array(
-                'intchar' => '53',
-                'real' => '6'
-            ),
-            'value' => '.333',
-            'precision' => '4',
-            'is_index' => 1,
-            'is_require' => 1,
-            'is_unique' => 1,
-        );
-
-        $input = array(
-            'is_show' => 0,
-            'type' => 'select',
-            'width' => '12',
-            'height' => '32',
-            'relation_level' => 'CASCADE',
-            'editor' => 'markdown'
-        );
-
-        var_dump(D('Input', 'Service')->checkInput($input));
-        var_dump(D('Field', 'Service')->checkField($field));
-        // var_dump($Field->getError());
-    }
 }
