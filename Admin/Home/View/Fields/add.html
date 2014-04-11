@@ -15,7 +15,7 @@
         <tr>
             <th width="100">字段备注：</th>
             <td><input type="text" class="input" size="29" name="input[remark]" />（用于描述字段域的意义或填写规则）</td>
-        </tr>        
+        </tr>
         <tr>
             <th width="100">字段类型：</th>
             <td>
@@ -84,22 +84,20 @@
             <td>
                 <select name="field[auto_filter]" width="180">
                     <option value="" selected>选择自动过滤函数</option>
-                    <option value="VARCHAR">substr</option>
-                    <option value="CHAR">uuid</option>
-                    <option value="TEXT">md5</option>
-                    <option value="MEDIUMTEXT">array_sort</option>
+                    <volist name="filters" id="filter">
+                    <option value="{$filter}">{$filter}</option>
+                    </volist>
                 </select>（可自定义过滤函数）
             </td>
-        </tr>   
+        </tr>
         <tr>
             <th width="100">自动填充函数：</th>
             <td>
                 <select name="field[auto_fill]"  width="180">
                     <option value="" selected>选择自动填充函数</option>
-                    <option value="datetime">datetime</option>
-                    <option value="uuid">uuid</option>
-                    <option value="md5">md5</option>
-                    <option value="array_sort">array_sort</option>
+                    <volist name="fills" id="fill">
+                    <option value="{$fill}">{$fill}</option>
+                    </volist>
                 </select>
                 （可自定义填充函数）
             </td>
@@ -140,7 +138,7 @@
         <tr class="input_text input_password">
             <th width="100">表单域长度：</th>
             <td>
-                <input type="text" class="input" size="20" name="input[width]" value="20"/>（可以限制输入表单值的长度）
+                <input type="text" class="input" size="20" name="input[width][text_pwd]" />（可以限制输入表单值的长度）
             </td>
         </tr>
         <!-- 单行文本框(text)的内容 -->
@@ -163,7 +161,7 @@
         <tr class="input_textarea">
             <th width="100">表单域规格：</th>
             <td>
-                <label for="">长度：</label><input type="text" class="input" size="20" name="input[width]" value="200"/>&nbsp;&nbsp;&nbsp;<label for="">宽度：</label><input type="text" class="input" size="20" name="input[height]" value="200"/>
+                <label for="textarea_width">长度：</label><input type="text" class="input" size="20" name="input[width][textarea]" id="textarea_width" />&nbsp;&nbsp;&nbsp;<label for="textarea_height">宽度：</label><input type="text" class="input" size="20" name="input[height][textarea]" value="200" id="textarea_height" />
             </td>
         </tr>
 
@@ -171,7 +169,7 @@
         <tr class="input_editor">
             <th width="100">编辑器规格：</th>
             <td>
-                <label for="">长度：</label><input type="text" class="input" size="20" name="input[width]" />&nbsp;&nbsp;&nbsp;<label for="">宽度：</label><input type="text" class="input" size="20" name="input[height]" />
+                <label for="editor_width">长度：</label><input type="text" class="input" size="20" name="input[width][editor]" id="editor_width" />&nbsp;&nbsp;&nbsp;<label for="editor_height">宽度：</label><input type="text" class="input" size="20" name="input[height][editor]"  id="editor_height" />
             </td>
         </tr>
         <tr class="input_editor">
@@ -185,7 +183,7 @@
         <tr class="input_file input_image">
             <th width="100">上传大小：</th>
             <td>
-                <input type="text" class="input" size="20" name="input[width]" />（可以限制上传图片、文件的大小，单位Kb）
+                <input type="text" class="input" size="20" name="input[width][upload]" />（可以限制上传图片、文件的大小，单位Kb）
             </td>
         </tr>
 
@@ -193,44 +191,38 @@
         <tr class="input_linkfieldselect">
             <th width="100">关联的模型：</th>
             <td>
-                <select id="relation_model" name="input[relation_model]">
+                <select id="relation_model" name="field[relation_model]">
                     <option value="" selected>请选择关联模型</option>
                     <volist name="models" id="model">
                     <option value="{$model['id']}">{$model['name']}（{$model['tbl_name']}）</option>
                     </volist>
                 </select>
             </td>
-        </tr>        
+        </tr>
         <tr class="sub_linkfieldselect">
             <th width="100">关联级别：</th>
             <td>
-                <select name="input[relation_level]">
-                  <option value="text">SET NULL</option>
-                  <option value="password">NOT ACTION</option>
-                  <option value="select" selected>CASCADE</option>
-                  <option value="radio">RESTRICT</option>
+                <select name="field[relation_level]">
+                    <option value="SET NULL">SET NULL</option>
+                    <option value="NOT ACTION">NOT ACTION</option>
+                    <option value="CASCADE" selected>CASCADE</option>
+                    <option value="RESTRICT">RESTRICT</option>
                 </select>
             </td>
         </tr>
         <tr class="sub_linkfieldselect">
             <th width="100">关联的字段：</th>
             <td>
-                <select id="relation_field" name="input[relation_field]">
-                  <option value="text">id</option>
-                  <option value="password">uuid</option>
-                  <option value="select" selected>created_by</option>
-                  <option value="radio">updated_by</option>
+                <select id="relation_field" name="field[relation_field]">
+                    <option value=""></option>
                 </select>
             </td>
         </tr>
         <tr class="sub_linkfieldselect">
             <th width="100">显示的字段：</th>
             <td>
-                <select id="relation_value" name="input[relation_value]">
-                  <option value="text">name</option>
-                  <option value="password">title</option>
-                  <option value="select" selected>content</option>
-                  <option value="radio">desc</option>
+                <select id="relation_value" name="field[relation_value]">
+                    <option value=""></option>
                 </select>
             </td>
         </tr>

@@ -34,6 +34,10 @@ class FieldsController extends CommonController {
         // 得到可选的关联模型
         $models = D('Model', 'Service')->getAll();
 
+        // 得到所有可用的filter和fill函数
+        $filters = get_registry_filter();
+        $fills = get_registry_fill();
+
         $model = M('Model')->getById($_GET['model_id']);
         if (empty($model)) {
             return $this->error('您需要添加字段的模型不存在');
@@ -41,6 +45,8 @@ class FieldsController extends CommonController {
 
         $this->assign('models', $models);
         $this->assign('model', $model);
+        $this->assign('filters', $filters);
+        $this->assign('fills', $fills);
         $this->display();
     }
 
