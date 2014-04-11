@@ -7,6 +7,9 @@
 
 /Admin/Runtime/
 /Admin/Common/Conf/model_menu.php
+/Admin/Common/Conf/fill_config.php
+/Admin/Common/Conf/filter_config.php
+/Common/
 /Public/images/uploads/
 /Cache/
 /Data/
