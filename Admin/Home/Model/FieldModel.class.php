@@ -47,6 +47,13 @@ class FieldModel extends CommonModel {
         array('is_index', '0, 1', '字段索引值只能为0或1', 1, 'in', 1),
     );
 
+    protected $_auto = array(
+        // 创建时间
+        array('created_at', 'time', 1, 'function'),
+        // 更新时间
+        array('updated_at', 'time', 3, 'function'),
+    );
+
     public function uniqueName($value) {
         return $this->isUnique('name', $value);
     }

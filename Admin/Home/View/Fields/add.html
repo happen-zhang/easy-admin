@@ -76,7 +76,7 @@
         <tr>
             <th width="100">是否必填：</th>
             <td>
-                <label><input type="radio" name="field[is_require]" value="0" /> 否</label> &nbsp; <label><input type="radio" name="field[is_require]" value="1" checked="checked" /> 是</label>
+                <label><input type="radio" name="field[is_require]" value="0" checked="checked"/> 否</label> &nbsp; <label><input type="radio" name="field[is_require]" value="1" /> 是</label>
             </td>
         </tr>
         <tr>
@@ -161,7 +161,7 @@
         <tr class="input_textarea">
             <th width="100">表单域规格：</th>
             <td>
-                <label for="textarea_width">长度：</label><input type="text" class="input" size="20" name="input[width][textarea]" id="textarea_width" />&nbsp;&nbsp;&nbsp;<label for="textarea_height">宽度：</label><input type="text" class="input" size="20" name="input[height][textarea]" value="200" id="textarea_height" />
+                <label for="textarea_width">长度：</label><input type="text" class="input" size="20" name="input[width][textarea]" id="textarea_width" />&nbsp;&nbsp;&nbsp;<label for="textarea_height">宽度：</label><input type="text" class="input" size="20" name="input[height][textarea]" id="textarea_height" />
             </td>
         </tr>
 
@@ -193,8 +193,8 @@
             <td>
                 <select id="relation_model" name="field[relation_model]">
                     <option value="" selected>请选择关联模型</option>
-                    <volist name="models" id="model">
-                    <option value="{$model['id']}">{$model['name']}（{$model['tbl_name']}）</option>
+                    <volist name="models" id="item">
+                    <option value="{$item['id']}">{$item['name']}（{$item['tbl_name']}）</option>
                     </volist>
                 </select>
             </td>
@@ -203,9 +203,10 @@
             <th width="100">关联级别：</th>
             <td>
                 <select name="field[relation_level]">
+                    <option value="" selected>请选择关联级别</option>
                     <option value="SET NULL">SET NULL</option>
                     <option value="NOT ACTION">NOT ACTION</option>
-                    <option value="CASCADE" selected>CASCADE</option>
+                    <option value="CASCADE">CASCADE</option>
                     <option value="RESTRICT">RESTRICT</option>
                 </select>
             </td>

@@ -5,6 +5,62 @@ namespace Home\Service;
  * FieldService
  */
 class FieldService extends CommonService {
+    const INDEX_PREFIX = 'idx_';
+    const UNIQUE_PREFIX = 'uniq_';
+
+    /**
+     * 添加字段
+     * @param  array Field数组
+     * @return array
+     */
+    public function add($field) {
+        $model = M('Model')->getById($field['model_id']);
+        $Field = $this->getD();
+
+        $Field->startTrans();
+        $field = $Field->create($field);
+        // 插入数据
+        $status = $Field->add($field);
+        $id = $Field->getLastInsID();
+        // 添加字段
+        $ac = $Field->addColumn($model['tbl_name'],
+                                $field['name'],
+                                $field['type'],
+                                $field['length'],
+                                $field['value'],
+                                $field['comment']);
+
+        // 字段索引
+        $idxn = self::INDEX_PREFIX . $field['name'];
+        if (isset($field['is_index']) && 1 == $field['is_index']) {
+            $ai = $Field->addIndex($model['tbl_name'], $field['name'], $idxn);
+        }
+
+        // 唯一索引
+        $uniqn = self::UNIQUE_PREFIX . $field['name'];
+        if ('' == $field['value']
+            && isset($field['is_unique'])
+            && 1 == $field['is_unique']) {
+            $au = $Field->addUnique($model['tbl_name'], $field['name'],$uniqn);
+        }
+
+        if (false === $status
+            || false === $ac
+            || false === $ai
+            || false === $au) {
+            // 删除插入数据
+            $Field->where->("id = {$id}")->delete();
+            // 删除字段
+            $Field->dropColumn($model['tbl_name'], $field['name']);
+
+            $Field->rollback();
+            return $this->resultReturn(false);
+        }
+
+        $Field->commit();
+        return $this->resultReturn(true);
+    }
+
     /**
      * 检查字段名称是否可用
      * @param  string     $name 字段名称
@@ -55,11 +111,15 @@ class FieldService extends CommonService {
      * @param    int    $id 需要更新field的id
      * @return mixed
      */
-    public function checkField($field, $id) {
+    public function checkField(&$field, $id) {
         // 字段类型约束验证
         $result = $this->checkTypeConstraint($field);
         if (!$result['status']) {
             return $result;
+        }
+
+        if (!$this->existModel($field['model_id'])) {
+            return $this->errorResultReturn('字段对应的模型不存在');
         }
 
         $Field = $this->getD();
@@ -100,7 +160,7 @@ class FieldService extends CommonService {
                 }
 
                 // 默认值只能为整数
-                if (!empty($field['value']) && isint($field['value'])) {
+                if (!empty($field['value']) && !isint($field['value'])) {
                     return $this->errorResultReturn('默认值只能为整数');
                 }
                 break ;
@@ -135,6 +195,7 @@ class FieldService extends CommonService {
                 break ;
         }
 
+        unset($field['precision']);
         return $this->resultReturn(true);
     }
 

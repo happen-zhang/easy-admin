@@ -196,6 +196,97 @@ class CommonModel extends RelationModel {
     }
 
     /**
+     * 添加字段到数据表
+     * @param string $tn      数据表名称
+     * @param string $cn      字段名称
+     * @param string $type    字段类型
+     * @param int    $length  字段长度
+     * @param mixed  $value   字段默认值
+     * @param string $comment 字段注释
+     * @return mixed
+     */
+    public function addColumn($tn, $cn, $type, $length, $value, $comment) {
+        // 添加字段的sql
+        $sql = "ALTER TABLE `{$tn}` ADD COLUMN `{$cn}` {$type}";
+
+        // 类型长度
+        if (isset($length) && 0 != $length) {
+            $sql .= "({$length}) ";
+        }
+
+        // 默认值
+        if (isset($value) && '' != $value) {
+            $text = array('CHAR', 'VARCHAR', 'TEXT',
+                          'TINYTEXT', 'MEDIUMTEXT', 'LONGTEXT');
+
+            if (in_array($type, $text)) {
+                // 字符默认值
+                $sql .= " NOT NULL DEFAULT '{$value}' ";
+            } else {
+                // 数值型
+                $sql .= " NOT NULL DEFAULT {$value} ";
+            }
+        }
+
+        // 字段注释
+        if (isset($comment) && '' != $comment) {
+            $sql .= " COMMENT '{$comment}' ";
+        }
+
+        return $this->query($sql);
+    }
+
+    /**
+     * 从数据表中删除字段
+     * @param string $tn      数据表名称
+     * @param string $cn      字段名称
+     * @return mixed
+     */
+    public function dropColumn($tn, $cn) {
+        $sql = "ALTER TABLE `{$tn}` DROP `{$cn}`";
+
+        return $this->query($sql);
+    }
+
+    /**
+     * 添加索引
+     * @param string $tn   数据表名称
+     * @param string $cn   字段名称
+     * @param string $idxn 索引名称
+     * @return mixed
+     */
+    public function addIndex($tn, $cn, $idxn) {
+        $sql = "CREATE INDEX {$idxn} ON `{$tn}`(`{$cn}`)";
+
+        return $this->query($sql);
+    }
+
+    /**
+     * 添加唯一索引
+     * @param string $tn   数据表名称
+     * @param string $cn   字段名称
+     * @param string $idxn 索引名称
+     * @return mixed
+     */
+    public function addUnique($tn, $cn, $idxn) {
+        $sql = "CREATE UNIQUE INDEX {$idxn} ON `{$tn}`(`{$cn}`)";
+
+        return $this->query($sql);
+    }
+
+    /**
+     * 删除索引
+     * @param string $tn   数据表名称
+     * @param string $idxn 索引名称
+     * @return mixed
+     */
+    public function dropIndex($tn, $idxn) {
+        $sql = "DROP INDEX {$idxn} ON `{$tn}`";
+
+        return $this->query($sql);
+    }
+
+    /**
      * 验证条件
      * @param  array   $conditions 验证条件
      * @param  array   $marray     模型数组

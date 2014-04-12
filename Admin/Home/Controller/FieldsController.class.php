@@ -51,6 +51,27 @@ class FieldsController extends CommonController {
     }
 
     /**
+     * 创建字段
+     * @return
+     */
+    public function create() {
+        // is post
+
+        $fieldService = D('Field', 'Service');
+        $field = $_POST['field'];
+
+        $result = $fieldService->checkField($field);
+        if (!$result['status']) {
+            // return $this->errorReturn($result['data']['error']);
+            return var_dump($result['data']['error']);
+        }
+
+        $fieldService->add($field);
+
+        // return var_dump($result['data']['error']);
+    }
+
+    /**
      * 检查字段名称可用性
      * @return
      */
