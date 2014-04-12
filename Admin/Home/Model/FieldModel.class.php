@@ -14,7 +14,8 @@ class FieldModel extends CommonModel {
         // 字段名为空验证
         array('name', 'require', '字段名称不能为空！', 1, 'regex', 3),
         // 字段名正确性验证
-        array('name', 'isAlpha', '只能由"_"、a~z、A-Z组成！', 1, 'callback', 3),
+        array('name', 'isAlpha', '字段名只能由"_"、a~z、A-Z组成！'
+              , 1, 'callback', 3),
         // 字段名长度验证
         array('name', '1, 24', '字段名称长度只能少于24个字符！', 1, 'length', 3),
         // 字段名唯一性验证
@@ -101,7 +102,7 @@ class FieldModel extends CommonModel {
     public function isValidFieldComment($field, $id) {
         return $this->validateConditions($this->validateFieldComment,
                                          $field,
-                                         $id);        
+                                         $id);
     }
 
     /**
@@ -124,13 +125,13 @@ class FieldModel extends CommonModel {
 
     protected function afterUpdate($field, $id) {
         $this->unsetUpdateSession('update_id');
-        $this->unsetUpdateSession('model_id');        
+        $this->unsetUpdateSession('model_id');
     }
 
     /**
      * 名称是否只包含_、字母
      * @param  string $name 需要检查的名称
-     * @return boolean      是否有效的名称       
+     * @return boolean      是否有效的名称
      */
     protected function isAlpha($name) {
         if (preg_match("/^[a-zA-Z_]+$/", $name)) {
