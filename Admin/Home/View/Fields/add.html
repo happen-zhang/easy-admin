@@ -1,4 +1,4 @@
-<form>
+<form action="__URL__/create" method="POST">
     <!-- 基本属性 -->
     <div class="Item hr">
         <div class="current">{$model['name']}（{$model['tbl_name']}）- 字段基本属性</div>
@@ -31,8 +31,6 @@
                     <option value="TEXT">小型字符型(TEXT)</option>
                     <option value="MEDIUMTEXT">中型字符型(MEDIUMTEXT)</option>
                     <option value="LONGTEXT">大型字符型(LONGTEXT)</option>
-                    <option value="DATE">日期型(DATE)</option>
-                    <option value="DATETIME">日期时间型(DATETIME)</option>
                 </select>
             </td>
         </tr>
@@ -250,9 +248,9 @@
         </tr>
     </table>
     <input type="hidden" name="field[model_id]" value="{$model['id']}" />
-</form>
 <div class="commonBtnArea" >
     <button class="btn submit">提交</button>
 </div>
+</form>
 
 <include file="Fields:javascript" />
