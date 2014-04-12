@@ -49,7 +49,7 @@ class FieldService extends CommonService {
             || false === $ai
             || false === $au) {
             // 删除插入数据
-            $Field->where->("id = {$id}")->delete();
+            $Field->where("id = {$id}")->delete();
             // 删除字段
             $Field->dropColumn($model['tbl_name'], $field['name']);
 
