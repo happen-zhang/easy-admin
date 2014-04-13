@@ -177,6 +177,21 @@ function genFile($name, $class = '') {
 }
 
 /**
+ * 生成datepicker
+ * @param  string $name  表单域名称
+ * @param  string $class css类
+ * @return string
+ */
+function genDate($name, $class = '') {
+    $src = __APP__ . '/../Public/javascripts/datepicker/images2/cal.gif';
+    $id = rand_code(8);
+
+    return "<input type='text' id='{$id}' class='{$class}' />"
+           . "<img src='{$src}' style='cursor:pointer; margin-left:2px' "
+           . "onclick='javascript:NewCssCal(\"{$id}\", \"YYYYMMDD\")'/>";
+}
+
+/**
  * 生成textarea文本域
  * @param  string $name        文本域name
  * @param  string $value       文本域value

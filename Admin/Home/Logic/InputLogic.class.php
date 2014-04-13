@@ -99,6 +99,8 @@ class InputLogic extends CommonLogic {
             $html = genFile($fn);
         } else if ('textarea' == $type) {
             $html = genTextarea($fn, $value, $width, $height, $remark);
+        } else if ('date' == $type) {
+            $html = genDate($fn, $class);
         }
 
         $input['html'] = $html;
