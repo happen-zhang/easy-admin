@@ -58,17 +58,40 @@ class FieldsController extends CommonController {
         // is post
 
         $fieldService = D('Field', 'Service');
+        $inputService = D('input', 'Service');
         $field = $_POST['field'];
+        $input = $_POST['input'];
 
+        // field
         $result = $fieldService->checkField($field);
         if (!$result['status']) {
             // return $this->errorReturn($result['data']['error']);
             return var_dump($result['data']['error']);
         }
 
-        $fieldService->add($field);
+        // input
+        $input['label'] = $field['comment'];
+        $input = $inputService->create($input, $field);
+        $result = $inputService->checkInput($input);
+        if (!$result['status']) {
+            // return $this->errorReturn($result['data']['error']);
+            return var_dump($result['data']['error']);
+        }
 
-        // return var_dump($result['data']['error']);
+        // 插入field
+        $result = $fieldService->add($field);
+        if (!$result['status']) {
+            return $this->errorReturn('系统出错了!');
+        }
+
+        // 插入input
+        $input['field_id'] = $result['data']['id'];
+        $result = $inputService->add($input);
+        if (!$result['status']) {
+            return $this->errorReturn('系统出错了!');
+        }
+
+        var_dump($input);
     }
 
     /**

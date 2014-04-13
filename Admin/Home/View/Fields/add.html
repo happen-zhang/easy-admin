@@ -108,7 +108,7 @@
     </div>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1" id="form_opts_tbl">
         <tr id="td_is_show">
-            <th width="100">是否显示表单域：</th>
+            <th width="100">显示表单域：</th>
             <td>
                <label><input type="radio" name="input[is_show]" value="0" class="input_is_show" /> 否</label> &nbsp; <label><input type="radio" name="input[is_show]" value="1" checked="checked" class="input_is_show" /> 是</label>
             </td>
@@ -136,30 +136,28 @@
         <tr class="input_text input_password">
             <th width="100">表单域长度：</th>
             <td>
-                <input type="text" class="input" size="20" name="input[width][text_pwd]" />（可以限制输入表单值的长度）
+                <input type="text" class="input" size="20" name="input[width][text_pwd]" placeholder="默认size为20" />
             </td>
         </tr>
         <!-- 单行文本框(text)的内容 -->
         <tr class="input_text">
             <th width="100">表单域默认值：</th>
             <td>
-                <input type="text" class="input" size="20" name="input[value]" />（表单域默认的值）
+                <input type="text" class="input" size="20" name="input[value]" />
             </td>
         </tr>
 
         <!-- 选择默认值 -->
         <tr class="input_select input_radio input_checkbox">
             <th width="100">可选择的默认值：</th>
-            <td><textarea id="content" class="input" style="height: 100px; width: 100%;" name="input[opt_value]"></textarea>
-            （如果没有default的话，默认为第一项）
-            </td>
+            <td><textarea id="content" class="jq_watermark" rows = "5" cols="68" name="input[opt_value]" placeholder="表单域值:显示文本:default（每行一个选项）<br/>1:apple<br/>2:banana:default<br/>3:orange<br/>"></textarea></td>
         </tr>
 
         <!-- 多行文本框 -->
         <tr class="input_textarea">
             <th width="100">表单域规格：</th>
             <td>
-                <label for="textarea_width">长度：</label><input type="text" class="input" size="20" name="input[width][textarea]" id="textarea_width" />&nbsp;&nbsp;&nbsp;<label for="textarea_height">宽度：</label><input type="text" class="input" size="20" name="input[height][textarea]" id="textarea_height" />
+                <label for="textarea_width">高度：</label><input type="text" class="input" size="20" name="input[width][textarea]" id="textarea_width" placeholder="rows" />&nbsp;&nbsp;&nbsp;<label for="textarea_height">宽度：</label><input type="text" class="input" size="20" name="input[height][textarea]" id="textarea_height" placeholder="cols" />
             </td>
         </tr>
 
@@ -167,7 +165,7 @@
         <tr class="input_editor">
             <th width="100">编辑器规格：</th>
             <td>
-                <label for="editor_width">长度：</label><input type="text" class="input" size="20" name="input[width][editor]" id="editor_width" />&nbsp;&nbsp;&nbsp;<label for="editor_height">宽度：</label><input type="text" class="input" size="20" name="input[height][editor]"  id="editor_height" />
+                <label for="editor_width">高度：</label><input type="text" class="input" size="20" name="input[width][editor]" id="editor_width" placeholder="默认rows为20" />&nbsp;&nbsp;&nbsp;<label for="editor_height">宽度：</label><input type="text" class="input" size="20" name="input[height][editor]"  id="editor_height" placeholder="默认cols为68" />
             </td>
         </tr>
         <tr class="input_editor">
@@ -181,7 +179,7 @@
         <tr class="input_file input_image">
             <th width="100">上传大小：</th>
             <td>
-                <input type="text" class="input" size="20" name="input[width][upload]" />（可以限制上传图片、文件的大小，单位Kb）
+                <input type="text" class="input" size="20" name="input[width][upload]" />（可以限制上传图片、文件的大小，单位Mb）
             </td>
         </tr>
 
@@ -225,17 +223,10 @@
                 </select>
             </td>
         </tr>
-        <tr class="sub_linkfieldselect">
-            <th width="100">关联默认值：</th>
-            <td><textarea id="content" class="input" style="height: 100px; width: 100%;" name="input[opt_value]"></textarea>
-            （如果没有default的话，默认为第一项）
-            </td>
-        </tr>
-
         <!-- 表单域替换 -->
         <tr>
-            <th width="100">表单域HTML代码：</th>
-            <td><textarea id="content" class="input" style="height: 80px; width: 100%;" name="input[html]">&lt;input type=&quot;text&quot; class=&quot;input&quot; size=&quot;60&quot; name=&quot;models[table_name]&quot; value=&quot;20&quot;/&gt;</textarea></td>
+            <th width="100">表单域HTML：</th>
+            <td><textarea id="content" rows="4" cols="68" name="input[html]" placeholder="请输入正确的表单域HTML代码，留空则系统自动成"></textarea></td>
             </td>
         </tr>
 

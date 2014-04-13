@@ -58,7 +58,7 @@ class FieldService extends CommonService {
         }
 
         $Field->commit();
-        return $this->resultReturn(true);
+        return $this->resultReturn(true, array('id' => $id));
     }
 
     /**
