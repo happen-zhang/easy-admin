@@ -54,7 +54,6 @@ class InputLogic extends CommonLogic {
                 $this->resetSize($input['height'], self::INPUT_ROWS);
                 break ;
 
-            case 'image':
             case 'file':
                 $input['width'] = $input['width']['upload'];
                 $input['height'] = 0;

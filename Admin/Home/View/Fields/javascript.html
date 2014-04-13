@@ -44,8 +44,8 @@ $(function(){
     // 表单类型
     var dom = ['.input_text', '.input_password', '.input_select',
                '.input_radio', '.input_checkbox', '.input_textarea',
-               '.input_editor', '.input_image', '.input_file',
-               '.input_date', '.input_linkfieldselect'];
+               '.input_editor', '.input_file', '.input_date',
+               '.input_linkfieldselect'];
     var domLength = dom.length;
 
     toggle_input_field($("#input_type").val());
@@ -94,7 +94,7 @@ $(function(){
             $(dom[1]).show();
         } else if (type == dom[2] || type == dom[3] || type == dom[4]) {
             $(dom[2]).show();
-        } else if (type == dom[7] || type == dom[8]) {
+        } else if (type == dom[7]) {
             $(dom[7]).show();
         } else if (type == dom[6]) {
             $(dom[6]).show();
