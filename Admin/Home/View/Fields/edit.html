@@ -14,7 +14,7 @@
         </tr>
         <tr>
             <th width="100">字段备注：</th>
-            <td><input type="text" class="input" size="35" name="field[remark]" value="填写整数"/>（用于描述字段域的意义或填写规则）</td>
+            <td><input type="text" class="input" size="35" name="input[remark]" value="填写整数"/>（用于描述字段域的意义或填写规则）</td>
         </tr>        
         <tr>
             <th width="100">字段类型：</th>
@@ -39,13 +39,13 @@
         <tr id="field_length">
             <th width="100">字段长度：</th>
             <td>
-                <input type="text" class="input" size="20" name="field[length]" value="10"/>（字段长度为整数）
+                <input type="text" class="input" size="20" name="field[length][intchar]" />（字段长度为整数，CHAR、VARCHAR长度不能为空）
             </td>
         </tr>
         <tr id="field_precision">
             <th width="100">字段精度：</th>
             <td>
-                <label for="">长度：</label><input type="text" class="input" size="20" name="field[length]" value="8"/>&nbsp;&nbsp;&nbsp;<label for="">保留位数：</label><input type="text" class="input" size="20" name="field[precision]" value="2"/>（字段长度、保留位数均为整数）
+                <label for="pre_length">长度：</label><input type="text" class="input" size="20" name="field[length][real]" id="pre_length" value="8" />&nbsp;&nbsp;&nbsp;<label for="precision">保留位数：</label><input type="text" class="input" size="20" name="field[precision]" id="precision" value="2" />（字段长度、保留位数均为整数）
             </td>
         </tr>
         <tr>
@@ -83,11 +83,11 @@
             <th width="100">自动过滤函数：</th>
             <td>
                 <select name="field[auto_filter]" width="180">
-                    <option value="VARCHAR" selected>选择自动过滤函数</option>
-                    <option value="VARCHAR">substr</option>
-                    <option value="CHAR">uuid</option>
-                    <option value="TEXT">md5</option>
-                    <option value="MEDIUMTEXT">array_sort</option>
+                    <option value="" selected>选择自动过滤函数</option>
+                    <option value="substr">substr</option>
+                    <option value="uuid">uuid</option>
+                    <option value="md5">md5</option>
+                    <option value="array_sort">array_sort</option>
                 </select>（可自定义过滤函数）
             </td>
         </tr>   
@@ -95,11 +95,11 @@
             <th width="100">自动填充函数：</th>
             <td>
                 <select name="field[auto_fill]"  width="180">
-                    <option value="VARCHAR" selected>选择自动填充函数</option>
-                    <option value="VARCHAR">datetime</option>
-                    <option value="CHAR">uuid</option>
-                    <option value="TEXT">md5</option>
-                    <option value="MEDIUMTEXT">array_sort</option>
+                    <option value="" selected>选择自动填充函数</option>
+                    <option value="datetime">datetime</option>
+                    <option value="uuid">uuid</option>
+                    <option value="md5">md5</option>
+                    <option value="array_sort">array_sort</option>
                 </select>
                 （可自定义填充函数）
             </td>
@@ -114,13 +114,13 @@
         <tr id="td_is_show">
             <th width="100">是否显示表单域：</th>
             <td>
-               <label><input type="radio" name="field[is_show]" value="0" class="input_is_show" /> 否</label> &nbsp; <label><input type="radio" name="field[is_show]" value="1" checked="checked" class="input_is_show" /> 是</label>
+               <label><input type="radio" name="input[is_show]" value="0" class="input_is_show" /> 否</label> &nbsp; <label><input type="radio" name="field[is_show]" value="1" checked="checked" class="input_is_show" /> 是</label>
             </td>
         </tr>
         <tr>
             <th width="100">表单域类型：</th>
             <td>
-                <select name="field[input_type]" id="input_type">
+                <select name="input[type]" id="input_type">
                   <option value="text" selected>单行文本框(text)</option>
                   <option value="password">密码框(password)</option>
                   <option value="select">下拉框(select)</option>
@@ -140,14 +140,14 @@
         <tr class="input_text input_password">
             <th width="100">长度限制：</th>
             <td>
-                <input type="text" class="input" size="20" name="field[input_size]" value="20"/>（可以限制输入表单值的长度）
+                <input type="text" class="input" size="20" name="input[width]" value="20"/>（可以限制输入表单值的长度）
             </td>
         </tr>
         <!-- 单行文本框(text)的内容 -->
         <tr class="input_text">
             <th width="100">表单域默认值：</th>
             <td>
-                <input type="text" class="input" size="20" name="field[input_value]" value="default"/>（表单域默认的值）
+                <input type="text" class="input" size="20" name="input[value]" value="default" />（表单域默认的值）
             </td>
         </tr>
 
@@ -264,6 +264,7 @@
             </td>
         </tr>
     </table>
+    <input type="hidden" name="field[model_id]" value="{$model['id']}" />
 </form>
 <div class="commonBtnArea" >
     <button class="btn submit">提交</button>

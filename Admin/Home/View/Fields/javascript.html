@@ -17,14 +17,14 @@ $(function(){
         });
     });
 
-    $(".sub_linkfieldselect").hide();
+    $(".sub_relation_select").hide();
     $("#relation_model").change(function() {
         // 所有可选择的model
         var models = eval('{:json_encode($models)}');
         var selected = $(this).val();
 
         if (!selected) {
-            $(".sub_linkfieldselect").hide();
+            $(".sub_relation_select").hide();
             return ;
         }
 
@@ -38,14 +38,14 @@ $(function(){
                 }
             }
         }
-        $(".sub_linkfieldselect").show();
+        $(".sub_relation_select").show();
     });
 
     // 表单类型
     var dom = ['.input_text', '.input_password', '.input_select',
                '.input_radio', '.input_checkbox', '.input_textarea',
                '.input_editor', '.input_file', '.input_date',
-               '.input_linkfieldselect'];
+               '.input_relation_select'];
     var domLength = dom.length;
 
     toggle_input_field($("#input_type").val());

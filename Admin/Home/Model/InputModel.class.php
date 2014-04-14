@@ -14,7 +14,7 @@ class InputModel extends CommonModel {
         // 表单域标签不能为空
         array('label', 'require', '字段标签不能为空！', 1, 'regex', 3),
         // 表单域类型
-        array('type', 'text,password,select,radio,checkbox,textarea,editor,file,date,linkfieldselect',
+        array('type', 'text,password,select,radio,checkbox,textarea,editor,file,date,relation_select',
               '无效的表单域类型!', 1, 'in', 3),
         // 表单域长度
         array('width', 'isint', '表单域长度只能是整数!', 2, 'function', 3),

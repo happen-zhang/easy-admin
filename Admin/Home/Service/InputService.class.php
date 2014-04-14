@@ -49,7 +49,7 @@ class InputService extends CommonService {
 
         // 生成表单域html
         if (!isset($input['html']) || '' == $input['html']) {
-            $inputLogic->genHtml($input, $field['name']);
+            $inputLogic->genHtml($input, $field);
         }
 
         return $this->getD()->create($input);

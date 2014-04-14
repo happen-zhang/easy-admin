@@ -70,15 +70,16 @@ class InputLogic extends CommonLogic {
     /**
      * 生成表单域对应的html
      * @param  array  $input
-     * @param  string $fn    表单域name
+     * @param  array  $field 字段信息
      * @return string
      */
-    public function genHtml(&$input, $fn) {
+    public function genHtml(&$input, $field) {
         $width = $input['width'];
         $height = $input['height'];
         $value = $input['value'];
         $type = $input['type'];
         $remark = $input['remark'];
+        $fn = $field['name'];
         $class = 'input';
 
         $html = '';
@@ -101,9 +102,46 @@ class InputLogic extends CommonLogic {
             $html = genTextarea($fn, $value, $width, $height, $remark);
         } else if ('date' == $type) {
             $html = genDate($fn, $class);
+        } else if ('relation_select' == $type) {
+            $html = $this->genRelationSelect($field);
         }
 
         $input['html'] = $html;
+    }
+
+    /**
+     * 生成relation_select
+     * @param  array $field
+     * @return string
+     */
+    public function genRelationSelect($field) {
+        if (!isset($field['relation_model'])
+            || !($field['relation_field'])
+            || !isset($field['relation_value'])) {
+            return '';
+        }
+
+        $rv = $field['relation_value'];
+        $rf = $field['relation_field'];
+        $rm = $field['relation_model'];
+
+        // 得到需要关联的模型
+        $rm = M('Model')->field('tbl_name')->getById($rm);
+        if (empty($rm)) {
+            return '';
+        }
+
+        // 得到不带前缀的表名
+        $tblName = substr($rm['tbl_name'], strlen(C('DB_PREFIX')));
+        // 得到对应模型表中的关联字段
+        $opts = M($tblName)->field("{$rv},{$rf}")->select();
+
+        $list = array();
+        foreach ($opts as $key => $part) {
+            $list[$part[$rv]] = $part[$rf];
+        }
+
+        return genSelect($field['name'], $list);
     }
 
     /**
