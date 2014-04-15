@@ -69,7 +69,7 @@ class FieldService extends CommonService {
      * @return  array
      */
     public function checkFieldName($name, $modelId, $id) {
-        if (!$this->existModel($modelId)) {
+        if (!D('Model', 'Service')->existModel($modelId)) {
             return $this->errorResultReturn('字段对应的模型不存在');
         }
 
@@ -91,7 +91,7 @@ class FieldService extends CommonService {
      * @return  array
      */
     public function checkFieldComment($comment, $modelId, $id) {
-        if (!$this->existModel($modelId)) {
+        if (!D('Model', 'Service')->existModel($modelId)) {
             return $this->errorResultReturn('字段对应的模型不存在');
         }
 
@@ -118,7 +118,7 @@ class FieldService extends CommonService {
             return $result;
         }
 
-        if (!$this->existModel($field['model_id'])) {
+        if (!D('Model', 'Service')->existModel($field['model_id'])) {
             return $this->errorResultReturn('字段对应的模型不存在');
         }
 
@@ -200,12 +200,12 @@ class FieldService extends CommonService {
     }
 
     /**
-     * 检查模型是否存在
-     * @param      int $modeId
+     * 检查字段是否存在
+     * @param  int     $fieldId
      * @return boolean
      */
-    private function existModel($modeId) {
-        if (M('Model')->where("id = {$modeId}")->count() > 0) {
+    private function existField($fieldId) {
+        if ($this->getM()->where("id = {$fieldId}")->count() > 0) {
             return true;
         }
 

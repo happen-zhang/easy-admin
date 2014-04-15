@@ -59,14 +59,14 @@ class FieldsController extends CommonController {
             return $this->errorReturn('无效的操作');
         }
 
-        if (empty(M('Model')->getById($_POST['field']['model_id']))) {
-            return $this->error('您需要添加字段的模型不存在');
-        }
-
         $fieldService = D('Field', 'Service');
         $inputService = D('input', 'Service');
         $field = $_POST['field'];
         $input = $_POST['input'];
+
+        if (!D('Model', 'Service')->existModel($field['model_id'])) {
+            return $this->error('您需要添加字段的模型不存在');
+        }
 
         // field
         $result = $fieldService->checkField($field);
@@ -133,6 +133,11 @@ class FieldsController extends CommonController {
      * @return
      */
     public function edit() {
+        if (!isset($_GET['model_id'])) {
+            return $this->error('您需要添加字段的模型不存在');
+        }
+
+
         $this->display();
     }
 }

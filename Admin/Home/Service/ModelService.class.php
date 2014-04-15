@@ -248,6 +248,19 @@ class ModelService extends CommonService {
     }
 
     /**
+     * 检查模型是否存在
+     * @param      int $modeId
+     * @return boolean
+     */
+    public function existModel($modeId) {
+        if ($this->getM()->where("id = {$modeId}")->count() > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * 添加系统字段：id、created_at、updated_at
      * @param  int     $modelId  模型id
      * @return boolean 是否添加成功
