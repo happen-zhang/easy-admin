@@ -1,9 +1,9 @@
 <?php
-include '_pre.php';
-include 'Common/Common/function.php';
-include 'helper.php';
-include 'fill_function.php';
-include 'filter_function.php';
+include('_pre.php');
+include('Common/Common/function.php');
+include('helper.php');
+include('fill_function.php');
+include('filter_function.php');
 
 /**
  * 生成验证码
