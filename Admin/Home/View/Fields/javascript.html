@@ -1,4 +1,11 @@
 <script type="text/javascript">
+function submitForm(action) {
+    $(".submit").click(function(){
+        commonAjaxSubmit("__URL__/" + action);
+        return false;
+    });
+}
+
 $(function(){
     toggle_type_length("VARCHAR");
     $("#field_type").click(function() {
@@ -73,11 +80,11 @@ $(function(){
             $("#field_length").hide();
         } else if ("FLOAT" == type || "DOUBLE" == type) {
             $("#field_precision").show();
-            $("#field_length").hide();            
+            $("#field_length").hide();
         } else {
             $("#field_precision").hide();
-            $("#field_length").show();            
-        }        
+            $("#field_length").show();
+        }
     }
 
     function toggle_input_field(val) {
@@ -89,7 +96,7 @@ $(function(){
                 $(dom[i]).hide();
             }
         }
-        
+
         if (type == dom[0]) {
             $(dom[1]).show();
         } else if (type == dom[2] || type == dom[3] || type == dom[4]) {

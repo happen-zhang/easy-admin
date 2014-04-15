@@ -55,7 +55,13 @@ class FieldsController extends CommonController {
      * @return
      */
     public function create() {
-        // is post
+        if (!IS_POST || !isset($_POST['field']) || !isset($_POST['input'])) {
+            return $this->errorReturn('无效的操作');
+        }
+
+        if (empty(M('Model')->getById($_POST['field']['model_id']))) {
+            return $this->error('您需要添加字段的模型不存在');
+        }
 
         $fieldService = D('Field', 'Service');
         $inputService = D('input', 'Service');
@@ -65,8 +71,7 @@ class FieldsController extends CommonController {
         // field
         $result = $fieldService->checkField($field);
         if (!$result['status']) {
-            // return $this->errorReturn($result['data']['error']);
-            return var_dump($result['data']['error']);
+            return $this->errorReturn($result['data']['error']);
         }
 
         // input
@@ -74,8 +79,7 @@ class FieldsController extends CommonController {
         $input = $inputService->create($input, $field);
         $result = $inputService->checkInput($input);
         if (!$result['status']) {
-            // return $this->errorReturn($result['data']['error']);
-            return var_dump($result['data']['error']);
+            return $this->errorReturn($result['data']['error']);
         }
 
         // 插入field
@@ -91,7 +95,8 @@ class FieldsController extends CommonController {
             return $this->errorReturn('系统出错了!');
         }
 
-        var_dump($input);
+        $url = U('Models/show', array('id' => $field['model_id']));
+        return $this->successReturn('字段添加成功!', $url);
     }
 
     /**

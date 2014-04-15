@@ -1,4 +1,4 @@
-<form action="__URL__/create" method="POST">
+<form>
     <!-- 基本属性 -->
     <div class="Item hr">
         <div class="current">{$model['name']}（{$model['tbl_name']}）- 字段基本属性</div>
@@ -238,9 +238,14 @@
         </tr>
     </table>
     <input type="hidden" name="field[model_id]" value="{$model['id']}" />
+</form>
 <div class="commonBtnArea" >
     <button class="btn submit">提交</button>
 </div>
-</form>
 
 <include file="Fields:javascript" />
+<script type="text/javascript">
+$(function(){
+    submitForm("create");
+});
+</script>
