@@ -7,6 +7,16 @@ namespace Home\Model;
  * 字段模型
  */
 class FieldModel extends CommonModel {
+    // realtions
+    protected $_link = array(
+        // 一个field对应一个input
+        'input' => array(
+            'mapping_type' => self::HAS_ONE,
+            'class_name' => 'Input',
+            'foreign_key' => 'field_id',
+        )
+    );
+
     /**
      * name
      */

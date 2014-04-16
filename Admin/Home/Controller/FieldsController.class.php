@@ -105,7 +105,8 @@ class FieldsController extends CommonController {
      */
     public function checkFieldName() {
         $result = D('Field', 'Service')->checkFieldName($_GET['field_name'],
-                                                        $_GET['model_id']);
+                                                        $_GET['model_id'],
+                                                        $_GET['field_id']);
         if ($result['status']) {
             return $this->successReturn('字段名称可用');
         }
@@ -120,7 +121,8 @@ class FieldsController extends CommonController {
     public function checkFieldLabel() {
         $result = D('Field', 'Service')
                    ->checkFieldComment($_GET['field_label'],
-                                       $_GET['model_id']);
+                                       $_GET['model_id'],
+                                       $_GET['field_id']);
         if ($result['status']) {
             return $this->successReturn('字段标签可用');
         }
@@ -133,11 +135,28 @@ class FieldsController extends CommonController {
      * @return
      */
     public function edit() {
-        if (!isset($_GET['model_id'])) {
-            return $this->error('您需要添加字段的模型不存在');
+        if (!isset($_GET['model_id'])
+            || !isset($_GET['field_id'])
+            || !D('Model', 'Service')->existModel($_GET['model_id'])
+            || !D('Field', 'Service')->existField($_GET['field_id'])) {
+            return $this->error('您需要编辑的字段不存在');
         }
 
+        $model = M('Model')->getById($_GET['model_id']);
+        $field = D('Field')->relation(true)->getById($_GET['field_id']);
+        $input = $field['input'];
+        $models = D('Model', 'Service')->getAll();
+        $filters = get_registry_filter();
+        $fills = get_registry_fill();
 
+        D('Field', 'Logic')->resetLength($field);
+
+        $this->assign('models', $models);
+        $this->assign('model', $model);
+        $this->assign('field', $field);
+        $this->assign('input', $input);
+        $this->assign('filters', $filters);
+        $this->assign('fills', $fills);
         $this->display();
     }
 }

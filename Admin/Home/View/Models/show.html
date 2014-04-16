@@ -54,7 +54,7 @@
             <td><if condition="$field['is_unique'] eq 1">是<else/>否</if></td>
             <td><if condition="$field['is_index'] eq 1">是<else/>否</if></td>
             <td><if condition="$field['is_index'] eq 1">是<else/>否</if></td>
-            <td>[ <a href="">编辑</a> ] [ <a href="" name="orders_admins" class="del">删除</a> ]</td>
+            <td>[ <a href="{:U('Fields/edit', array('model_id' => $model['id'], 'field_id' => $field['id']))}">编辑</a> ] [ <a href="" name="orders_admins" class="del">删除</a> ]</td>
         </tr>
         </volist>
     </tbody>
