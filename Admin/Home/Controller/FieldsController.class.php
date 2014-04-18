@@ -159,4 +159,60 @@ class FieldsController extends CommonController {
         $this->assign('fills', $fills);
         $this->display();
     }
+
+    /**
+     * 更新字段
+     * @return
+     */
+    public function update() {
+        if (!IS_POST || !isset($_POST['field']) || !isset($_POST['input'])) {
+            // return $this->errorReturn('无效的操作');
+        }
+
+        $fieldService = D('Field', 'Service');
+        $inputService = D('input', 'Service');
+        $field = $_POST['field'];
+        $input = $_POST['input'];
+
+        if (!D('Model', 'Service')->existModel($field['model_id'])) {
+            var_dump('您需要修改字段的模型不存在');
+            // return $this->error('您需要修改字段的模型不存在');
+        }
+
+       if (!$fieldService->existField($field['id'])) {
+           var_dump('您需要修改的字段不存在');
+       }
+
+        // field
+        $result = $fieldService->checkField($field, $field['id']);
+        if (!$result['status']) {
+            var_dump($result['data']['error']);
+            // return $this->errorReturn($result['data']['error']);
+        }
+
+        // input
+        $input['label'] = $field['comment'];
+        $input = $inputService->create($input, $field);
+        $result = $inputService->checkInput($input);
+        if (!$result['status']) {
+            var_dump($result['data']['error']);
+            // return $this->errorReturn($result['data']['error']);
+        }
+
+        // 插入field
+        $result = $fieldService->update($field);
+        if (!$result['status']) {
+            return $this->errorReturn('系统出错了!');
+        }
+
+        // 插入input
+        // $input['field_id'] = $result['data']['id'];
+        // $result = $inputService->add($input);
+        // if (!$result['status']) {
+        //     return $this->errorReturn('系统出错了!');
+        // }
+
+        // $url = U('Models/show', array('id' => $field['model_id']));
+        // return $this->successReturn('字段更新成功!', $url);
+    }
 }

@@ -62,6 +62,72 @@ class FieldService extends CommonService {
     }
 
     /**
+     * 更新字段
+     * @param  array $field
+     * @return array
+     */
+    public function update($field) {
+        if (!$this->existField($field['id'])) {
+            return $this->resultReturn(false);
+        }
+
+        $Field = $this->getD();
+        $old = $Field->getById($field['id']);
+
+        // 得到数据表名称
+        $model = M('Model')->field('tbl_name')->getById($field['model_id']);
+
+        $Field->startTrans();
+        // 更新field
+        $field = $Field->create($field);
+        $status = $Field->save($field);
+
+        // name
+        if ($field['name'] != $old['name']
+            || $field['type'] != $old['type']
+            || $field['length'] != $old['length']) {
+
+            $acas = $Field->alterColumnAttr($model['tbl_name'],
+                                            $old['name'],
+                                            $field['name'],
+                                            $field['type'],
+                                            $field['length'],
+                                            $field['comment']);
+        }
+
+        // value
+        if ($field['value'] != $old['value']) {
+            $acvs = $Field->alterColumnValue($model['tbl_name'],
+                                             $field['name'],
+                                             $field['value']);
+        }
+
+        // index
+
+
+        if (false === $status
+            || false === $acas
+            || false === $acvs) {
+            $Field->alterColumnAttr($model['tbl_name'],
+                                    $field['name'],
+                                    $old['name'],
+                                    $old['type'],
+                                    $old['length'],
+                                    $old['comment']);
+            $Field->alterColumnValue($model['tbl_name'],
+                                     $old['name'],
+                                     $old['value']);
+
+            $Field->rollback();
+            return $this->resultReturn(false);
+        }
+
+        $Field->commit();
+
+        return $this->resultReturn(true);
+    }
+
+    /**
      * 检查字段名称是否可用
      * @param  string     $name 字段名称
      * @param     int $model_id 模型id

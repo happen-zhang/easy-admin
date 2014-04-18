@@ -1,4 +1,4 @@
-<form>
+<form action="{:U('Fields/update')}" method="post">
     <!-- 基本属性 -->
     <div class="Item hr">
         <div class="current">{$model['name']}（{$model['tbl_name']}）- 字段基本属性</div>
@@ -238,14 +238,15 @@
         </tr>
     </table>
     <input type="hidden" name="field[model_id]" value="{$model['id']}" />
-</form>
+    <input type="hidden" name="field[id]" value="{$field['id']}" />
 <div class="commonBtnArea" >
     <button class="btn submit">提交</button>
 </div>
+</form>
 
 <include file="Fields:javascript" />
 <script type="text/javascript">
-$(function(){
-    submitForm("update");
-});
+// $(function(){
+//     submitForm("update");
+// });
 </script>

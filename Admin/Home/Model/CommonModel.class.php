@@ -237,6 +237,67 @@ class CommonModel extends RelationModel {
     }
 
     /**
+     * 修改列基本属性
+     * @param  string $tn   数据表名
+     * @param  string $cn   需要修改的列名
+     * @param  string $ncn  新列名
+     * @param  string $type 列的类型
+     * @param  int    $len  字段长度
+     * @param  string $cm   字段注释
+     * @return mixed
+     */
+    public function alterColumnAttr($tn, $cn, $ncn, $type, $len, $cm) {
+        $sql = "ALTER TABLE {$tn} CHANGE COLUMN {$cn} {$ncn} {$type} ";
+
+        if (isset($len) && 0 !== $len) {
+            $sql .= "({$len}) ";
+        }
+
+        if (isset($cm)) {
+            $sql .= "COMMENT '{$cm}'";
+        }
+
+        return $this->query($sql);
+    }
+
+    /**
+     * 删除列默认值
+     * @param  string $tn   数据表名
+     * @param  string $cn   需要修改的列名
+     * @return mixed
+     */
+    public function dropColumnDefault($tn, $cn) {
+        $sql = "ALTER TABLE {$tn} ALTER COLUMN {$cn} DROP DEFAULT";
+
+        return $this->query($sql);
+    }
+
+    /**
+     * 设置列默认值
+     * @param  string $tn    数据表名
+     * @param  string $cn    需要修改的列名
+     * @param  string $value 字段默认值
+     * @return mixed
+     */
+    public function setColumnDefault($tn, $cn, $value) {
+        $sql = "ALTER TABLE {$tn} ALTER COLUMN {$cn} set DEFAULT '{$value}'";
+
+        return $this->query($sql);
+    }
+
+    /**
+     * 修改列默认值
+     * @param  string $tn    数据表名
+     * @param  string $cn    需要修改的列名
+     * @param  string $value 字段默认值
+     * @return boolean
+     */
+    public function alterColumnValue($tn, $cn, $value) {
+        return $this->dropColumnDefault($tn, $cn)
+               && $this->setColumnDefault($tn, $cn, $value);
+    }
+
+    /**
      * 从数据表中删除字段
      * @param string $tn      数据表名称
      * @param string $cn      字段名称
