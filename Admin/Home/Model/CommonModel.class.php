@@ -290,11 +290,12 @@ class CommonModel extends RelationModel {
      * @param  string $tn    数据表名
      * @param  string $cn    需要修改的列名
      * @param  string $value 字段默认值
-     * @return boolean
+     * @return mixed
      */
     public function alterColumnValue($tn, $cn, $value) {
-        return $this->dropColumnDefault($tn, $cn)
-               && $this->setColumnDefault($tn, $cn, $value);
+        $this->dropColumnDefault($tn, $cn);
+
+        return $this->setColumnDefault($tn, $cn, $value);
     }
 
     /**

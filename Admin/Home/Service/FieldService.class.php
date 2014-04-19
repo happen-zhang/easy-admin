@@ -86,8 +86,7 @@ class FieldService extends CommonService {
         if ($field['name'] != $old['name']
             || $field['type'] != $old['type']
             || $field['length'] != $old['length']) {
-
-            $acas = $Field->alterColumnAttr($model['tbl_name'],
+            $Field->alterColumnAttr($model['tbl_name'],
                                             $old['name'],
                                             $field['name'],
                                             $field['type'],
@@ -97,17 +96,39 @@ class FieldService extends CommonService {
 
         // value
         if ($field['value'] != $old['value']) {
-            $acvs = $Field->alterColumnValue($model['tbl_name'],
+            $Field->alterColumnValue($model['tbl_name'],
                                              $field['name'],
                                              $field['value']);
         }
 
-        // index
+        // 先删除索引，再进行添加
+        $oidxn = self::INDEX_PREFIX . $old['name'];
+        if ($field['is_index'] != $old['is_index']
+            && 0 == $field['is_index']) {
+            $Field->dropIndex($model['tbl_name'], $oidxn);
+        }
 
+        $ouniqn = self::UNIQUE_PREFIX . $old['name'];
+        if ($field['is_unique'] != $old['is_unique']
+            && 0 == $field['is_unique']) {
+            $Field->dropIndex($model['tbl_name'], $ouniqn);
+        }
 
-        if (false === $status
-            || false === $acas
-            || false === $acvs) {
+        $idxn = self::INDEX_PREFIX . $field['name'];
+        if ($field['is_index'] != $old['is_index']
+            && 1 == $field['is_index']) {
+            $Field->dropIndex($model['tbl_name'], $oidxn);
+            $Field->addIndex($model['tbl_name'], $field['name'], $idxn);
+        }
+
+        $uniqn = self::UNIQUE_PREFIX . $field['name'];
+        if ($field['is_unique'] != $old['is_unique']
+            && 1 == $field['is_unique']) {
+            $Field->addIndex($model['tbl_name'], $field['name'], $uniqn);
+            $Field->dropIndex($model['tbl_name'], $ouniqn);
+        }
+
+        if (false === $status) {
             $Field->alterColumnAttr($model['tbl_name'],
                                     $field['name'],
                                     $old['name'],
@@ -117,13 +138,20 @@ class FieldService extends CommonService {
             $Field->alterColumnValue($model['tbl_name'],
                                      $old['name'],
                                      $old['value']);
+            (1 == $old['is_index']) ?
+                  $Field->addIndex($model['tbl_name'], $old['name'], $oidxn)
+                  : $Field->dropIndex($model['tbl_name'], $idxn);
+
+            $ouniqn = self::UNIQUE_PREFIX . $old['name'];
+            (1 == $old['is_unique']) ?
+                  $Field->addUnique($model['tbl_name'], $old['name'], $ouniqn)
+                  : $Field->dropIndex($model['tbl_name'], $uniqn);
 
             $Field->rollback();
             return $this->resultReturn(false);
         }
 
         $Field->commit();
-
         return $this->resultReturn(true);
     }
 
