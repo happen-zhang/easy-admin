@@ -35,6 +35,18 @@ class InputService extends CommonService {
             return $this->resultReturn(false);
         }
 
+        // 更新html
+        $old = $Input->getById($input['id']);
+        $field = M('Field')->getById($input['field_id']);
+        if ($input['type'] != $old['type']
+            || $input['width'] != $old['width']
+            || $input['height'] != $old['height']
+            || $input['value'] != $old['value']
+            || $input['opt_value'] != $old['opt_value']
+            || false === strpos($input['html'], $field['name'])) {
+            D('Input', 'Logic')->genHtml($input, $field);
+        }
+
         $input = $Input->create($input);
         if (false === $Input->save($input)) {
             return $this->resultReturn(false);
