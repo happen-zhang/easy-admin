@@ -9,7 +9,7 @@
     <tr>
         <th width="100">数据表名：</th>
         <td>{$model['tbl_name']}</td>
-    </tr>        
+    </tr>
     <tr>
         <th width="100">是否为内部表：</th>
         <td><if condition="$model['is_inner'] == 1">是<else/>否</if></td>
@@ -53,7 +53,7 @@
             <td><if condition="$field['is_require'] eq 1">是<else/>否</if></td>
             <td><if condition="$field['is_unique'] eq 1">是<else/>否</if></td>
             <td><if condition="$field['is_index'] eq 1">是<else/>否</if></td>
-            <td><if condition="$field['is_index'] eq 1">是<else/>否</if></td>
+            <td><if condition="$field['is_system'] eq 1">是<else/>否</if></td>
             <td>[ <a href="{:U('Fields/edit', array('model_id' => $model['id'], 'field_id' => $field['id']))}">编辑</a> ] [ <a href="" name="orders_admins" class="del">删除</a> ]</td>
         </tr>
         </volist>
