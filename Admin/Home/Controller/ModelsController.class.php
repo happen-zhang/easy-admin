@@ -33,6 +33,21 @@ class ModelsController extends CommonController {
             $this->error('您需要查看的模型不存在');
         }
 
+        // 得到input的显示顺序
+        $orders = array();
+        foreach ($model['fields'] as $key => $field) {
+            $input = M('Input')->field('show_order')
+                               ->where("field_id={$field['id']}")
+                               ->find();
+            $model['fields'][$key]['show_order'] =
+                (is_null($input) || 0 == $input['show_order'])
+                    ? 0 : $input['show_order'];
+            $orders[$key] = $model['fields'][$key]['show_order'];
+        }
+
+        // field按show_order排序
+        array_multisort($orders, $model['fields']);
+
         $this->assign('model', $model);
         $this->display();
     }

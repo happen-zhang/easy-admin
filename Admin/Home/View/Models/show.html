@@ -34,6 +34,7 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
     <thead>
         <tr>
+            <td>表单域顺序</td>
             <td>字段名称</td>
             <td>字段标签</td>
             <td>字段类型</td>
@@ -47,6 +48,7 @@
     <tbody>
         <volist name="model['fields']" id="field">
         <tr align="center">
+            <td><if condition="0 == $field['show_order']">---<else/>{$field['show_order']}</if></td>
             <td>{$field['name']}</td>
             <td>{$field['comment']}</td>
             <td>{$field['type']}</td>

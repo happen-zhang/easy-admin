@@ -68,6 +68,10 @@ class FieldsController extends CommonController {
             return $this->error('您需要添加字段的模型不存在');
         }
 
+        if (0 == $input['is_show']) {
+            $input['show_order'] = 0;
+        }
+
         // field
         $result = $fieldService->checkField($field);
         if (!$result['status']) {
@@ -173,6 +177,10 @@ class FieldsController extends CommonController {
         $inputService = D('input', 'Service');
         $field = $_POST['field'];
         $input = $_POST['input'];
+
+        if (0 == $input['is_show']) {
+            $input['show_order'] = 0;
+        }
 
         if (!D('Model', 'Service')->existModel($field['model_id'])) {
             return $this->error('您需要修改字段的模型不存在');
