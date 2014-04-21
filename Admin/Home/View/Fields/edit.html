@@ -225,7 +225,7 @@
         <!-- 表单域替换 -->
         <tr>
             <th width="100">表单域HTML：</th>
-            <td><textarea id="html" rows="4" cols="68" name="input[html]" placeholder="请输入正确的表单域HTML代码，留空则系统自动成">{$input['html']}</textarea></td>
+            <td><textarea id="html" rows="4" cols="68" name="input[html]" placeholder="请输入正确的表单域HTML代码，留空则系统自动成">{:htmlspecialchars($input['html'])}</textarea></td>
             </td>
         </tr>
 
