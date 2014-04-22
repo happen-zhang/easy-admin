@@ -219,4 +219,30 @@ class FieldsController extends CommonController {
         $url = U('Models/show', array('id' => $field['model_id']));
         return $this->successReturn('字段更新成功!', $url);
     }
+
+    /**
+     * 删除字段
+     * @return
+     */
+    public function delete() {
+        if (!isset($_GET['model_id'])) {
+            return $this->errorReturn('需要删除字段所在的模型不存在!');
+        }
+
+        if (!isset($_GET['field_id'])) {
+            return $this->errorReturn('需要删除的字段不存在!');
+        }
+
+        if (!D('Model', 'Service')->hasField($_GET['model_id'],
+                                            $_GET['field_id'])) {
+            return $this->errorReturn('无效的操作');
+        }
+
+        $result = D('Field', 'Service')->delete($_GET['field_id']);
+        if (!$result['status']) {
+            return $this->errorReturn('系统出错了!');
+        }
+
+        return $this->successReturn('删除字段成功!');
+    }
 }

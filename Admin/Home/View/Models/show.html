@@ -56,7 +56,7 @@
             <td><if condition="$field['is_unique'] eq 1">是<else/>否</if></td>
             <td><if condition="$field['is_index'] eq 1">是<else/>否</if></td>
             <td><if condition="$field['is_system'] eq 1">是<else/>否</if></td>
-            <td><if condition="$field['is_system'] eq 0">[ <a href="{:U('Fields/edit', array('model_id' => $model['id'], 'field_id' => $field['id']))}">编辑</a> ] [ <a href="" name="orders_admins" class="del">删除</a> ]<else/>---</if></td>
+            <td><if condition="$field['is_system'] eq 0">[ <a href="{:U('Fields/edit', array('model_id' => $model['id'], 'field_id' => $field['id']))}">编辑</a> ] [ <a href="{:U('Fields/delete', array('model_id' => $model['id'], 'field_id' => $field['id']))}" name="{$field['name']}" class="del">删除</a> ]<else/>---</if></td>
         </tr>
         </volist>
     </tbody>
@@ -68,10 +68,23 @@
 <script type="text/javascript">
 $(function(){
     $(".del").click(function(){
-        var delLink=$(this).attr("link");
-        popup.confirm('你真的打算删除【<b>'+$(this).attr("name")+'</b>】吗?','温馨提示',function(action){
+        var url = $(this).attr("href");
+        popup.confirm('你真的打算删除 <b>'+$(this).attr("name")+'</b> 吗?','温馨提示',function(action){
             if(action == 'ok'){
-                top.window.location.href=delLink;
+                $.getJSON(url, function(json) {
+                    if (json.status) {
+                        popup.success(json.info);
+                        setTimeout(function(){
+                            popup.close("asyncbox_success");
+                            top.window.location.reload();
+                        }, 2000);
+                    } else {
+                        popup.error(json.info);
+                        setTimeout(function(){
+                            popup.close("asyncbox_error");
+                        }, 2000);
+                    }
+                });
             }
         });
         return false;

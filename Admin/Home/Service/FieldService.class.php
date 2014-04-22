@@ -156,6 +156,41 @@ class FieldService extends CommonService {
     }
 
     /**
+     * 删除字段
+     * @param  int   $id 需要删除字段的id
+     * @return array
+     */
+    public function delete($id) {
+        if (!isset($id) || !$this->existField($id)) {
+            return resultReturn(false);
+        }
+
+        $Field = $this->getD();
+        $old = $Field->getById($id);
+        $model = M('Model')->field('tbl_name')->getById($old['model_id']);
+
+        $Field->startTrans();
+        $status = $Field->where("id={$old['id']}")->delete();
+        // 删除表中的字段
+        $dcs = $Field->dropColumn($model['tbl_name'], $old['name']);
+
+        if (false === $status || false === $dcs) {
+            $Field->addColumn($model['tbl_name'],
+                              $old['name'],
+                              $old['type'],
+                              $old['length'],
+                              $old['value'],
+                              $old['comment']);
+
+            $Field->rollback();
+            return $this->resultReturn(false);
+        }
+
+        $Field->commit();
+        return $this->resultReturn(true);
+    }
+
+    /**
      * 检查字段名称是否可用
      * @param  string     $name 字段名称
      * @param     int $model_id 模型id

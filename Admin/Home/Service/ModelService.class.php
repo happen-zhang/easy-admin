@@ -261,6 +261,22 @@ class ModelService extends CommonService {
     }
 
     /**
+     * 检查模型是否存在指定的字段
+     * @param  int  $modelId 模型id
+     * @param  int  $fieldId 字段id
+     * @return boolean
+     */
+    public function hasField($modelId, $fieldId) {
+        $where = array('model_id' => $modelId, 'id' => $fieldId);
+
+        if (null == M('Field')->where($where)->find()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * 添加系统字段：id、created_at、updated_at
      * @param  int     $modelId  模型id
      * @return boolean 是否添加成功
