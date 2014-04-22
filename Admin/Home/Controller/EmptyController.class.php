@@ -20,6 +20,23 @@ class EmptyController extends CommonController {
      * @return
      */
     public function index() {
+        // 得到数据表名称
+        $tblName = C('DB_PREFIX') . strtolower(CONTROLLER_NAME);
+        $model = M('Model')->getByTblName($tblName);
+        if (!$model) {
+            return $this->error('系统出现错误了！');
+        }
+
+        // 得到数据表中的所有数据
+        $result = M(CONTROLLER_NAME)->select();
+        // 得到模型对应的非系统字段
+        $where = array('model_id' => $model['id'], 'is_system' => 0);
+        $fields = D('Field')->where($where)->select();
+
+        $this->assign('model', $model);
+        $this->assign('fields', $fields);
+        $this->assign('result', $result);
+        $this->assign('rows', count($result));
         $this->display('Default/index');
     }
 

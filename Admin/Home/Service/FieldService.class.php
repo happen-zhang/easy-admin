@@ -369,6 +369,17 @@ class FieldService extends CommonService {
         return false;
     }
 
+    /**
+     * 按modelId得到所有字段
+     * @param  int $modelId
+     * @return array
+     */
+    public function getByModelId($modelId, $field) {
+        return $this->getM()
+                    ->field($field)
+                    ->where("model_id={$modelId}")->select();
+    }
+
     protected function getModelName() {
         return 'Field';
     }

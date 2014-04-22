@@ -1,24 +1,32 @@
 <div class="Item hr">
-    <span class="fr">系统现有数据50行</span>
-    <div class="current">新闻模型列表</div>
+    <span class="fr">系统现有数据 <b>{$rows}</b> 行</span>
+    <div class="current"><b>{$model['name']}</b> 数据列表</div>
 </div>
 <form>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
         <thead>
             <tr>
-                <td>新闻标题</td>
-                <td>发布时间</td>
+                <td>表主键ID</td>
+                <volist name="fields" id="field">
+                <if condition="$field['is_system'] eq 0"><td>{$field['comment']}</td></if>
+                </volist>
+                <td>创建时间</td>
                 <td>更新时间</td>
                 <td>操作</td>
             </tr>
         </thead>
         <tbody>
+            <volist name="result" id="item">
             <tr align="center">
-                <td>Ruby代码块实现</td>
-                <td>2014-04-15</td>
-                <td>2014-04-15</td>
-                <td>[ <a href="{:U('Models/show', array('id' => $model['id']))}">查看</a> ] [ <a href="{:U('Models/edit', array('id' => $model['id']))}">编辑</a> ] [ <a href="javascript:void(0);" value="{:U('Models/delete', array('id' => $model['id']))}" name="{$model['name']}({$model['tbl_name']})" class="del">删除</a> ]</td>
+                <td>{$item['id']}</td>
+                <volist name="fields" id="field">
+                <td>{$item[$field['name']]}</td>
+                </volist>
+                <td>{:date('Y-m-d', $item['created_at'])}</td>
+                <td>{:date('Y-m-d', $item['updated_at'])}</td>
+                <td>[ <a href="{:U(CONTROLLER_NAME . '/show', array('id' => $item['id']))}">查看</a> ] [ <a href="{:U(CONTROLLER_NAME . '/edit', array('id' => $item['id']))}">编辑</a> ] [ <a href="javascript:void(0);" value="{:U(CONTROLLER_NAME . '/delete', array('id' => $item['id']))}" name="ID={$item['id']}" class="del">删除</a> ]</td>
             </tr>
+            </volist>
         </tbody>
     </table>
 </form>
@@ -31,7 +39,7 @@
 $(function(){
     $(".del").click(function(){
         var del_link = $(this).attr("value");
-        popup.confirm('你真的打算删除 ['+$(this).attr("name")+'] 吗?','温馨提示',function(action){
+        popup.confirm('你真的打算删除 '+$(this).attr("name")+' 的数据吗?','温馨提示',function(action){
             if(action == 'ok'){
                 $.getJSON(del_link, function(json){
                     if (json.status) {
@@ -49,7 +57,7 @@ $(function(){
                     setTimeout(function(){
                         top.window.location.reload();
                     },1000);
-                });                
+                });
             }
         });
 
