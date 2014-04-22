@@ -11,6 +11,7 @@ class EmptyController extends CommonController {
      * @return
      */
     public function _initialize() {
+        parent::_initialize();
         $this->ensureExistContoller();
     }
 
