@@ -7,12 +7,18 @@ namespace Home\Controller;
  */
 class EmptyController extends CommonController {
     /**
+     * 执行过滤
+     * @return
+     */
+    public function _initialize() {
+        $this->ensureExistContoller();
+    }
+
+    /**
      * 模型数据列表首页
      * @return
      */
     public function index() {
-        $this->ensureExistContoller();
-
         $this->display('Default/index');
     }
 
@@ -21,8 +27,6 @@ class EmptyController extends CommonController {
      * @return
      */
     public function add() {
-        $this->ensureExistContoller();
-
         $this->display('Default/add');
     }
 
@@ -31,8 +35,6 @@ class EmptyController extends CommonController {
      * @return
      */
     public function create() {
-        $this->ensureExistContoller();
-
         var_dump('craete');
     }
 
@@ -41,8 +43,6 @@ class EmptyController extends CommonController {
      * @return
      */
     public function edit() {
-        $this->ensureExistContoller();
-
         $this->display('Default/edit');
     }
 
@@ -51,8 +51,6 @@ class EmptyController extends CommonController {
      * @return
      */
     public function update() {
-        $this->ensureExistContoller();
-
          var_dump('update');
     }
 
