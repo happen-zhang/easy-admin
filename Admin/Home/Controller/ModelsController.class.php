@@ -84,7 +84,8 @@ class ModelsController extends CommonController {
             return $this->errorReturn('系统出错了');
         }
 
-        $this->successReturn("添加模型[{$model['name']}]成功", U('Models/index'));
+        $this->successReturn("添加模型 <b>{$model['name']}</b> 成功",
+                             U('Models/index'));
     }
 
     /**
@@ -199,6 +200,6 @@ class ModelsController extends CommonController {
             return $this->errorReturn('系统出错了');
         }
 
-        $this->successReturn("删除模型 [{$model['name']}] 成功");
+        $this->successReturn("删除模型 <b>{$model['name']}</b> 成功");
     }
 }
