@@ -19,10 +19,10 @@
             <th width="100">是否为内部表：</th>
             <td><label><input type="radio" name="model[is_inner]" value="0" checked="checked" /> 否</label> &nbsp; <label><input type="radio" name="model[is_inner]" value="1" /> 是</label> （内部表将不会被显示在菜单上）</td>
         </tr>
-        <tr>
+<!--         <tr>
             <th width="100">是否生成主键：</th>
             <td><label><input type="radio" name="model[has_pk]" value="0" /> 否</label> &nbsp; <label><input type="radio" name="model[has_pk]" value="1" checked="checked" /> 是</label> （如果生成主键则会在数据表中生成一个名为id自动递增的字段）</td>
-        </tr>
+        </tr> -->
         <tr>
         <th width="100">引擎类型：</th>
             <td>
@@ -40,6 +40,7 @@
             <th>模型描述：</th>
             <td><textarea id="content" class="input" style="height: 80px; width: 50%;" name="model[description]" placeholder="模型的注释，同时也会作为表的注释"></textarea></td>
         </tr>
+        <input type="hidden" name="model[has_pk]" value="1" />
     </table>
 </form>
 <div class="commonBtnArea" >
