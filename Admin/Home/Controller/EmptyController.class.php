@@ -49,6 +49,27 @@ class EmptyController extends CommonController {
      * @return
      */
     public function add() {
+        $model = M('Model')->getByTblName($this->getTblName(CONTROLLER_NAME));
+
+        // 得到模型对应的非系统字段
+        $where = array(
+            'model_id' => $model['id'],
+            'is_system' => 0
+        );
+        $fields = M('Field')->where($where)->select();
+
+        // 得到字段对应的表单域
+        $inputs = array();
+        $orders = array();
+        foreach ($fields as $key => $field) {
+            $inputs[$key] = M('Input')->getByFieldId($field['id']);
+            $orders[$key] = $inputs[$key]['show_order'];
+        }
+        // 排序表单域
+        array_multisort($orders, $inputs);
+
+        $this->assign('model', $model);
+        $this->assign('inputs', $inputs);
         $this->display('Default/add');
     }
 
@@ -93,5 +114,14 @@ class EmptyController extends CommonController {
         if (!array_key_exists(CONTROLLER_NAME, $menu)) {
             return $this->_empty();
         }
+    }
+
+    /**
+     * 得到数据表名称
+     * @param  string $ctrlName
+     * @return string
+     */
+    private function getTblName($ctrlName) {
+        return C('DB_PREFIX') . strtolower($ctrlName);
     }
 }
