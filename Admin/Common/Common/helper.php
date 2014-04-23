@@ -201,7 +201,7 @@ function genDate($name, $class = '') {
  * @param  string $class       css类
  * @return string
  */
-function genTextarea($name, $value, $rows, $cols, $placeholder = '', $class) {
+function genTextarea($name, $value, $cols, $rows, $placeholder = '', $class) {
     $html = "<textarea name='{$name}' class='{$class}' "
             . "rows='{$rows}' cols='{$cols}' ";
     if (isset($value) && !empty($value)) {

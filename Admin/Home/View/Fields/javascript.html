@@ -11,9 +11,16 @@ $(function(){
     $("#auto_fill option[value='{$field['auto_fill']}']").attr('selected', true);
     $("#field_type option[value='{$field['type']}']").attr('selected', true);
     toggle_type_length('{$field['type']}' || "VARCHAR");
-    $("#field_type").click(function() {
+    $("#field_type").change(function() {
         toggle_type_length($(this).val());
+
+        if (-1 == $(this).val().indexOf('TEXT')) {
+            $("#field_value").show();
+        } else {
+            $("#field_value").hide();
+        }
     });
+    $("#field_type").trigger("change");
 
     $("#check_field_name").click(function(){
         $.getJSON("__URL__/checkFieldName", { field_name: $("#field_name").val(), model_id: "{$model['id']}", field_id: "{$field['id']}" }, function(json){

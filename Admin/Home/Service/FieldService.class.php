@@ -322,6 +322,11 @@ class FieldService extends CommonService {
                     return $this->errorResultReturn('浮点型默认值只能为有效的数字');
                 }
                 break ;
+
+            default:
+                // mysql支持TEXT长度和默认值
+                unset($field['length']);
+                unset($field['value']);
         }
 
         unset($field['precision']);
