@@ -30,7 +30,11 @@ class EmptyController extends CommonController {
         // 得到数据表中的所有数据
         $result = M(CONTROLLER_NAME)->select();
         // 得到模型对应的非系统字段
-        $where = array('model_id' => $model['id'], 'is_system' => 0);
+        $where = array(
+            'model_id' => $model['id'],
+            'is_system' => 0,
+            'is_list_show' => 1
+        );
         $fields = D('Field')->where($where)->select();
 
         $this->assign('model', $model);
