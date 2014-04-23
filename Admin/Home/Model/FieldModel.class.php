@@ -59,6 +59,8 @@ class FieldModel extends CommonModel {
         array('is_unique', '0, 1', '字段唯一值只能为0或1', 1, 'in', 1),
         // 是否索引
         array('is_index', '0, 1', '字段索引值只能为0或1', 1, 'in', 1),
+        // 是否列表显示
+        array('is_list_show', '0, 1', '列表显示值只能为0或1', 1, 'in', 1)
     );
 
     protected $_auto = array(

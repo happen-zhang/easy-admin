@@ -78,6 +78,12 @@
             </td>
         </tr>
         <tr>
+            <th width="100">列表中显示：</th>
+            <td>
+                <label><input type="radio" name="field[is_list_show]" value="0" <if condition="$field['is_list_show'] eq 0">checked="checked"</if> /> 否</label> &nbsp; <label><input type="radio" name="field[is_list_show]" value="1" <if condition="$field['is_list_show'] eq 1">checked="checked"</if> /> 是</label> （设置成"是"，则将会在模型数据管理列表中显示出该字段的数据）
+            </td>
+        </tr>
+        <tr>
             <th width="100">自动过滤函数：</th>
             <td>
                 <select name="field[auto_filter]" id="auto_filter" width="180">
