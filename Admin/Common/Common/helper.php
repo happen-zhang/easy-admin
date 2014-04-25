@@ -183,7 +183,7 @@ function genFile($name, $class = '') {
  * @return string
  */
 function genDate($name, $class = '') {
-    $src = __APP__ . '/../Public/javascripts/datepicker/images2/cal.gif';
+    $src = __APP__ . '/../Public/javascripts/admin/datepicker/images2/cal.gif';
     $id = rand_code(8);
 
     return "<input type='text' id='{$id}' class='{$class}' />"

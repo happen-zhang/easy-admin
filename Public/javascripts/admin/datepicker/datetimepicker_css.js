@@ -62,7 +62,7 @@ var ThemeBg = "";//Background image of Calendar window.
 var PrecedeZero = true;//Preceding zero [true|false]
 var MondayFirstDay = true;//true:Use Monday as first day; false:Sunday as first day. [true|false]  //added in version 1.7
 var UseImageFiles = true;//Use image files with "arrows" and "close" button
-var imageFilesPath = "../Public/javascripts/datepicker/images2/";
+var imageFilesPath = "../Public/javascripts/admin/datepicker/images2/";
 //Configurable parameters end
 
 //use the Month and Weekday in your preferred language.
