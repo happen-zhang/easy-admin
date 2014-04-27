@@ -71,8 +71,12 @@ class InstallController extends CommonController {
     public function create() {
         $db = $_POST['db'];
         $db = array_filter($db, 'trim');
-        $db['prefix'] = $db['prefix']== '' ? C('DEFAULT_TABLE_PREFIX')
-                                           : $db['prefix'];
+        $db['prefix'] = $db['prefix'] == '' ? C('DEFAULT_TABLE_PREFIX')
+                                            : $db['prefix'];
+        // 添加'_'作为分割
+        if (false === strpos($db['prefix'], '_')) {
+            $db['prefix'] .= '_';
+        }
         $this->tablePrefix = $db['prefix'];
 
         // 当前已执行到的sql文件位置
