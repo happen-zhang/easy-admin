@@ -89,7 +89,7 @@ class InputLogic extends CommonLogic {
         $value = $input['value'];
         $type = $input['type'];
         $remark = $input['remark'];
-        $fn = $field['name'];
+        $fn = "{$field['model']}[{$field['name']}]";
         $class = 'input';
 
         $html = '';

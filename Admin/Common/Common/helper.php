@@ -186,7 +186,7 @@ function genDate($name, $class = '') {
     $src = __APP__ . '/../Public/javascripts/admin/datepicker/images2/cal.gif';
     $id = rand_code(8);
 
-    return "<input type='text' id='{$id}' class='{$class}' />"
+    return "<input type='text' id='{$id}' class='{$class}' name='{$name}' />"
            . "<img src='{$src}' style='cursor:pointer; margin-left:2px' "
            . "onclick='javascript:NewCssCal(\"{$id}\", \"YYYYMMDD\")'/>";
 }

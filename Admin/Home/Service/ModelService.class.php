@@ -366,7 +366,7 @@ class ModelService extends CommonService {
      * @param  string $tblName
      * @return string
      */
-    private function getCtrlName($tblName) {
+    public function getCtrlName($tblName) {
         // 去掉表前缀
         $tblName = substr($tblName, strpos($tblName, '_') + 1);
         $tblName = str_replace('_', ' ', $tblName);

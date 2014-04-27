@@ -79,6 +79,10 @@ class InputService extends CommonService {
      */
     public function create(&$input, $field) {
         $inputLogic = D('Input', 'Logic');
+        $model = M('Model')->field('tbl_name')->getById($field['model_id']);
+        // 得到小写的模型名
+        $field['model'] = strtolower(D('Model', 'Service')
+                                      ->getCtrlName($model['tbl_name']));
 
         // 处理表单域长度
         $inputLogic->genSize($input);
