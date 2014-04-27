@@ -25,6 +25,7 @@ return array(
         'Common/Conf',
         'Cache',
         'Data',
+        'Public',
         'Install'
     ),
 );
