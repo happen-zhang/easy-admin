@@ -1,3 +1,6 @@
+<script type="text/javascript" src="__PUBLIC__/javascripts/admin/kindeditor/kindeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/javascripts/admin/kindeditor/lang/zh_CN.js"></script>
+
 <div class="Item hr">
     <div class="current">添加数据</div>
 </div>
@@ -6,7 +9,7 @@
        <volist name="inputs" id="input">
         <tr>
             <th width="100">{$input['label']}：</th>
-            <td>{$input['html']}<php>if ($input['remark'] != '' && $input['type'] != 'textarea') { echo "（$input[remark]）"; }</php></td>
+            <td>{$input['html']}<php>if ($input['remark'] != '' && $input['type'] != 'textarea' && $input['type'] != 'editor') { echo "（$input[remark]）"; }</php></td>
         </tr>
         </volist>
     </table>

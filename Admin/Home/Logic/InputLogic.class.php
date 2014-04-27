@@ -12,14 +12,24 @@ class InputLogic extends CommonLogic {
     const INPUT_SIZE = 20;
 
     /**
-     * editor、textarea
+     * textarea
      */
     const INPUT_ROWS = 4;
 
     /**
-     * editor、textarea
+     * textarea
      */
     const INPUT_COLS = 68;
+
+    /**
+     * editor
+     */
+    const EDITOR_ROWS = 12;
+
+    /**
+     * editor
+     */
+    const EDITOR_COLS = 84;
 
     /**
      * file
@@ -50,8 +60,8 @@ class InputLogic extends CommonLogic {
             case 'editor':
                 $input['width'] = $input['width']['editor'];
                 $input['height'] = $input['height']['editor'];
-                $this->resetSize($input['width'], self::INPUT_COLS);
-                $this->resetSize($input['height'], self::INPUT_ROWS);
+                $this->resetSize($input['width'], self::EDITOR_COLS);
+                $this->resetSize($input['height'], self::EDITOR_ROWS);
                 break ;
 
             case 'file':
@@ -104,6 +114,9 @@ class InputLogic extends CommonLogic {
             $html = genDate($fn, $class);
         } else if ('relation_select' == $type) {
             $html = $this->genRelationSelect($field);
+        } else if ('editor' == $type) {
+            $html = genEditor($fn, empty($value) ? $remark : $value,
+                              $width, $height, $input['editor']);
         }
 
         $input['html'] = $html;

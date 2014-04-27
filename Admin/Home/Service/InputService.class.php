@@ -43,6 +43,7 @@ class InputService extends CommonService {
             || $input['height'] != $old['height']
             || $input['value'] != $old['value']
             || $input['opt_value'] != $old['opt_value']
+            || $input['editor'] != $old['editor']
             || false === strpos($input['html'], $field['name'])) {
             D('Input', 'Logic')->genHtml($input, $field);
         }

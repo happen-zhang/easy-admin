@@ -21,7 +21,7 @@ class InputModel extends CommonModel {
         // 表单域宽度
         array('height', 'isint', '表单域宽度只能是整数!', 2, 'function', 3),
         // 编辑器类型
-        array('editor', 'markdown,fulltext', '编辑器只能为markdown或fulltext',
+        array('editor', 'all,simple', '编辑器只能为"all"或"simple"',
               2, 'in', 3),
         // html
         array('html', 'require', 'html代码不能为空!', 1, 'regex', 3),

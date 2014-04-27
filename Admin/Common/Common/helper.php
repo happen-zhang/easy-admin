@@ -205,7 +205,7 @@ function genTextarea($name, $value, $cols, $rows, $placeholder = '', $class) {
     $html = "<textarea name='{$name}' class='{$class}' "
             . "rows='{$rows}' cols='{$cols}' ";
     if (isset($value) && !empty($value)) {
-        $html .= "class='{$class}'>{$value}</textarea>";
+        $html .= ">{$value}</textarea>";
     } else if ('' != $placeholder) {
         $html .= "placeholder='{$placeholder}'></textarea>";
     } else {
@@ -213,6 +213,35 @@ function genTextarea($name, $value, $cols, $rows, $placeholder = '', $class) {
     }
 
     return $html;
+}
+
+/**
+ * 生成编辑器
+ * @param  string $name   文本域name
+ * @param  string $value  文本域value
+ * @param  int    $rows   文本域rows
+ * @param  int    $cols   文本域cols
+ * @param  string $type   编辑器类型
+ * @return string
+ */
+function genEditor($name, $value, $cols, $rows, $type = 'simple') {
+    $id = rand_code(8);
+    $html = "<textarea name='{$name}' id='{$id}' "
+            . "rows='{$rows}' cols='{$cols}' ";
+
+    if ('simple' == $type) {
+        $js = "<script type='text/javascript'>$(function(){KindEditor.ready(function(K) {K.create('#{$id}',{resizeType:1,items:['fontname','fontsize','|','forecolor','hilitecolor','bold','italic','underline','removeformat','|','justifyleft','justifycenter','justifyright','insertorderedlist','insertunorderedlist','|','emoticons','image','link'],afterBlur:function(){this.sync();}});});});</script>";
+    } else {
+        $js = "<script type='text/javascript'>$(function(){KindEditor.ready(function(K) {K.create('#{$id}',{resizeType:1,afterBlur:function(){this.sync();}});});});</script>";
+    }
+
+    if (isset($value) && !empty($value)) {
+        $html .= ">{$value}</textarea>";
+    } else {
+        $html .= "></textarea>";
+    }
+
+    return $html . $js;
 }
 
 /**
