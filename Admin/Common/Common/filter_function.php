@@ -86,7 +86,7 @@ if (!isset($customFilter) || !is_array($customFilter)) {
 $filter = array(
     'sql_injection',
     'strip_sql_injection',
-    'filterSpecialChars'
+    'filter_special_chars'
 );
 
 fast_cache(FILTER_NAME,
