@@ -327,6 +327,8 @@ class FieldService extends CommonService {
                 // mysql支持TEXT长度和默认值
                 unset($field['length']);
                 unset($field['value']);
+                $field['is_index'] = 0;
+                $field['is_unique'] = 0;
         }
 
         unset($field['precision']);

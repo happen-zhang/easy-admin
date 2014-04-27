@@ -59,13 +59,13 @@
         <div class="current">{$model['name']}（{$model['tbl_name']}）- 字段特殊属性</div>
     </div>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
-        <tr>
+        <tr class="untext_index">
             <th width="100">添加索引：</th>
             <td>
                 <label><input type="radio" name="field[is_index]" value="0" <if condition="$field['is_index'] eq 0">checked="checked"</if> /> 否</label> &nbsp; <label><input type="radio" name="field[is_index]" value="1" <if condition="$field['is_index'] eq 1">checked="checked"</if>/> 是</label>
             </td>
         </tr>
-        <tr>
+        <tr class="untext_index">
             <th width="100">是否唯一：</th>
             <td>
                 <label><input type="radio" name="field[is_unique]" value="0" <if condition="$field['is_unique'] eq 0">checked="checked"</if> /> 否</label> &nbsp; <label><input type="radio" name="field[is_unique]" value="1" <if condition="$field['is_unique'] eq 1">checked="checked"</if> /> 是</label>

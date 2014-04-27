@@ -16,8 +16,10 @@ $(function(){
 
         if (-1 == $(this).val().indexOf('TEXT')) {
             $("#field_value").show();
+            $('.untext_index').show();
         } else {
             $("#field_value").hide();
+            $('.untext_index').hide();
         }
     });
     $("#field_type").trigger("change");
