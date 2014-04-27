@@ -54,7 +54,7 @@ class EmptyController extends CommonController {
         // 得到模型对应的非系统字段
         $where = array(
             'model_id' => $model['id'],
-            'is_system' => 0
+            'is_system' => 0,
         );
         $fields = M('Field')->where($where)->select();
 
@@ -62,8 +62,11 @@ class EmptyController extends CommonController {
         $inputs = array();
         $orders = array();
         foreach ($fields as $key => $field) {
-            $inputs[$key] = M('Input')->getByFieldId($field['id']);
-            $orders[$key] = $inputs[$key]['show_order'];
+            $input = M('Input')->getByFieldId($field['id']);
+            if ($input['is_show']) {
+                $inputs[$key] = $input;
+                $orders[$key] = $inputs[$key]['show_order'];
+            }
         }
         // 排序表单域
         array_multisort($orders, $inputs);
