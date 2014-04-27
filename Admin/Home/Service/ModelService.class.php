@@ -76,7 +76,9 @@ class ModelService extends CommonService {
         $addFieldStatus = $this->addSystemFields($Model->getLastInsID());
 
         // 生成菜单项
-        $this->addMenuItem($model);
+        if (isset($model['is_inner']) && 0 == $model['is_inner']) {
+            $this->addMenuItem($model);
+        }
 
         if (false === $addStatus
             || false === $createTblStatus
@@ -117,8 +119,9 @@ class ModelService extends CommonService {
                                                     $model['description']);
         }
         // 更新菜单
-        if ($model['menu_name'] != $old['menu_name']
-            || $model['tbl_name'] != $old['tbl_name']) {
+        if (($model['menu_name'] != $old['menu_name']
+            || $model['tbl_name'] != $old['tbl_name'])
+            && 0 == $old['is_inner']) {
             $this->replaceMenuItem($model, $old);
         }
 
@@ -127,12 +130,14 @@ class ModelService extends CommonService {
             || false === $utcStatus) {
             $Model->rollback();
             // 撤回更新
-            $this->replaceMenuItem($old, $model);
+            if (0 == $old['is_inner']) {
+                $this->replaceMenuItem($old, $model);
+            }
             return $this->resultReturn(false);
         }
         $Model->commit();
 
-        return $this->resultReturn(true);        
+        return $this->resultReturn(true);
     }
 
     /**
@@ -159,7 +164,9 @@ class ModelService extends CommonService {
         if (false === $dropStatus || false === $delStatus) {
             $Modle->rollback();
             // 还原菜单项
-            $this->addMenuItem($model);
+            if (0 == $model['is_inner']) {
+                $this->addMenuItem($model);
+            }
             return $this->resultReturn(false);
         }
 
@@ -366,7 +373,7 @@ class ModelService extends CommonService {
         // 单词首字母转为大写
         $tblName = ucwords($tblName);
 
-        return str_replace(' ', '', $tblName);    
+        return str_replace(' ', '', $tblName);
     }
 
     protected function getModelName() {
