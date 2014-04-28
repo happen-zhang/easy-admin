@@ -45,6 +45,7 @@ class InputService extends CommonService {
             || $input['opt_value'] != $old['opt_value']
             || $input['editor'] != $old['editor']
             || false === strpos($input['html'], $field['name'])) {
+            $field['model'] = $this->getInoutModelName($field['model_id']);
             D('Input', 'Logic')->genHtml($input, $field);
         }
 
@@ -79,15 +80,12 @@ class InputService extends CommonService {
      */
     public function create(&$input, $field) {
         $inputLogic = D('Input', 'Logic');
-        $model = M('Model')->field('tbl_name')->getById($field['model_id']);
-        // 得到小写的模型名
-        $field['model'] = strtolower(D('Model', 'Service')
-                                      ->getCtrlName($model['tbl_name']));
 
         // 处理表单域长度
         $inputLogic->genSize($input);
 
         // 生成表单域html
+        $field['model'] = $this->getInoutModelName($field['model_id']);
         if (!isset($input['html']) || '' == $input['html']) {
             $inputLogic->genHtml($input, $field);
         }
@@ -106,6 +104,18 @@ class InputService extends CommonService {
         }
 
         return false;
+    }
+
+    /**
+     * 得到模型小写作为表单域的name
+     * @param  int    $modelId 模型的id
+     * @return string
+     */
+    protected function getInoutModelName($modelId) {
+        $model = M('Model')->field('tbl_name')->getById($modelId);
+        $ctrlName = D('Model', 'Service')->getCtrlName($model['tbl_name']);
+
+        return strtolower($ctrlName);
     }
 
     protected function getModelName() {
