@@ -171,8 +171,11 @@ class InputLogic extends CommonLogic {
         $list = array_filter(explode("\n", $optValue));
 
         foreach ($list as $key => $item) {
-            $part = array_filter(explode(':', $item));
-            if (isset($part[2]) && 'default' == $part[2]) {
+            $part = array_filter(explode(':', $item), function($part) {
+                return !(empty($part) && 0 !== $part && '0' !== $part);
+            });
+
+            if (isset($part[2]) && 'default' == strtolower($part[2])) {
                 if ($mutilSelectd) {
                     $selected .= "{$key},";
                 } else {
