@@ -89,8 +89,13 @@ class InputLogic extends CommonLogic {
         $value = $input['value'];
         $type = $input['type'];
         $remark = $input['remark'];
-        $fn = "{$field['model']}[{$field['name']}]";
         $class = 'input';
+
+        if ('file' == $type) {
+            $fn = "{$field['name']}";
+        } else {
+            $fn = "{$field['model']}[{$field['name']}]";
+        }
 
         $html = '';
         if ('text' == $type) {
