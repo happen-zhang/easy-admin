@@ -45,7 +45,7 @@ class InputService extends CommonService {
             || $input['opt_value'] != $old['opt_value']
             || $input['editor'] != $old['editor']
             || false === strpos($input['html'], $field['name'])) {
-            $field['model'] = $this->getInoutModelName($field['model_id']);
+            $field['model'] = $this->getInputModelName($field['model_id']);
             D('Input', 'Logic')->genHtml($input, $field);
         }
 
@@ -85,7 +85,7 @@ class InputService extends CommonService {
         $inputLogic->genSize($input);
 
         // 生成表单域html
-        $field['model'] = $this->getInoutModelName($field['model_id']);
+        $field['model'] = $this->getInputModelName($field['model_id']);
         if (!isset($input['html']) || '' == $input['html']) {
             $inputLogic->genHtml($input, $field);
         }
@@ -111,7 +111,7 @@ class InputService extends CommonService {
      * @param  int    $modelId 模型的id
      * @return string
      */
-    protected function getInoutModelName($modelId) {
+    protected function getInputModelName($modelId) {
         $model = M('Model')->field('tbl_name')->getById($modelId);
         $ctrlName = D('Model', 'Service')->getCtrlName($model['tbl_name']);
 
