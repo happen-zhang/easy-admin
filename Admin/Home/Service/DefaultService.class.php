@@ -18,6 +18,7 @@ class DefaultService extends CommonService {
 
         foreach ($fields as $field) {
             $fn = $field['name'];
+            $fm = $field['comment'];
 
             // 是否文件类型的表单域
             if (D('Input', 'Service')->isFileInput($field['input']['type'])) {
@@ -38,7 +39,8 @@ class DefaultService extends CommonService {
                     && !$this->isEmpty($_FILES[$fn]['tmp_name'])
                     && is_array($uploadInfo['info'][0])) {
                     // 处理真正上传过的file表单域
-                    if (convMb2B($field['input']['width']) < $uploadInfo['info'][0]['size']) {
+                    $size = $uploadInfo['info'][0]['size'];
+                    if (convMb2B($field['input']['width']) < $size) {
                         // 删除已上传的文件
                         foreach ($uploadInfo['info'] as $upload) {
                             // 删除文件
@@ -46,7 +48,7 @@ class DefaultService extends CommonService {
                         }
 
                         // 超过限制大小
-                        $msg ="{$fn}文件大小不能超过{$field['input']['width']}M！";
+                        $msg ="{$fm}文件大小不能超过{$field['input']['width']}M！";
                         return $this->errorResultReturn($msg);
                     }
 
@@ -55,12 +57,46 @@ class DefaultService extends CommonService {
                 }
             }
 
+            // 检查field[type]约束
+            if (!empty($data[$fn])) {
+                $result = $this->checkTypeContraint($field['type'],$data[$fn]);
+                if (!$result['status'] && !empty($result['data'])) {
+                    $msg = "{$fm}为{$field['type']}类型";
+                    if ('int' == $result['data']) {
+                        $msg .= "，值只能为整数！";
+                    } else if ('double' == $reuslt['data']) {
+                        $msg .= "，值只能为浮点数！";
+                    }
+
+                    return $this->errorResultReturn($msg);
+                }
+            }
+
+            // 日期型格式
+            if ('date' == $field['input']['type'] && !empty($data[$fn])) {
+                $result = $this->checkTypeContraint($field['input']['type'],
+                                                    $data[$fn]);
+                if (!$result['status']) {
+                    $msg = "{$fm}日期格式不正确！";
+                    return $this->errorResultReturn($msg);
+                }
+            }
+
+            // 字符长度
+            if (('CHAR' == $field['type'] || 'VARCHAR' == $field['type'])
+                && !empty($data[$fn])
+                && strlen($data[$fn]) > $field['length']) {
+
+                $msg = "{$fm}长度只能小于{$field['length']}个字符！";
+                return $this->errorResultReturn($msg);
+            }
+
             // 字段必填
             if (1 != $field['is_system']
                 && 1 == $field['is_require']
                 && empty($field['auto_fill'])
                 && (!isset($data[$fn]) || empty($data[$fn]))) {
-                return $this->errorResultReturn("{$field['comment']}必需填写！");
+                return $this->errorResultReturn("{$fm}必需填写！");
             }
 
             // 字段唯一
@@ -68,7 +104,7 @@ class DefaultService extends CommonService {
                 && 1 == $field['is_unique']
                 && !empty($data[$fn])
                 && !$this->isRowUnique($ctrlName, $fn, $data[$fn])) {
-                return $this->errorResultReturn("{$field['comment']}已经存在！");
+                return $this->errorResultReturn("{$fm}已经存在！");
             }
 
             // 系统字段 auto_fill 自动填充
@@ -87,7 +123,7 @@ class DefaultService extends CommonService {
             }
 
             // 自定义字段 auto_fill 自动填充
-            if (!empty($field['auto_fill'])) {
+            if (!empty($field['auto_fill']) && empty($data[$fn])) {
                 if (!function_exists($field['auto_fill'])) {
                     $msg = "填充函数{$field['auto_fill']}不存在，请先进行注册函数！";
                     return $this->errorResultReturn($msg);
@@ -109,6 +145,40 @@ class DefaultService extends CommonService {
     public function add(array $data, $ctrlName) {
         if (false === M($ctrlName)->add($data)) {
             return $this->resultReturn(false);
+        }
+
+        return $this->resultReturn(true);
+    }
+
+    /**
+     * 检查类型约束
+     * @param  string $type  需要约束的类型
+     * @param  string $value 需要约束的值
+     * @return mixed
+     */
+    public function checkTypeContraint($type, $value) {
+        switch ($type) {
+            case 'TINYINT':
+            case 'SMALLINT':
+            case 'INT':
+            case 'BIGINT':
+                if (!isint($value)) {
+                    return $this->resultReturn(false, 'int');
+                }
+                break;
+
+            case 'FLOAT':
+            case 'DOUBLE':
+                if (!isdouble($value)) {
+                    return $this->resultReturn(false, 'double');
+                }
+                break;
+
+            case 'date':
+                if (!is_valid_date($value)) {
+                    return $this->resultReturn(false, 'date');
+                }
+                break;
         }
 
         return $this->resultReturn(true);

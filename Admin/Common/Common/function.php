@@ -218,3 +218,33 @@ function hasSpecialChar($subject) {
 function isint($var) {
     return (preg_match('/^\d*$/', $var) == 1);
 }
+
+/**
+ * 是否浮点型
+ * @param  mixed   $var 需要检查的值
+ * @return boolean
+ */
+function isdouble($var) {
+    return (preg_match('/^[+-]?(\d*\.\d+([eE]?[+-]?\d+)?|\d+[eE][+-]?\d+)$/', $var));
+}
+
+/**
+ * 检验是否有效日期
+ * @param  string  $date    需要检验的日期
+ * @param  array   $formats 有效的日期格式
+ * @return boolean
+ */
+function is_valid_date($date, $formats = array("Y-m-d", "Y/m/d")) {
+    $unixtime = strtotime($date);
+    if (!$unixtime) {
+        return false;
+    }
+
+    foreach ($formats as $format) {
+        if (date($format, $unixtime) == $date) {
+            return true;
+        }
+    }
+
+    return false;
+}
