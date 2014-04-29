@@ -22,8 +22,8 @@
                 <volist name="fields" id="field">
                 <td>{$item[$field['name']]}</td>
                 </volist>
-                <td>{:date('Y-m-d', $item['created_at'])}</td>
-                <td>{:date('Y-m-d', $item['updated_at'])}</td>
+                <td>{:date('Y-m-d H:i:s', $item['created_at'])}</td>
+                <td>{:date('Y-m-d H:i:s', $item['updated_at'])}</td>
                 <td>[ <a href="{:U(CONTROLLER_NAME . '/show', array('id' => $item['id']))}">查看</a> ] [ <a href="{:U(CONTROLLER_NAME . '/edit', array('id' => $item['id']))}">编辑</a> ] [ <a href="javascript:void(0);" value="{:U(CONTROLLER_NAME . '/delete', array('id' => $item['id']))}" name="ID={$item['id']}" class="del">删除</a> ]</td>
             </tr>
             </volist>

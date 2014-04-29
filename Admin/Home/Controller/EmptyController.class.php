@@ -7,6 +7,12 @@ namespace Home\Controller;
  */
 class EmptyController extends CommonController {
     /**
+     * 需要拆分列表值的表单域类型
+     * @var array
+     */
+    public $types = array('checkbox', 'select', 'radio');
+
+    /**
      * 执行过滤
      * @return
      */
@@ -35,7 +41,42 @@ class EmptyController extends CommonController {
             'is_system' => 0,
             'is_list_show' => 1
         );
-        $fields = D('Field')->where($where)->select();
+        $fields = D('Field')->relation(true)->where($where)->select();
+
+        // 处理需要替换的字段值
+        foreach ($fields as $field) {
+            $fn = $field['name'];
+
+            // checkbox，radio，select类型
+            if (in_array($field['input']['type'], $this->types)
+                && !empty($field['input']['opt_value'])) {
+                $opts = D('Input', 'Logic')
+                         ->optValueToArray($field['input']['opt_value']);
+                $opts = array_flip($opts['opt_value']);
+
+                foreach ($result as $key => $row) {
+                    $result[$key][$fn] = $opts[$row[$fn]];
+                }
+            }
+
+            // 关联表类型
+            if (0 != $field['relation_model']
+                && !empty($field['relation_value'])
+                && !empty($field['relation_field'])) {
+                // 被关联的模型
+                $rModel = M('Model')->getById($field['relation_model']);
+                // 表模型名
+                $mn = D('Model', 'Service')->getCtrlName($rModel['tbl_name']);
+
+                foreach ($result as $key => $row) {
+                    $tmp = "{$field['relation_field']}={$row[$fn]}";
+                    $rField = M($mn)->where($tmp)
+                                    ->field("{$field['relation_value']}")
+                                    ->find();
+                    $result[$key][$fn] = $rField[$field['relation_value']];
+                }
+            }
+        }
 
         $this->assign('model', $model);
         $this->assign('fields', $fields);
