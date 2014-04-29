@@ -118,6 +118,7 @@ class InputLogic extends CommonLogic {
         } else if ('date' == $type) {
             $html = genDate($fn, $class);
         } else if ('relation_select' == $type) {
+            $field['name'] = $fn;
             $html = $this->genRelationSelect($field);
         } else if ('editor' == $type) {
             $html = genEditor($fn, empty($value) ? $remark : $value,
