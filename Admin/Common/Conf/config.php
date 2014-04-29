@@ -32,7 +32,10 @@ $appConfig =  array(
     // 系统保留表明
     'SYSTEM_TBL_NAME' => 'model,models,filed,fileds,admin,admins',
     // 系统保留菜单明
-    'SYSTEM_MENU_NAME' => '首页,模型,数据'
+    'SYSTEM_MENU_NAME' => '首页,模型,数据',
+
+    // 文件上传根目录
+    'UPLOAD_ROOT' => WEB_ROOT . 'Public/uploads/'
 );
 
 return array_merge($appConfig, $systemConfig);

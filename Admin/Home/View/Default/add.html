@@ -18,9 +18,9 @@
     <button class="btn submit">提交</button>
 </div>
 
-<include file="Models/javascript" />
 <script type="text/javascript">
-$(function(){
-    submitForm("create");
+$(".submit").click(function(){
+    commonAjaxSubmit('__URL__/create');
+    return false;
 });
 </script>

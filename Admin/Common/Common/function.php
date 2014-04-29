@@ -43,6 +43,14 @@ function bytes_format($bytes) {
 }
 
 /**
+ * 转换Mb单位为Byte大小
+ * @return int
+ */
+function convMb2B($mb) {
+    return $mb * 1048576;
+}
+
+/**
  * 生成随机码
  * @param  int $length
  * @param  int $type
@@ -156,6 +164,35 @@ function unzip($zip_file, $out_dir) {
     $zip->close();
 
     return true;
+}
+
+/**
+ * 文件上传
+ * @param  string $save_path 保存路径
+ * @return array
+ */
+function upload($save_path, $size = -1, $rule = 'uniqid') {
+    $upload = new \Org\Util\UploadFile();
+
+    // 文件大小
+    $upload->maxSize = $size;
+     //设置附件上传目录
+    $upload->savePath = $save_path;
+    // 上传文件名唯一
+    $upload->saveRule = $rule;
+
+    if (!$upload->upload()) {
+        //捕获上传异常
+        return array('status' => false, 'info' => $upload->getErrorMsg());
+    }
+
+    // 得到上传的文件路径
+    $info = $upload->getUploadFileInfo();
+    foreach ($info as $key => $item) {
+        $info[$key]['path'] = $item['savepath'] . $item['savename'];
+    }
+
+    return array('status' => true, 'info' => $info);
 }
 
 /**
