@@ -107,6 +107,19 @@ class InputService extends CommonService {
     }
 
     /**
+     * 是否file表单域
+     * @param  string  $type 类型
+     * @return boolean
+     */
+    public function isFileInput($type) {
+        if ('file' == $type) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * 得到模型小写作为表单域的name
      * @param  int    $modelId 模型的id
      * @return string
