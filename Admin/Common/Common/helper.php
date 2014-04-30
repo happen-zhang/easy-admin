@@ -154,7 +154,9 @@ function genCheckbox($name, $text, $value, $checked = false, $class = '') {
  */
 function genCheckboxs($name, array $list, $checked, $class = '') {
     $html = '';
-    $checked = array_filter(explode(',', $checked));
+    $checked = array_filter(explode(',', $checked), function($pos) {
+        return !(empty($pos) && 0 !== $pos && '0' !== $pos);
+    });
 
     $i = 0;
     foreach ($list as $text => $value) {
@@ -182,11 +184,12 @@ function genFile($name, $class = '') {
  * @param  string $class css类
  * @return string
  */
-function genDate($name, $class = '') {
+function genDate($name, $value, $class = '') {
     $src = __APP__ . '/../Public/javascripts/admin/datepicker/images2/cal.gif';
     $id = rand_code(8);
 
-    return "<input type='text' id='{$id}' class='{$class}' name='{$name}' />"
+    return "<input type='text' id='{$id}' "
+           . "value='{$value}' class='{$class}' name='{$name}' />"
            . "<img src='{$src}' style='cursor:pointer; margin-left:2px' "
            . "onclick='javascript:NewCssCal(\"{$id}\", \"YYYYMMDD\")'/>";
 }
