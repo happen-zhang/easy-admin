@@ -27,15 +27,15 @@ class EmptyController extends CommonController {
      */
     public function index() {
         // 得到数据表名称
-        $tblName = C('DB_PREFIX') . strtolower(CONTROLLER_NAME);
+        $tblName = $this->getTblName(CONTROLLER_NAME);
         $model = M('Model')->getByTblName($tblName);
         if (!$model) {
             return $this->error('系统出现错误了！');
         }
 
         // 得到分页数据
-        $result = $this->getPagination('Default');
-        $rows = $result['data'];
+        $result = $this->getPagination('Default', null, null, 'id DESC');
+        $rows = array_map("strip_sql_injection", $result['data']);
         unset($result['data']);
 
         // 得到模型对应的非系统字段
