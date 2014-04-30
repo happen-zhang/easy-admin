@@ -94,29 +94,9 @@ class EmptyController extends CommonController {
      * @return
      */
     public function add() {
-        $model = M('Model')->getByTblName($this->getTblName(CONTROLLER_NAME));
+        $tblName = $this->getTblName(CONTROLLER_NAME);
+        $inputs = D('Input', 'Service')->getAddInputsByTblName($tblName);
 
-        // 得到模型对应的非系统字段
-        $where = array(
-            'model_id' => $model['id'],
-            'is_system' => 0,
-        );
-        $fields = M('Field')->where($where)->select();
-
-        // 得到字段对应的表单域
-        $inputs = array();
-        $orders = array();
-        foreach ($fields as $key => $field) {
-            $input = M('Input')->getByFieldId($field['id']);
-            if ($input['is_show']) {
-                $inputs[$key] = $input;
-                $orders[$key] = $inputs[$key]['show_order'];
-            }
-        }
-        // 排序表单域
-        array_multisort($orders, $inputs);
-
-        $this->assign('model', $model);
         $this->assign('inputs', $inputs);
         $this->display('Default/add');
     }
