@@ -58,7 +58,16 @@ class EmptyController extends CommonController {
                 $opts = array_flip($opts['opt_value']);
 
                 foreach ($rows as $key => $row) {
-                    $rows[$key][$fn] = $opts[$row[$fn]];
+                    if ('checkbox' == $field['input']['type']) {
+                        $value = '';
+                        $values = explode(',', $row[$fn]);
+                        foreach ($values as $val) {
+                            $value .= "{$opts[$val]}<br/>";
+                        }
+                        $rows[$key][$fn] = $value;
+                    } else {
+                        $rows[$key][$fn] = $opts[$row[$fn]];
+                    }
                 }
             }
 
