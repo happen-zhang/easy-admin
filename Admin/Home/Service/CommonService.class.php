@@ -19,11 +19,13 @@ abstract class CommonService {
      * @param  array $where    分页条件
      * @param  int   $firstRow 起始行
      * @param  int   $listRows 行数
-     * @return array           
+     * @return array
      */
     public function getPagination($where, $fields,$order,$firstRow,$listRows) {
-        // 关联模型
-        $M = $this->getD()->relation(true);
+        // 是否关联模型
+        $M = $this->isRelation() ? $this->getD()->relation(true)
+                                 : $this->getM();
+
         // 需要查找的字段
         if (isset($fields)) {
             $M = $M->field($fields);
@@ -83,6 +85,14 @@ abstract class CommonService {
      */
     protected function getD() {
         return D($this->getModelName());
+    }
+
+    /**
+     * 是否关联查询
+     * @return boolean
+     */
+    protected function isRelation() {
+        return true;
     }
 
     /**

@@ -33,8 +33,11 @@ class EmptyController extends CommonController {
             return $this->error('系统出现错误了！');
         }
 
-        // 得到数据表中的所有数据
-        $result = M(CONTROLLER_NAME)->select();
+        // 得到分页数据
+        $result = $this->getPagination('Default');
+        $rows = $result['data'];
+        unset($result['data']);
+
         // 得到模型对应的非系统字段
         $where = array(
             'model_id' => $model['id'],
@@ -54,8 +57,8 @@ class EmptyController extends CommonController {
                          ->optValueToArray($field['input']['opt_value']);
                 $opts = array_flip($opts['opt_value']);
 
-                foreach ($result as $key => $row) {
-                    $result[$key][$fn] = $opts[$row[$fn]];
+                foreach ($rows as $key => $row) {
+                    $rows[$key][$fn] = $opts[$row[$fn]];
                 }
             }
 
@@ -68,20 +71,21 @@ class EmptyController extends CommonController {
                 // 表模型名
                 $mn = D('Model', 'Service')->getCtrlName($rModel['tbl_name']);
 
-                foreach ($result as $key => $row) {
+                foreach ($rows as $key => $row) {
                     $tmp = "{$field['relation_field']}={$row[$fn]}";
                     $rField = M($mn)->where($tmp)
                                     ->field("{$field['relation_value']}")
                                     ->find();
-                    $result[$key][$fn] = $rField[$field['relation_value']];
+                    $rows[$key][$fn] = $rField[$field['relation_value']];
                 }
             }
         }
 
         $this->assign('model', $model);
         $this->assign('fields', $fields);
-        $this->assign('result', $result);
-        $this->assign('rows', count($result));
+        $this->assign('rows', $rows);
+        $this->assign('rows_count', $result['total_rows']);
+        $this->assign('page', $result['show']);
         $this->display('Default/index');
     }
 

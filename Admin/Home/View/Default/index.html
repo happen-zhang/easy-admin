@@ -1,5 +1,5 @@
 <div class="Item hr">
-    <span class="fr">系统现有数据 <b>{$rows}</b> 行</span>
+    <span class="fr">系统现有数据 <b>{$rows_count}</b> 行</span>
     <div class="current"><b>{$model['name']}</b> 数据列表</div>
 </div>
 <form>
@@ -16,15 +16,15 @@
             </tr>
         </thead>
         <tbody>
-            <volist name="result" id="item">
+            <volist name="rows" id="row">
             <tr align="center">
-                <td>{$item['id']}</td>
+                <td>{$row['id']}</td>
                 <volist name="fields" id="field">
-                <td>{$item[$field['name']]}</td>
+                <td>{$row[$field['name']]}</td>
                 </volist>
-                <td>{:date('Y-m-d H:i:s', $item['created_at'])}</td>
-                <td>{:date('Y-m-d H:i:s', $item['updated_at'])}</td>
-                <td>[ <a href="{:U(CONTROLLER_NAME . '/show', array('id' => $item['id']))}">查看</a> ] [ <a href="{:U(CONTROLLER_NAME . '/edit', array('id' => $item['id']))}">编辑</a> ] [ <a href="javascript:void(0);" value="{:U(CONTROLLER_NAME . '/delete', array('id' => $item['id']))}" name="ID={$item['id']}" class="del">删除</a> ]</td>
+                <td>{:date('Y-m-d H:i:s', $row['created_at'])}</td>
+                <td>{:date('Y-m-d H:i:s', $row['updated_at'])}</td>
+                <td>[ <a href="{:U(CONTROLLER_NAME . '/show', array('id' => $row['id']))}">查看</a> ] [ <a href="{:U(CONTROLLER_NAME . '/edit', array('id' => $row['id']))}">编辑</a> ] [ <a href="javascript:void(0);" value="{:U(CONTROLLER_NAME . '/delete', array('id' => $row['id']))}" name="ID={$row['id']}" class="del">删除</a> ]</td>
             </tr>
             </volist>
         </tbody>

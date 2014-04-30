@@ -225,7 +225,11 @@ class DefaultService extends CommonService {
         }
     }
 
+    protected function isRelation() {
+        return false;
+    }
+
     protected function getModelName() {
-        return '';
+        return CONTROLLER_NAME;
     }
 }
