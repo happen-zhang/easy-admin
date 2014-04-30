@@ -24,7 +24,7 @@
                 </volist>
                 <td>{:date('Y-m-d H:i:s', $row['created_at'])}</td>
                 <td>{:date('Y-m-d H:i:s', $row['updated_at'])}</td>
-                <td>[ <a href="{:U(CONTROLLER_NAME . '/show', array('id' => $row['id']))}">查看</a> ] [ <a href="{:U(CONTROLLER_NAME . '/edit', array('id' => $row['id']))}">编辑</a> ] [ <a href="javascript:void(0);" value="{:U(CONTROLLER_NAME . '/delete', array('id' => $row['id']))}" name="ID={$row['id']}" class="del">删除</a> ]</td>
+                <td>[ <a href="{:U(CONTROLLER_NAME . '/edit', array('id' => $row['id']))}">编辑</a> ] [ <a href="javascript:void(0);" value="{:U(CONTROLLER_NAME . '/delete', array('id' => $row['id']))}" name="ID={$row['id']}" class="del">删除</a> ]</td>
             </tr>
             </volist>
         </tbody>

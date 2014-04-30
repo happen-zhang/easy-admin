@@ -157,6 +157,11 @@ class EmptyController extends CommonController {
      * @return
      */
     public function edit() {
+        $data = M(CONTROLLER_NAME)->where("id={$_GET['id']}")->find();
+        $tblNmae = $this->getTblName(CONTROLLER_NAME);
+        $inputs = D('Input','Service')->getEditInputsByTblName($tblNmae,$data);
+
+        $this->assign('inputs', $inputs);
         $this->display('Default/edit');
     }
 

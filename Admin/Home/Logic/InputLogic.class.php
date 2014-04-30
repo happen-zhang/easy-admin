@@ -116,7 +116,7 @@ class InputLogic extends CommonLogic {
         } else if ('textarea' == $type) {
             $html = genTextarea($fn, $value, $width, $height, $remark);
         } else if ('date' == $type) {
-            $html = genDate($fn, $class);
+            $html = genDate($fn, $value, $class);
         } else if ('relation_select' == $type) {
             $field['name'] = $fn;
             $html = $this->genRelationSelect($field);
@@ -193,6 +193,35 @@ class InputLogic extends CommonLogic {
         }
 
         return array('opt_value' => $parts, 'selected' => $selected);
+    }
+
+    /**
+     * 可选值组合成字符串
+     * @param  array  $options 可选值数组
+     * @return string
+     */
+    public function optArrayToString(array $options, $mutilSelectd = false) {
+        $opts = '';
+        $selected = $options['selected'];
+
+        if ($mutilSelectd) {
+            $selected = explode(',', $options['selected']);
+            $selected = array_filter($selected, function($pos) {
+                return !(empty($pos) && 0 !== $pos && '0' !== $pos);
+            });
+        }
+
+        $i = 0;
+        foreach ($options['opt_value'] as $key => $option) {
+            $opts .= "{$option}:{$key}";
+            if ($mutilSelectd) {
+                $opts .= (in_array($i++, $selected)) ? ":default\r\n" : "\r\n";
+            } else {
+                $opts .= ($i++ == $selected) ? ":default\r\n" : "\r\n";
+            }
+        }
+
+        return $opts;
     }
 
     private function resetSize(&$value, $default) {

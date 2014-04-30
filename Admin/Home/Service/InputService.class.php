@@ -120,6 +120,96 @@ class InputService extends CommonService {
     }
 
     /**
+     * 得到添加表单域
+     * @param  string $tblName 模型数据表
+     * @return array
+     */
+    public function getAddInputsByTblName($tblName) {
+        $model = M('Model')->getByTblName($tblName);
+
+        // 得到模型对应的非系统字段
+        $where = array(
+            'model_id' => $model['id'],
+            'is_system' => 0,
+        );
+        $fields = M('Field')->where($where)->select();
+
+        // 得到字段对应的表单域
+        $inputs = array();
+        $orders = array();
+        foreach ($fields as $key => $field) {
+            $input = M('Input')->getByFieldId($field['id']);
+            if ($input['is_show']) {
+                $inputs[$key] = $input;
+                $orders[$key] = $inputs[$key]['show_order'];
+            }
+        }
+        // 排序表单域
+        array_multisort($orders, $inputs);
+
+        return $inputs;
+    }
+
+    /**
+     * 得到带值编辑的表单域
+     * @param  string $tblName 模型数据表
+     * @param  array  $data    表单域值
+     * @return array
+     */
+    public function getEditInputsByTblName($tblName, $data) {
+        $types = array('checkbox', 'select', 'radio', 'relation_select');
+
+        $inputs = $this->getAddInputsByTblName($tblName);
+        $model = M('Model')->getByTblName($tblName);
+
+        // 生成带有默认值的表单域
+        foreach ($inputs as $key => $input) {
+            $field = M('Field')->getById($input['field_id']);
+            $field['model'] = $this->getInputModelName($model['id']);
+
+            if (in_array($input['type'], $types)) {
+                // 处理opt_value中的默认项
+                $i = 0;
+                $inputLogic = D('Input', 'Logic');
+
+                $opts = $inputLogic->optValueToArray($input['opt_value']);
+                // 得到已选项
+                foreach ($opts['opt_value'] as $opt) {
+                    if ($opt == $data[$field['name']]) {
+                        $opts['selected'] = $i;
+                    }
+                    $i += 1;
+                }
+
+                if ('checkbox' == $input['type']) {
+                    $selected = explode(',', $data[$field['name']]);
+                    $opts['selected'] = '';
+                    foreach ($selected as $item) {
+                        $pos = array_pos($opts['opt_value'], $item);
+                        if (false !== $pos) {
+                            $opts['selected'] .= "{$pos},";
+                        }
+                    }
+
+                    $opts = $inputLogic->optArrayToString($opts, true);
+                } else {
+                    $opts = $inputLogic->optArrayToString($opts);
+                }
+
+                $inputs[$key]['opt_value'] = $opts;
+            } else {
+                $value = strip_sql_injection($data[$field['name']]);
+                $inputs[$key]['value'] = $value;
+            }
+
+            // 生成带值的表单域
+            D('Input', 'Logic')->genHtml($inputs[$key], $field);
+        }
+
+        return $inputs;
+    }
+
+    /**
      * 得到模型小写作为表单域的name
      * @param  int    $modelId 模型的id
      * @return string

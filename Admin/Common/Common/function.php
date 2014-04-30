@@ -248,3 +248,22 @@ function is_valid_date($date, $formats = array("Y-m-d", "Y/m/d")) {
 
     return false;
 }
+
+/**
+ * 得到指定值在数组中的位置，未找到返回false
+ * @param  array  $search 被查找的数组
+ * @param  mixed  $target 目标值
+ * @return mixed
+ */
+function array_pos(array $search, $target) {
+    $i = 0;
+    foreach ($search as $item) {
+        if ($item == $target) {
+            return $i;
+        }
+
+        $i += 1;
+    }
+
+    return false;
+}
