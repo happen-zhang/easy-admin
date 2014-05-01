@@ -267,3 +267,16 @@ function array_pos(array $search, $target) {
 
     return false;
 }
+
+/**
+ * 只对字符串进行trim
+ * @param  mixed $val 需要trim的值
+ * @return mixed
+ */
+function trim_value($val) {
+    if (is_string($val)) {
+        return trim($val);
+    }
+
+    return $val;
+}

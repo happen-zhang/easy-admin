@@ -120,6 +120,19 @@ class InputService extends CommonService {
     }
 
     /**
+     * 是否checkbox
+     * @param  string  $type 类型
+     * @return boolean
+     */
+    public function isCheckbox($type) {
+        if ('checkbox' == $type) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * 得到添加表单域
      * @param  string $tblName 模型数据表
      * @return array

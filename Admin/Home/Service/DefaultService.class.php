@@ -16,12 +16,15 @@ class DefaultService extends CommonService {
         $uploadInfo = null;
         $uploadDir = C('UPLOAD_ROOT') . $ctrlName . '/';
 
+        $data = array_map(trim_value, $data);
+        $inputService = D('Input', 'Service');
+
         foreach ($fields as $field) {
             $fn = $field['name'];
             $fm = $field['comment'];
 
             // 是否文件类型的表单域
-            if (D('Input', 'Service')->isFileInput($field['input']['type'])) {
+            if ($inputService->isFileInput($field['input']['type'])) {
                 if (!$once) {
                     // 只执行一次上传
                     $uploadInfo = upload($uploadDir);
@@ -54,6 +57,15 @@ class DefaultService extends CommonService {
 
                     $data[$fn] = $uploadInfo['info'][0]['path'];
                     array_shift($uploadInfo['info']);
+                }
+            }
+
+            // checkbox类型需要合并值
+            if ($inputService->isCheckbox($field['input']['type'])) {
+                if (isset($data[$fn]) && !empty($data[$fn])) {
+                    $data[$fn] = $data[$fn] = implode(',', $data[$fn]);
+                } else {
+                    $data[$fn] = '';
                 }
             }
 

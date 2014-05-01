@@ -115,8 +115,6 @@ class EmptyController extends CommonController {
      * @return
      */
     public function create() {
-        $data = array_map(trim, $_POST[strtolower(CONTROLLER_NAME)]);
-
         // 得先得到这个模型的所有字段
         $model = M('Model')->getByTblName($this->getTblName(CONTROLLER_NAME));
         $fields = D('Field')->relation(true)
@@ -126,6 +124,7 @@ class EmptyController extends CommonController {
         $defaultService = D('Default', 'Service');
 
         // 创建数据
+        $data = $_POST[strtolower(CONTROLLER_NAME)];
         $result = $defaultService->create($data, $fields, CONTROLLER_NAME);
         if (!$result['status']) {
             return $this->errorReturn($result['data']['error']);
