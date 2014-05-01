@@ -173,10 +173,10 @@ class InputService extends CommonService {
                 $inputLogic = D('Input', 'Logic');
 
                 $opts = $inputLogic->optValueToArray($input['opt_value']);
-                // 得到已选项
                 foreach ($opts['opt_value'] as $opt) {
                     if ($opt == $data[$field['name']]) {
                         $opts['selected'] = $i;
+                        break ;
                     }
                     $i += 1;
                 }
@@ -194,6 +194,11 @@ class InputService extends CommonService {
                     $opts = $inputLogic->optArrayToString($opts, true);
                 } else {
                     $opts = $inputLogic->optArrayToString($opts);
+                }
+
+                // 已得到realtion_select的可选项
+                if ('relation_select' == $input['type']) {
+                    $inputs[$key]['type'] = 'select';
                 }
 
                 $inputs[$key]['opt_value'] = $opts;
