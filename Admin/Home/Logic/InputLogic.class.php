@@ -118,8 +118,9 @@ class InputLogic extends CommonLogic {
         } else if ('date' == $type) {
             $html = genDate($fn, $value, $class);
         } else if ('relation_select' == $type) {
-            $field['name'] = $fn;
-            $html = $this->genRelationSelect($field);
+            $relaOpts = $this->getRelationOpts($field);
+            $input['opt_value'] = $this->optArrayToString($relaOpts);
+            $html = genSelect($fn, $relaOpts['opt_value']);
         } else if ('editor' == $type) {
             $html = genEditor($fn, empty($value) ? $remark : $value,
                               $width, $height, $input['editor']);
@@ -129,11 +130,11 @@ class InputLogic extends CommonLogic {
     }
 
     /**
-     * 生成relation_select
+     * 得到关联可选项数组
      * @param  array $field
-     * @return string
+     * @return array
      */
-    public function genRelationSelect($field) {
+    public function getRelationOpts($field) {
         if (!isset($field['relation_model'])
             || !($field['relation_field'])
             || !isset($field['relation_value'])) {
@@ -160,7 +161,7 @@ class InputLogic extends CommonLogic {
             $list[$part[$rv]] = $part[$rf];
         }
 
-        return genSelect($field['name'], $list);
+        return array('opt_value' => $list, 'selected' => 0);
     }
 
     /**
