@@ -124,9 +124,14 @@ class DefaultService extends CommonService {
             // 字段唯一
             if (1 != $field['is_system']
                 && 1 == $field['is_unique']
-                && !empty($data[$fn])
-                && !$this->isRowUnique($ctrlName, $fn, $data[$fn])) {
-                return $this->errorResultReturn("{$fm}已经存在！");
+                && !empty($data[$fn])) {
+                $isUnique = $this->isRowUnique($ctrlName,
+                                               $field['name'],
+                                               $data[$fn],
+                                               $data['id']);
+                if (!$isUnique) {
+                    return $this->errorResultReturn("{$fm}已经存在！");
+                }
             }
 
             // 自定义字段 auto_filter 自动过滤
@@ -255,8 +260,11 @@ class DefaultService extends CommonService {
      * @param  string  $val 字段值
      * @return boolean
      */
-    public function isRowUnique($mn, $fn, $val) {
+    public function isRowUnique($mn, $fn, $val, $id = null) {
         $where = array($fn => $val);
+        if (isset($id)) {
+            $where['id'] = array('neq', $id);
+        }
 
         if (M($mn)->where($where)->count() > 0) {
             return false;
