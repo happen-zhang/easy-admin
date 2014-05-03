@@ -27,7 +27,7 @@ class EmptyController extends CommonController {
      */
     public function index() {
         // 得到数据表名称
-        $tblName = $this->getTblName(CONTROLLER_NAME);
+        $tblName = D('Model', 'Service')->getTblName(CONTROLLER_NAME);
         $model = M('Model')->getByTblName($tblName);
         if (!$model) {
             return $this->error('系统出现错误了！');
@@ -103,7 +103,7 @@ class EmptyController extends CommonController {
      * @return
      */
     public function add() {
-        $tblName = $this->getTblName(CONTROLLER_NAME);
+        $tblName = D('Model', 'Service')->getTblName(CONTROLLER_NAME);
         $inputs = D('Input', 'Service')->getAddInputsByTblName($tblName);
 
         $this->assign('inputs', $inputs);
@@ -116,11 +116,7 @@ class EmptyController extends CommonController {
      */
     public function create() {
         // 得先得到这个模型的所有字段
-        $model = M('Model')->getByTblName($this->getTblName(CONTROLLER_NAME));
-        $fields = D('Field')->relation(true)
-                            ->where("model_id={$model['id']}")
-                            ->select();
-
+        $fields = D('Field', 'Service')->getByCtrlName(CONTROLLER_NAME);
         $defaultService = D('Default', 'Service');
 
         // 创建数据
@@ -151,7 +147,7 @@ class EmptyController extends CommonController {
             return $this->error('需要编辑的数据不存在！');
         }
 
-        $tblNmae = $this->getTblName(CONTROLLER_NAME);
+        $tblNmae = D('Model', 'Service')->getTblName(CONTROLLER_NAME);
         $inputs = D('Input','Service')->getEditInputsByTblName($tblNmae,$data);
         $hidden = array(
             'name' => strtolower(CONTROLLER_NAME) . '[id]',
@@ -211,14 +207,5 @@ class EmptyController extends CommonController {
         if (!array_key_exists(CONTROLLER_NAME, $menu)) {
             return $this->_empty();
         }
-    }
-
-    /**
-     * 得到数据表名称
-     * @param  string $ctrlName
-     * @return string
-     */
-    private function getTblName($ctrlName) {
-        return C('DB_PREFIX') . strtolower($ctrlName);
     }
 }

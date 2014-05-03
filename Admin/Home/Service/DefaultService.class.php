@@ -160,7 +160,7 @@ class DefaultService extends CommonService {
         }
 
         $data['id'] = M($ctrlName)->getLastInsId();
-        $tblName = C('DB_PREFIX') . strtolower($ctrlName);
+        $tblName = D('Model', 'Service')->getTblName($ctrlName);
         $model = M('Model')->getByTblName($tblName);
 
         // 更新被关联的表单域
