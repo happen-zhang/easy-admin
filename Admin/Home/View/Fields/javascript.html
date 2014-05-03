@@ -9,6 +9,7 @@ function submitForm(action) {
 $(function(){
     $("#auto_filter option[value='{$field['auto_filter']}']").attr('selected', true);
     $("#auto_fill option[value='{$field['auto_fill']}']").attr('selected', true);
+    $("#fill_time option[value='{$field['fill_time']}']").attr('selected', true);
     $("#field_type option[value='{$field['type']}']").attr('selected', true);
     toggle_type_length('{$field['type']}' || "VARCHAR");
     $("#field_type").change(function() {

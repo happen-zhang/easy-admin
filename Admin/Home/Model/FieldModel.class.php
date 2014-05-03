@@ -53,6 +53,9 @@ class FieldModel extends CommonModel {
         // 字段关联级别
         array('relation_level', 'SET NULL,NOT ACTION,CASCADE,RESTRICT',
               '无效的关联级别!', 2, 'in', 3),
+        // 填充时机
+        array('fill_time', 'both,insert,update', '自动填充时机类型不正确！',
+              1, 'in', 3),
         // 是否必需
         array('is_require', '0, 1', '字段必需值只能为0或1', 1, 'in', 1),
         // 是否唯一
