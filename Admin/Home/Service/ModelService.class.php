@@ -312,10 +312,12 @@ class ModelService extends CommonService {
         // created_at字段
         $timestamp['name'] = 'created_at';
         $timestamp['comment'] = '创建时间';
+        $timestamp['fill_time'] = 'insert';
         $status = false !== $Field->add($timestamp) ? true : false;
         // updated_at字段
         $timestamp['name'] = 'updated_at';
         $timestamp['comment'] = '更新时间';
+        $timestamp['fill_time'] = 'both';
         $status = false !== $Field->add($timestamp) ? true : false;
 
         return $status;

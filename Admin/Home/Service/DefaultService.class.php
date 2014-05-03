@@ -6,17 +6,27 @@ namespace Home\Service;
  */
 class DefaultService extends CommonService {
     /**
+     * 填充时机
+     * @var array
+     */
+    private $createTime = array('insert', 'update');
+
+    /**
      * 创建数据
-     * @param  array $data   提交的数据
-     * @param  array $fields 对应模型的数据
+     * @param  array  $data     提交的数据
+     * @param  array  $fields   对应模型的数据
+     * @param  string $ctrlName 控制器名
+     * @param  string $time     填充时机
      * @return array
      */
-    public function create(array $data, array $fields, $ctrlName) {
+    public function create(array $data, array $fields, $ctrlName, $time) {
         $once = false;
         $uploadInfo = null;
         $uploadDir = C('UPLOAD_ROOT') . $ctrlName . '/';
 
         $data = array_map(trim_value, $data);
+        $time = in_array(strtolower($time), $this->createTime) ?
+                         strtolower($time) : $this->createTime[0];
         $inputService = D('Input', 'Service');
 
         foreach ($fields as $field) {
@@ -119,11 +129,6 @@ class DefaultService extends CommonService {
                 return $this->errorResultReturn("{$fm}已经存在！");
             }
 
-            // 系统字段 auto_fill 自动填充
-            if ($field['is_system'] && !empty($field['auto_fill'])) {
-                $data[$fn] = $field['auto_fill']();
-            }
-
             // 自定义字段 auto_filter 自动过滤
             if (!empty($field['auto_filter'])) {
                 if (!function_exists($field['auto_filter'])) {
@@ -134,14 +139,32 @@ class DefaultService extends CommonService {
                 $data[$fn] = $field['auto_filter']($data[$fn]);
             }
 
-            // 自定义字段 auto_fill 自动填充
-            if (!empty($field['auto_fill']) && empty($data[$fn])) {
+            // 系统字段 auto_fill 自动填充
+            if ($field['is_system']
+                && !empty($field['auto_fill'])
+                && ('both' == $field['fill_time']
+                    || $time == $field['fill_time'])) {
+
                 if (!function_exists($field['auto_fill'])) {
                     $msg = "填充函数{$field['auto_fill']}不存在，请先进行注册函数！";
                     return $this->errorResultReturn($msg);
                 }
 
-                $data[$fn] = $field['auto_fill']($data[$fn]);
+                $data[$fn] = $field['auto_fill']();
+            }
+
+            // 自定义字段 auto_fill 自动填充
+            if (!empty($field['auto_fill'])
+                && empty($data[$fn])
+                && ('both' == $field['fill_time']
+                    || $time == $field['fill_time'])) {
+
+                if (!function_exists($field['auto_fill'])) {
+                    $msg = "填充函数{$field['auto_fill']}不存在，请先进行注册函数！";
+                    return $this->errorResultReturn($msg);
+                }
+
+                $data[$fn] = $field['auto_fill']();
             }
         }
 

@@ -175,7 +175,10 @@ class EmptyController extends CommonController {
 
         // 创建数据
         $data = $_POST[$iname];
-        $result = $defaultService->create($data, $fields, CONTROLLER_NAME);
+        $result = $defaultService->create($data,
+                                          $fields,
+                                          CONTROLLER_NAME,
+                                          'update');
         if (!$result['status']) {
             return $this->errorReturn($result['data']['error']);
         }
