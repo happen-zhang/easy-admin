@@ -146,9 +146,19 @@ class EmptyController extends CommonController {
      */
     public function edit() {
         $data = M(CONTROLLER_NAME)->where("id={$_GET['id']}")->find();
+
+        if (is_null($data)) {
+            return $this->error('需要编辑的数据不存在！');
+        }
+
         $tblNmae = $this->getTblName(CONTROLLER_NAME);
         $inputs = D('Input','Service')->getEditInputsByTblName($tblNmae,$data);
+        $hidden = array(
+            'name' => strtolower(CONTROLLER_NAME) . '[id]',
+            'value' => $_GET['id']
+        );
 
+        $this->assign('hidden', $hidden);
         $this->assign('inputs', $inputs);
         $this->display('Default/edit');
     }
@@ -158,7 +168,30 @@ class EmptyController extends CommonController {
      * @return
      */
     public function update() {
-         var_dump('update');
+        $iname = strtolower(CONTROLLER_NAME);
+        if (!isset($_POST[$iname]['id'])
+            || is_null(M(CONTROLLER_NAME)->getById($_POST[$iname]['id']))) {
+            return $this->errorReturn('无效的操作！');
+        }
+
+        $defaultService = D('Default', 'Service');
+        $fields = D('Field', 'Service')->getByCtrlName(CONTROLLER_NAME);
+
+        // 创建数据
+        $data = $_POST[$iname];
+        $result = $defaultService->create($data, $fields, CONTROLLER_NAME);
+        if (!$result['status']) {
+            return $this->errorReturn($result['data']['error']);
+        }
+
+        // 更新数据
+        $result = $defaultService->update($result['data'], CONTROLLER_NAME);
+        if (!$result['status']) {
+            return $this->errorReturn('更新数据失败！');
+        }
+
+        return $this->successReturn('更新数据成功！',
+                                    U(CONTROLLER_NAME . '/index'));
     }
 
     /**

@@ -376,6 +376,15 @@ class ModelService extends CommonService {
         return str_replace(' ', '', $tblName);
     }
 
+    /**
+     * 以控制器名得到表名称
+     * @param  string $ctrlName 控制器名
+     * @return string
+     */
+    public function getTblName($ctrlName) {
+        return C('DB_PREFIX') . strtolower($ctrlName);
+    }
+
     protected function getModelName() {
         return 'Model';
     }

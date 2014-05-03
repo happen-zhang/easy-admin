@@ -388,6 +388,21 @@ class FieldService extends CommonService {
     }
 
     /**
+     * 以控制器名得到字段
+     * @param  string $ctrlName 控制器名
+     * @return array
+     */
+    public function getByCtrlName($ctrlName) {
+        $model = M('Model')->getByTblName(D('Model', 'Service')
+                           ->getTblName($ctrlName));
+
+        return $fields = $this->getD()
+                              ->relation(true)
+                              ->where("model_id={$model['id']}")
+                              ->select();
+    }
+
+    /**
      * 得到被关联的字段
      * @param  int     $modelId 被关联的模型id
      * @param  string  $fn      被关联的字段名

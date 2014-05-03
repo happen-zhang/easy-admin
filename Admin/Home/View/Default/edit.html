@@ -12,6 +12,7 @@
             <td>{$input['html']}<php>if ($input['remark'] != '' && $input['type'] != 'textarea' && $input['type'] != 'editor') { echo "（$input[remark]）"; }</php></td>
         </tr>
         </volist>
+        <input type="hidden" name="{$hidden['name']}" value="{$hidden['value']}" />
     </table>
 </form>
 <div class="commonBtnArea" >

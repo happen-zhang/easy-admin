@@ -171,6 +171,27 @@ class DefaultService extends CommonService {
     }
 
     /**
+     * 更新数据
+     * @param  array  $data     需要更新的数据
+     * @param  string $ctrlName 更新数据的模型
+     * @return array
+     */
+    public function update(array $data, $ctrlName) {
+        if (false === M($ctrlName)->save($data)) {
+            return $this->resultReturn(false);
+        }
+
+        $tblName = D('Model', 'Service')->getTblName($ctrlName);
+        $model = M('Model')->getByTblName($tblName);
+
+        // 更新被关联的表单域
+        $inputService = D('Input', 'Service');
+        $inputService->updateRalationInput($data, $model['id']);
+
+        return $this->resultReturn(true);
+    }
+
+    /**
      * 检查类型约束
      * @param  string $type  需要约束的类型
      * @param  string $value 需要约束的值
