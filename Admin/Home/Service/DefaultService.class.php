@@ -159,6 +159,14 @@ class DefaultService extends CommonService {
             return $this->resultReturn(false);
         }
 
+        $data['id'] = M($ctrlName)->getLastInsId();
+        $tblName = C('DB_PREFIX') . strtolower($ctrlName);
+        $model = M('Model')->getByTblName($tblName);
+
+        // 更新被关联的表单域
+        $inputService = D('Input', 'Service');
+        $inputService->updateRalationInput($data, $model['id']);
+
         return $this->resultReturn(true);
     }
 

@@ -228,6 +228,49 @@ class InputService extends CommonService {
     }
 
     /**
+     * 更新关联表单域
+     * @param  array  $data    更新的数据
+     * @param  int    $modelId 模型id
+     * @return
+     */
+    public function updateRalationInput(array $data, $modelId) {
+        $fieldService = D('Field', 'Service');
+        $inputLogic = D('Input', 'Logic');
+
+        $fields = $fieldService->getByModelId($modelId);
+        $updKeys = array_keys($data);
+        $updFields = array();
+        foreach ($fields as $field) {
+            if (!in_array($field['name'], $updKeys)) {
+                continue ;
+            }
+
+            $rFields=$fieldService->getRelatedFields($modelId, $field['name']);
+            foreach ($rFields as $rField) {
+                $updFields[] = $rField;
+            }
+        }
+
+        foreach ($updFields as $updField) {
+            $opts = $inputLogic->getRelationOpts($updField);
+            $fn = $this->getInputModelName($updField['model_id'])
+                         . "[$updField[name]]";
+
+            $udpInput = array(
+                'opt_value' => $inputLogic->optArrayToString($opts),
+                'html' => genSelect($fn, $opts['opt_value'])
+            );
+
+            // update
+            $this->getM()
+                 ->where("id={$updField['input']['id']}")
+                 ->save($udpInput);
+        }
+
+        return ;
+    }
+
+    /**
      * 得到模型小写作为表单域的name
      * @param  int    $modelId 模型的id
      * @return string

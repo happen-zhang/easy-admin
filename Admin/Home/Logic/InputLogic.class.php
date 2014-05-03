@@ -135,9 +135,9 @@ class InputLogic extends CommonLogic {
      * @return array
      */
     public function getRelationOpts($field) {
-        if (!isset($field['relation_model'])
-            || !($field['relation_field'])
-            || !isset($field['relation_value'])) {
+        if (is_null($field['relation_model'])
+            || is_null($field['relation_field'])
+            || is_null($field['relation_value'])) {
             return '';
         }
 

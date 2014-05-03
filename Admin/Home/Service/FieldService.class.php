@@ -387,6 +387,17 @@ class FieldService extends CommonService {
                     ->where("model_id={$modelId}")->select();
     }
 
+    /**
+     * 得到被关联的字段
+     * @param  int     $modelId 被关联的模型id
+     * @param  string  $fn      被关联的字段名
+     * @return array
+     */
+    public function getRelatedFields($modelId, $fn) {
+        $where = array('relation_model' => $modelId, 'relation_field' => $fn);
+        return $this->getD()->relation(true)->where($where)->select();
+    }
+
     protected function getModelName() {
         return 'Field';
     }
