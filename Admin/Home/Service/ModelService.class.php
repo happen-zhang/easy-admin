@@ -384,7 +384,19 @@ class ModelService extends CommonService {
      * @return string
      */
     public function getTblName($ctrlName) {
-        return C('DB_PREFIX') . strtolower($ctrlName);
+        $tblName = '';
+
+        for ($i = 0, $len = strlen($ctrlName); $i < $len; $i++) {
+            if (strtoupper($ctrlName[$i]) === $ctrlName[$i]) {
+                // 大写字母
+                $tblName .= '_' . strtolower($ctrlName[$i]);
+                continue ;
+            }
+
+            $tblName .= $ctrlName[$i];
+        }
+
+        return C('DB_PREFIX') . substr($tblName, 1);
     }
 
     protected function getModelName() {
