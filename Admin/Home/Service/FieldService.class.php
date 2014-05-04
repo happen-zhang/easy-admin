@@ -384,7 +384,21 @@ class FieldService extends CommonService {
     public function getByModelId($modelId, $field) {
         return $this->getM()
                     ->field($field)
-                    ->where("model_id={$modelId}")->select();
+                    ->where("model_id={$modelId}")
+                    ->select();
+    }
+
+    /**
+     * 按realtion_model得到字段
+     * @param  int    $modelId 模型id
+     * @param  string $field   需要的字段
+     * @return array
+     */
+    public function getByRelationModel($modelId, $field) {
+        return $this->getM()
+                    ->field($field)
+                    ->where("relation_model={$modelId}")
+                    ->select();
     }
 
     /**

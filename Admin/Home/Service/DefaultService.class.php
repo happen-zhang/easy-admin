@@ -220,6 +220,32 @@ class DefaultService extends CommonService {
     }
 
     /**
+     * 删除模型数据
+     * @param  int    $id       删除数据的id
+     * @param  string $ctrlName 删除数据的模型
+     * @return array
+     */
+    public function delete($id, $ctrlName) {
+        $old = M($ctrlName)->getById($id);
+
+        if (is_null($old) || false === M($ctrlName)->delete($id)) {
+            return $this->resultReturn(false);
+        }
+
+        $tblName = D('Model', 'Service')->getTblName($ctrlName);
+        $model = M('Model')->getByTblName($tblName);
+
+        // 级联删除
+        $this->cascadeDel($model['id'], $old);
+
+        // 更新被关联的表单域
+        $inputService = D('Input', 'Service');
+        $inputService->updateRalationInput($old, $model['id']);
+
+        return $this->resultReturn(true);
+    }
+
+    /**
      * 检查类型约束
      * @param  string $type  需要约束的类型
      * @param  string $value 需要约束的值
@@ -271,6 +297,30 @@ class DefaultService extends CommonService {
         }
 
         return true;
+    }
+
+    /**
+     * 级联删除数据
+     * @param  int   $modelId 模型id
+     * @param  array $data    被删除的关联数据
+     * @return
+     */
+    public function cascadeDel($modelId, $data) {
+        // 得到关联到模型的字段
+        $fields = D('Field', 'Service')->getByRelationModel($modelId);
+        // 级联删除关联的数据
+        foreach ($fields as $field) {
+            $rf = $field['relation_field'];
+            $where = array($field['name'] => $old[$rf]);
+
+            // 得到该字段所在的模型
+            $model = M('Model')->getById($field['model_id']);
+            M(D('Model', 'Service')->getCtrlName($model['tbl_name']))
+                                   ->where($where)
+                                   ->delete();
+        }
+
+        return ;
     }
 
     /**

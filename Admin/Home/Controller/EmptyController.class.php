@@ -194,6 +194,24 @@ class EmptyController extends CommonController {
     }
 
     /**
+     * 删除模型数据
+     * @return
+     */
+    public function delete() {
+        if (!isset($_GET['id'])
+            || is_null(M(CONTROLLER_NAME)->getById($_GET['id']))) {
+            return $this->errorReturn('需要删除的数据不存在！');
+        }
+
+        $result = D('Default', 'Service')->delete($_GET['id'],CONTROLLER_NAME);
+        if (!$result['status']) {
+            return $this->errorReturn('删除数据失败！');
+        }
+
+        return $this->successReturn('成功删除数据！');
+    }
+
+    /**
      * 空操作
      * @return
      */

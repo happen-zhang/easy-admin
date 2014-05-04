@@ -39,7 +39,7 @@
 $(function(){
     $(".del").click(function(){
         var del_link = $(this).attr("value");
-        popup.confirm('你真的打算删除 '+$(this).attr("name")+' 的数据吗?','温馨提示',function(action){
+        popup.confirm('您真的打算删除 '+$(this).attr("name")+' 的数据吗?','温馨提示',function(action){
             if(action == 'ok'){
                 $.getJSON(del_link, function(json){
                     if (json.status) {
