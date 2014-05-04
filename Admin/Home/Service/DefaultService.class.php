@@ -311,7 +311,7 @@ class DefaultService extends CommonService {
         // 级联删除关联的数据
         foreach ($fields as $field) {
             $rf = $field['relation_field'];
-            $where = array($field['name'] => $old[$rf]);
+            $where = array($field['name'] => $data[$rf]);
 
             // 得到该字段所在的模型
             $model = M('Model')->getById($field['model_id']);
