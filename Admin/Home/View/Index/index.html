@@ -1,50 +1,50 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
     <tr>
         <td width="120" align="right">操作系统：</td>
-        <td>Linux</td>
+        <td>{$info['system']}</td>
         <td width="120" align="right">主机名IP端口：</td>
-        <td>localhost (127.0.0.1:80)</td>
+        <td>{$info['hostport']}</td>
     </tr>
     <tr>
-        <td width="120" align="right">运行环境：</td>
-        <td>Apache/2.4.6 (Ubuntu)</td>
+        <td width="120" align="right">服务器：</td>
+        <td>{$info['server']}</td>
         <td width="120" align="right">PHP运行方式：</td>
-        <td>apache2handler</td>
+        <td>{$info['php_env']}</td>
     </tr>
     <tr>
         <td width="120" align="right">程序目录：</td>
-        <td>/home/happen/php_pro/common_system/</td>
+        <td>{$info['app_dir']}</td>
         <td width="120" align="right">MYSQL版本：</td>
-        <td>5.5.35</td>
+        <td>{$info['mysql']}</td>
     </tr>
     <tr>
         <td width="120" align="right">GD库版本：</td>
-        <td>2.1.1-dev</td>
+        <td>{$info['gd']}</td>
         <td width="120" align="right">上传附件限制：</td>
-        <td>2M</td>
+        <td>{$info['upload_size']}</td>
     </tr>
     <tr>
         <td width="120" align="right">执行时间限制：</td>
-        <td>30秒</td>
+        <td>{$info['exec_time']}</td>
         <td width="120" align="right">剩余空间：</td>
-        <td>6887.04M</td>
+        <td>{$info['disk_free']}</td>
     </tr>
     <tr>
         <td width="120" align="right">服务器时间：</td>
-        <td>2014年2月25日 11:10:08</td>
+        <td>{$info['server_time']}</td>
         <td width="120" align="right">北京时间：</td>
-        <td>2014年2月25日 11:10:08</td>
+        <td>{$info['beijing_time']}</td>
     </tr>
     <tr>
-        <td width="120" align="right">采集函数检测：</td>
-        <td>支持</td>
+        <td width="120" align="right">allow_url_fopen</td>
+        <td>{$info['fopen']}</td>
         <td width="120" align="right">register_globals：</td>
-        <td>OFF</td>
+        <td>{$info['reg_gbl']}</td>
     </tr>
     <tr>
         <td width="120" align="right">magic_quotes_gpc：</td>
-        <td>NO</td>
+        <td>{$info['quotes_gpc']}</td>
         <td width="120" align="right">magic_quotes_runtime：</td>
-        <td>NO</td>
+        <td>{$info['quotes_runtime']}</td>
     </tr>
 </table>
