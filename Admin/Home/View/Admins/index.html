@@ -1,0 +1,83 @@
+<div class="Item hr">
+    <span class="fr">系统现有管理员<b>{$models_count}</b>位</span>
+    <div class="current">管理员列表</div>
+</div>
+<form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+        <thead>
+            <tr>
+                <td>Email</td>
+                <td>角色</td>
+                <td>备注</td>
+                <td>状态</td>
+                <td>创建时间</td>
+                <td>最后登录时间</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr align="center">
+                <td>zhanghaipeng404@gmail.com</td>
+                <td>超级管理员</td>
+                <td>系统默认管理员</td>
+                <td>已启用</td>
+                <td>2014-05-06 23:40:55</td>
+                <td>2014-05-06 23:40:55</td>
+                <td>[ <a href="{:U('Admins/edit', array('id' => $admin['id']))}">编辑</a> ]</td>
+            </tr>
+            <tr align="center">
+                <td>zhanghaipeng404@gmail.com</td>
+                <td>超级管理员</td>
+                <td>系统默认管理员</td>
+                <td>已启用</td>
+                <td>2014-05-06 23:40:55</td>
+                <td>2014-05-06 23:40:55</td>
+                <td>[ <a href="{:U('Admins/edit', array('id' => $model['id']))}">编辑</a> ]</td>
+            </tr>
+            <tr align="center">
+                <td>zhanghaipeng404@gmail.com</td>
+                <td>超级管理员</td>
+                <td>系统默认管理员</td>
+                <td>已启用</td>
+                <td>2014-05-06 23:40:55</td>
+                <td>2014-05-06 23:40:55</td>
+                <td>[ <a href="{:U('Admins/edit', array('id' => $model['id']))}">编辑</a> ]</td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+<div class="page">
+    {$page}
+</div>
+
+<script type="text/javascript">
+$(function(){
+    $(".del").click(function(){
+        var del_link = $(this).attr("value");
+        popup.confirm('你真的打算删除 <b>'+ $(this).attr("name")+'</b> 吗?','温馨提示',function(action){
+            if(action == 'ok'){
+                $.getJSON(del_link, function(json){
+                    if (json.status) {
+                        popup.success(json.info);
+                        setTimeout(function(){
+                            popup.close("asyncbox_success");
+                        },2000);
+                    } else {
+                        popup.error(json.info);
+                        setTimeout(function(){
+                            popup.close("asyncbox_error");
+                        },2000);
+                    }
+
+                    setTimeout(function(){
+                        top.window.location.reload();
+                    },1000);
+                });
+            }
+        });
+
+        return false;
+    });
+});
+</script>

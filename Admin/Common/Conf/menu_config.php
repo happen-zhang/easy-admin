@@ -8,14 +8,24 @@ if (false === $modelMenu) {
 
 // 菜单项配置
 $systemMenu = array(
-    // 
+    //
     'Index' => array(
         'name' => '首页',
         'target' => 'Index/index',
         'sub_menu' => array(
             array('item' => array('Index/index' => '系统信息')),
-            array('item' => array('Admins/edit' => '修改密码')),
             array('item' => array('Cache/index' => '清除缓存'))
+        )
+    ),
+
+    // 数据管理
+    'Admins' => array(
+        'name' => '管理员权限',
+        'target' => 'Admins/index',
+        'sub_menu' => array(
+            array('item' => array('Admins/index' => '管理员信息')),
+            array('item' => array('Admins/add' => '添加管理员')),
+            array('item'=>array('Admins/edit'=>'编辑管理员信息'),'hidden'=>true),
         )
     ),
 
