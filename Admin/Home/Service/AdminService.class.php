@@ -40,6 +40,15 @@ class AdminService extends CommonService {
     }
 
     /**
+     * 管理员登出
+     * @return
+     */
+    public function logout() {
+        $this->unsetLoginMarked();
+        session_destroy();
+    }
+
+    /**
      * 检查登录状态
      * @return array
      */

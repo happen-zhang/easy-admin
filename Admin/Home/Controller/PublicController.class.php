@@ -75,7 +75,9 @@ class PublicController extends CommonController {
      * @return
      */
     public function logout() {
+        D('Admin', 'Service')->logout();
 
+        $this->success('登出成功！', U('Public/index'));
     }
 
     /**
