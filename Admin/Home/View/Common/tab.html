@@ -1,12 +1,12 @@
 <div id="Tags">
-    <div class="userPhoto"><img src="{:getGravatar('zhanghaipeng404@gmail.com')}" /> </div>
+    <div class="userPhoto"><img src="{:getGravatar($_SESSION[current_account][email])}" /> </div>
     <div class="navArea">
         <div class="userInfo">
             <div>
                 <a href="/common_system/system.php/Webinfo/index" class="sysSet"><span>&nbsp;</span>系统设置</a>
                 <a href="/common_system/system.php/Public/loginOut" class="loginOut"><span>&nbsp;</span>退出系统</a>
             </div>
-                欢迎您，543438708@qq.com | <a href="#">个人信息管理</a> | <a href="#">个人信息管理</a> | <a href="#">个人信息管理</a>
+            欢迎您，{$Think.session.current_account.email}
         </div>
         <div class="nav">
             <font id="today">{:date("Y-m-d H:i:s")}</font>

@@ -21,8 +21,8 @@ function create_verify_code(array $config) {
  * @param  int $verify_code_id
  * @return boolean
  */
-function check_verify_code($code, $verify_code_id) {
-    $Verify = new \Think\Verify($config);
+function check_verify_code($code, $verify_code_id = '') {
+    $Verify = new \Think\Verify();
     return $Verify->check($code, $verify_code_id);
 }
 

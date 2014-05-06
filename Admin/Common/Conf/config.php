@@ -2,6 +2,7 @@
 $systemConfig = include('Common/Conf/system_config.php');
 $menuConfig = include('menu_config.php');
 $backupConfig = include('backup_config.php');
+$securityConfig = include('security_config.php');
 
 $appConfig =  array(
     // 调试页
@@ -38,4 +39,4 @@ $appConfig =  array(
     'UPLOAD_ROOT' => WEB_ROOT . 'Public/uploads/'
 );
 
-return array_merge($appConfig, $systemConfig);
+return array_merge($appConfig, $systemConfig, $securityConfig);

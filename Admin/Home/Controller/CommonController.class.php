@@ -16,10 +16,41 @@ class CommonController extends Controller {
         // utf-8编码
         header('Content-Type: text/html; charset=utf-8');
 
-        // 分配菜单
-        $this->assignMenu();
-        // 面包屑位置
-        $this->assignBreadcrumbs();
+        // 登录过滤
+        $notLoginModules = explode(',', C('NOT_LOGIN_MODULES'));
+        if (!in_array(CONTROLLER_NAME, $notLoginModules)) {
+            $this->filterLogin();
+        }
+
+        // 菜单分配
+        $noMenuModules = array('Public');
+        if (!in_array(CONTROLLER_NAME, $noMenuModules)) {
+            // 分配菜单
+            $this->assignMenu();
+            // 面包屑位置
+            $this->assignBreadcrumbs();
+        }
+    }
+
+    /**
+     * 登录过滤
+     * @return
+     */
+    protected function filterLogin() {
+        $result = D('Admin', 'Service')->checkLogin();
+        if (!$result['status']) {
+            return $this->error($result['data']['error'], U('Public/index'));
+        }
+    }
+
+    /**
+     * 是否已登录
+     * @return boolean
+     */
+    protected function hasLogin() {
+        $result = D('Admin', 'Service')->checkLogin();
+
+        return $result['status'];
     }
 
     /**
@@ -127,7 +158,7 @@ class CommonController extends Controller {
             $routes = array_keys($item['item']);
             $itemNames = array_values($item['item']);
             $subMenu[$routes[0]] = $itemNames[0];
-        }            
+        }
 
         unset($menu);
         return array(
@@ -183,7 +214,7 @@ class CommonController extends Controller {
      * 返回带有status、info键值的json数据
      * @param  boolean $status
      * @param  string $info
-     * @param  string $url 
+     * @param  string $url
      * @return
      */
     protected function resultReturn($status, $info, $url) {
