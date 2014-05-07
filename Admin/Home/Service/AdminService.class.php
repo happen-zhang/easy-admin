@@ -95,7 +95,8 @@ class AdminService extends CommonService {
             return $this->errorResultReturn('账户异常，请重新登录！');
         }
 
-        // 已登录
+        // 重新设置过期时间
+        setcookie($loginMarked, $cookie[0] . '_' . time(), 0, '/');
         return $this->resultReturn(true);
     }
 
