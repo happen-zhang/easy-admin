@@ -31,9 +31,9 @@ class InputModel extends CommonModel {
 
     protected $_auto = array(
         // label
-        array('label', 'htmlspecialchars', 1, 'function'),
+        array('label', 'htmlspecialchars', 3, 'function'),
         // remark
-        array('remark', 'htmlspecialchars', 1, 'function'),
+        array('remark', 'htmlspecialchars', 3, 'function'),
         // 创建时间
         array('created_at', 'time', 1, 'function'),
         // 更新时间
