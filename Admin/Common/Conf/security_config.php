@@ -2,7 +2,7 @@
 
 $config = array(
     // 表单令牌
-    'TOKEN_ON' => true,
+    'TOKEN_ON' => false,
     'TOKEN_NAME' => '__hash__',
     'TOKEN_TYPE' => 'md5',
     'TOKEN_RESET' => true,

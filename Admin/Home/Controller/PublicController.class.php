@@ -13,6 +13,9 @@ class PublicController extends CommonController {
     public function _initialize() {
         parent::_initialize();
 
+        // 开启令牌
+        C('TOKEN_ON', true);
+
         // 需要登录才能访问的action
         $filterLogin = array('logout');
         if (in_array(ACTION_NAME, $filterLogin)) {
