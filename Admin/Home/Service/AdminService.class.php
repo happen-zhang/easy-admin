@@ -37,10 +37,15 @@ class AdminService extends CommonService {
             return $this->errorResultReturn('邮箱不存在！');
         }
 
-        $account = $this->getM()->getByEmail($admin['email']);
+        $account = $Admin->getByEmail($admin['email']);
         // 密码验证
         if ($account['password'] != $this->encrypt($admin['password'])) {
             return $this->errorResultReturn('密码不正确！');
+        }
+
+        // 是否启用
+        if (!$this->isActive($admin['email'])) {
+            return $this->errorResultReturn('账户已被禁用！');
         }
 
         $loginMarked = C('LOGIN_MARKED');
@@ -51,9 +56,12 @@ class AdminService extends CommonService {
 
         // 生成登录cookie
         $shell .= '_' . time();
-        setcookie($loginMarked, "{$shell}", 0, "/");
-
+        setcookie($loginMarked, "{$shell}", 0, '/');
         $_SESSION['current_account'] = $account;
+
+        // 更新最后登录时间
+        $Admin->where("id={$account['id']}")
+              ->save(array('last_login_at' => time()));
 
         return $this->resultReturn(true);
     }
@@ -147,6 +155,24 @@ class AdminService extends CommonService {
      */
     public function existAccount($email) {
         if ($this->getM()->where("email='{$email}'")->count() > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 账户是否启用
+     * @param  string  $email email
+     * @return boolean
+     */
+    public function isActive($email) {
+        $where = array(
+            'email' => $email,
+            'is_active' => 1
+        );
+
+        if ($this->getM()->where($where)->count() > 0) {
             return true;
         }
 
