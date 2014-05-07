@@ -11,6 +11,11 @@ class AdminsController extends CommonController {
 	   * @return
 	   */
     public function index() {
+        $result = $this->getPagination('Admin');
+
+        $this->assign('admins', $result['data']);
+        $this->assign('rows_count', $result['total_rows']);
+        $this->assign('page', $result['show']);
         $this->display();
     }
 

@@ -8,6 +8,17 @@ namespace Home\Model;
  */
 class AdminModel extends CommonModel {
 
+    // realtions
+    protected $_link = array(
+        // 一个管理员属于一个角色
+        'role' => array(
+            'mapping_type' => self::BELONGS_TO,
+            'class_name' => 'Role',
+            'foreign_key' => 'role_id',
+            'mapping_fields' => 'name'
+        )
+    );
+
     protected $_validate = array(
         // 登录邮箱不能为空
         array('email', 'require', '登录邮箱不能为空！', 1, 'regex', 3),

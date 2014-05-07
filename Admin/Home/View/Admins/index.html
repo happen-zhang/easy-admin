@@ -1,5 +1,5 @@
 <div class="Item hr">
-    <span class="fr">系统现有管理员<b>{$models_count}</b>位</span>
+    <span class="fr">现有管理员<b>{$rows_count}</b>位</span>
     <div class="current">管理员列表</div>
 </div>
 <form>
@@ -16,33 +16,17 @@
             </tr>
         </thead>
         <tbody>
+            <volist name="admins" id="admin">
             <tr align="center">
-                <td>zhanghaipeng404@gmail.com</td>
-                <td>超级管理员</td>
-                <td>系统默认管理员</td>
-                <td>已启用</td>
-                <td>2014-05-06 23:40:55</td>
-                <td>2014-05-06 23:40:55</td>
+                <td>{$admin['email']}</td>
+                <td>{$admin['role']['name']}</td>
+                <td>{$admin['remark']}</td>
+                <td><if condition="$admin['is_active'] eq 1">已启用<else/>已禁用</if></td>
+                <td>{:date('Y-m-d H:i:s', $admin['created_at'])}</td>
+                <td>{:date('Y-m-d H:i:s', $admin['last_login_at'])}</td>
                 <td>[ <a href="{:U('Admins/edit', array('id' => $admin['id']))}">编辑</a> ]</td>
             </tr>
-            <tr align="center">
-                <td>zhanghaipeng404@gmail.com</td>
-                <td>超级管理员</td>
-                <td>系统默认管理员</td>
-                <td>已启用</td>
-                <td>2014-05-06 23:40:55</td>
-                <td>2014-05-06 23:40:55</td>
-                <td>[ <a href="{:U('Admins/edit', array('id' => $model['id']))}">编辑</a> ]</td>
-            </tr>
-            <tr align="center">
-                <td>zhanghaipeng404@gmail.com</td>
-                <td>超级管理员</td>
-                <td>系统默认管理员</td>
-                <td>已启用</td>
-                <td>2014-05-06 23:40:55</td>
-                <td>2014-05-06 23:40:55</td>
-                <td>[ <a href="{:U('Admins/edit', array('id' => $model['id']))}">编辑</a> ]</td>
-            </tr>
+            </volist>
         </tbody>
     </table>
 </form>
@@ -50,34 +34,3 @@
 <div class="page">
     {$page}
 </div>
-
-<script type="text/javascript">
-$(function(){
-    $(".del").click(function(){
-        var del_link = $(this).attr("value");
-        popup.confirm('你真的打算删除 <b>'+ $(this).attr("name")+'</b> 吗?','温馨提示',function(action){
-            if(action == 'ok'){
-                $.getJSON(del_link, function(json){
-                    if (json.status) {
-                        popup.success(json.info);
-                        setTimeout(function(){
-                            popup.close("asyncbox_success");
-                        },2000);
-                    } else {
-                        popup.error(json.info);
-                        setTimeout(function(){
-                            popup.close("asyncbox_error");
-                        },2000);
-                    }
-
-                    setTimeout(function(){
-                        top.window.location.reload();
-                    },1000);
-                });
-            }
-        });
-
-        return false;
-    });
-});
-</script>
