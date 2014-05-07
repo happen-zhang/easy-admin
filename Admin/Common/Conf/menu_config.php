@@ -24,8 +24,12 @@ $systemMenu = array(
         'target' => 'Admins/index',
         'sub_menu' => array(
             array('item' => array('Admins/index' => '管理员信息')),
+            array('item' => array('Admins/rolesIndex' => '角色管理')),
             array('item' => array('Admins/add' => '添加管理员')),
+            array('item' => array('Admins/roleAdd' => '添加角色')),
             array('item'=>array('Admins/edit'=>'编辑管理员信息'),'hidden'=>true),
+            array('item' => array('Admins/roleEdit'=>'编辑角色信息'),
+                  'hidden'=>true),
         )
     ),
 

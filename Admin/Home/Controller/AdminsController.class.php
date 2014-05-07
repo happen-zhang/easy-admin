@@ -69,7 +69,7 @@ class AdminsController extends CommonController {
     public function update() {
         $adminService = D('Admin', 'Service');
         if (!isset($_POST['admin'])
-        	  || !$adminService->existAdmin($_POST['admin']['id'])) {
+            || !$adminService->existAdmin($_POST['admin']['id'])) {
             return $this->errorReturn('无效的操作！');
         }
 
@@ -79,5 +79,81 @@ class AdminsController extends CommonController {
         }
 
         return $this->successReturn('更新管理员信息成功！', U('Admins/index'));
+    }
+
+    /**
+     * 角色管理列表
+     * @return
+     */
+    public function rolesIndex() {
+        $roles = D('Admin', 'Service')->getRoles();
+
+        $this->assign('roles', $roles);
+        $this->assign('rows_count', count($roles));
+        $this->display('roles_index');
+    }
+
+    /**
+     * 添加角色
+     * @return
+     */
+    public function roleAdd() {
+        $roles = D('Admin', 'Service')->getRoles();
+
+        $this->assign('roles', $roles);
+        $this->display('role_add');
+    }
+
+    /**
+     * 创建角色
+     * @return
+     */
+    public function roleCreate() {
+        if (!isset($_POST['role'])) {
+            return $this->errorReturn('无效的操作！');
+        }
+
+        $result = D('Admin', 'Service')->addRole($_POST['role']);
+        if (!$result['status']) {
+            return $this->errorReturn($result['data']['error']);
+        }
+
+        return $this->successReturn('添加角色成功！', U('Admins/rolesIndex'));
+    }
+
+    /**
+     * 编辑角色信息
+     * @return
+     */
+    public function roleEdit() {
+        $adminService = D('Admin', 'Service');
+        if (!isset($_GET['id']) || !$adminService->existRole($_GET['id'])) {
+            return $this->error('需要编辑的角色不存在！');
+        }
+
+        $role = M('Role')->getById($_GET['id']);
+
+        $this->assign('role', $role);
+        $this->assign('roles', $adminService->getRoles());
+        $this->display('role_edit');
+    }
+
+    /**
+     * 更新角色信息
+     * @return
+     */
+    public function roleUpdate() {
+        $adminService = D('Admin', 'Service');
+        if (!isset($_POST['role'])
+            || !$adminService->existRole($_POST['role']['id'])) {
+            return $this->errorReturn('无效的操作！');
+        }
+
+        $result = $adminService->updateRole($_POST['role']);
+        if (!$result['status']) {
+            return $this->errorReturn($result['data']['error']);
+        }
+
+        return $this->successReturn('更新角色信息成功！', U('Admins/rolesIndex'));
     }
 }

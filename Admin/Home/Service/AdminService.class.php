@@ -47,6 +47,43 @@ class AdminService extends CommonService {
     }
 
     /**
+     * 添加角色
+     * @param  array $role 角色信息
+     * @return array
+     */
+    public function addRole($role) {
+        $Role = D('Role');
+
+        if (false === ($role = $Role->create($role))) {
+            return $this->errorResultReturn($Role->getError());
+        }
+
+        if (false === $Role->add($role)) {
+            return $this->errorResultReturn('系统错误！');
+        }
+
+        return $this->resultReturn(true);
+    }
+
+    /**
+     * 更新角色信息
+     * @return
+     */
+    public function updateRole($role) {
+        $Role = D('Role');
+
+        if (false === ($role = $Role->create($role))) {
+            return $this->errorResultReturn($Role->getError());
+        }
+
+        if (false === $Role->save($role)) {
+            return $this->errorResultReturn('系统错误！');
+        }
+
+        return $this->resultReturn(true);
+    }
+
+    /**
      * 管理员登录认证
      * @param  array $admin 管理员信息
      * @return array
@@ -162,7 +199,7 @@ class AdminService extends CommonService {
     }
 
     /**
-     * 得到带有层级的role数据de
+     * 得到带有层级的role数据
      * @return array
      */
     public function getRoles() {
@@ -190,6 +227,15 @@ class AdminService extends CommonService {
      */
     public function existAdmin($id) {
         return !is_null($this->getM()->getById($id));
+    }
+
+    /**
+     * 是否存在角色
+     * @param  int     $id 角色id
+     * @return boolean
+     */
+    public function existRole($id) {
+        return !is_null(M('Role')->getById($id));
     }
 
     /**
