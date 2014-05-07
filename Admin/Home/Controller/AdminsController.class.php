@@ -19,7 +19,25 @@ class AdminsController extends CommonController {
      * @return
      */
     public function add() {
+        $this->assign('roles', D('Admin', 'Service')->getRoles());
         $this->display();
+    }
+
+    /**
+     * 创建管理员
+     * @return
+     */
+    public function create() {
+        if (!isset($_POST['admin'])) {
+            return $this->errorReturn('无效的操作！');
+        }
+
+        $result = D('Admin', 'Service')->add($_POST['admin']);
+        if (!$result['status']) {
+            return $this->errorReturn($result['data']['error']);
+        }
+
+        return $this->successReturn('添加管理员成功！', U('Admins/index'));
     }
 
     /**

@@ -6,6 +6,25 @@ namespace Home\Service;
  */
 class AdminService extends CommonService {
     /**
+     * 添加管理员
+     * @param  array $admin 管理员信息
+     * @return array
+     */
+    public function add($admin) {
+        $Admin = $this->getD();
+
+        if (false === ($admin = $Admin->create($admin))) {
+            return $this->errorResultReturn($Admin->getError());
+        }
+
+        if (false === $Admin->add($admin)) {
+            return $this->errorResultReturn('系统错误！');
+        }
+
+        return $this->resultReturn(true);
+    }
+
+    /**
      * 管理员登录认证
      * @param  array $admin 管理员信息
      * @return array
@@ -109,6 +128,15 @@ class AdminService extends CommonService {
         unset($_SESSION[$loginMarked], $_COOKIE[$loginMarked]);
 
         return ;
+    }
+
+    /**
+     * 得到带有层级的role数据de
+     * @return array
+     */
+    public function getRoles() {
+        $category = new \Org\Util\Category('Role', array('id', 'pid', 'name'));
+        return $category->getList();
     }
 
     /**
