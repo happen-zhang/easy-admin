@@ -25,6 +25,28 @@ class AdminService extends CommonService {
     }
 
     /**
+     * 更新管理员信息
+     * @return
+     */
+    public function update($admin) {
+        $Admin = $this->getD();
+
+        if (false === ($admin = $Admin->create($admin))) {
+            return $this->errorResultReturn($Admin->getError());
+        }
+
+        if (empty($admin['password'])) {
+            unset($admin['password']);
+        }
+
+        if (false === $Admin->save($admin)) {
+            return $this->errorResultReturn('系统错误！');
+        }
+
+        return $this->resultReturn(true);
+    }
+
+    /**
      * 管理员登录认证
      * @param  array $admin 管理员信息
      * @return array
@@ -159,6 +181,15 @@ class AdminService extends CommonService {
         }
 
         return false;
+    }
+
+    /**
+     * 是否存在管理员
+     * @param  int     $id 管理员id
+     * @return boolean
+     */
+    public function existAdmin($id) {
+        return !is_null($this->getM()->getById($id));
     }
 
     /**

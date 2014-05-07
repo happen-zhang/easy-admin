@@ -46,10 +46,38 @@ class AdminsController extends CommonController {
     }
 
     /**
-     * 编辑管理员
+     * 编辑管理员信息
      * @return
      */
     public function edit() {
+        $adminService = D('Admin', 'Service');
+        if (!isset($_GET['id']) || !$adminService->existAdmin($_GET['id'])) {
+            return $this->error('需要编辑的管理员信息不存在！');
+        }
+
+        $admin = M('Admin')->getById($_GET['id']);
+
+        $this->assign('admin', $admin);
+        $this->assign('roles', $adminService->getRoles());
         $this->display();
+    }
+
+    /**
+     * 更新管理员信息
+     * @return
+     */
+    public function update() {
+        $adminService = D('Admin', 'Service');
+        if (!isset($_POST['admin'])
+        	  || !$adminService->existAdmin($_POST['admin']['id'])) {
+            return $this->errorReturn('无效的操作！');
+        }
+
+        $result = $adminService->update($_POST['admin']);
+        if (!$result['status']) {
+            return $this->errorReturn($result['data']['error']);
+        }
+
+        return $this->successReturn('更新管理员信息成功！', U('Admins/index'));
     }
 }
