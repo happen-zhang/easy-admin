@@ -49,7 +49,9 @@ class AdminModel extends CommonModel {
         // 创建时间
         array('created_at', 'time', 1, 'function'),
         // 更新时间
-        array('updated_at', 'time', 3, 'function')
+        array('updated_at', 'time', 3, 'function'),
+        // 最后登录时间
+        array('last_login_at', 'time', 1, 'function')
     );
 
     /**
