@@ -1,0 +1,28 @@
+<div class="Item hr">
+    <span class="fr">现有节点<b>{$rows_count}</b>个</span>
+    <div class="current">节点列表</div>
+</div>
+<form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+        <thead>
+            <tr>
+                <td>节点结构</td>
+                <td>节点名称</td>
+                <td>节点类型</td>
+                <td>状态</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <volist name="nodes" id="node">
+            <tr align="center">
+                <td align="left">{$node['fullname']}</td>
+                <td>{$node['name']}</td>
+                <td>{$node['type']}</td>
+                <td><if condition="$node['status'] eq 1">已启用<else/>已禁用</if></td>
+                <td>[ <a href="{:U('Nodes/nodeEdit', array('id' => $node['id']))}">编辑</a> ]</td>
+            </tr>
+            </volist>
+        </tbody>
+    </table>
+</form>

@@ -157,4 +157,21 @@ class AdminsController extends CommonController {
 
         return $this->successReturn('更新角色信息成功！', U('Admins/rolesIndex'));
     }
+
+    /**
+     * 节点列表
+     * @return
+     */
+    public function nodesIndex() {
+        $nodeService = D('Admin', 'Service');
+        $nodes = $nodeService->getNodes();
+
+        foreach ($nodes as $key => $node) {
+            $nodes[$key]['type'] = $nodeService->getNodeType($node['level']);
+        }
+
+        $this->assign('nodes', $nodes);
+        $this->assign('rows_count', count($nodes));
+        $this->display('nodes_index');
+    }
 }

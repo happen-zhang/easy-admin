@@ -6,6 +6,16 @@ namespace Home\Service;
  */
 class AdminService extends CommonService {
     /**
+     * 节点类型
+     * @var array
+     */
+    private $NODE_TYPE = array(
+        1 => '应用（GROUP）',
+        2 => '模块（MODULE）',
+        3 => '操作（ACTION）'
+    );
+
+    /**
      * 添加管理员
      * @param  array $admin 管理员信息
      * @return array
@@ -227,6 +237,24 @@ class AdminService extends CommonService {
     public function getRoles() {
         $category = new \Org\Util\Category('Role', array('id', 'pid', 'name'));
         return $category->getList();
+    }
+
+    /**
+     * 得到带又层级的node数据
+     * @return array
+     */
+    public function getNodes() {
+        $category = new \Org\Util\Category('Node', array('id', 'pid','title'));
+        return $category->getList();
+    }
+
+    /**
+     * 得到节点的类型
+     * @param  int    $type 节点的类型
+     * @return string
+     */
+    public function getNodeType($type) {
+        return $this->NODE_TYPE[$type];
     }
 
     /**
