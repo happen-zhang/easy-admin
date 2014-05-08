@@ -155,7 +155,6 @@ class CommonController extends Controller {
                 if (!empty($mapped[$mapping])) {
                     $key = "{$mapped[$mapping]}-{$key}";
                     $mapping = $mapped[$mapping];
-                    var_dump($key);
                 } else {
                     $key = "{$mapping}-{$key}";
                 }
