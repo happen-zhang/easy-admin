@@ -135,6 +135,7 @@ class AdminsController extends CommonController {
 
         $this->assign('role', $role);
         $this->assign('roles', $adminService->getRoles());
+        $this->assign('sids', $adminService->getSonRoleIds($role['id']));
         $this->display('role_edit');
     }
 

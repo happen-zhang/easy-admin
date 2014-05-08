@@ -76,6 +76,10 @@ class AdminService extends CommonService {
             return $this->errorResultReturn($Role->getError());
         }
 
+        if ($role['id'] == $role['pid']) {
+            $role['pid'] = 0;
+        }
+
         if (false === $Role->save($role)) {
             return $this->errorResultReturn('系统错误！');
         }
@@ -205,6 +209,27 @@ class AdminService extends CommonService {
     public function getRoles() {
         $category = new \Org\Util\Category('Role', array('id', 'pid', 'name'));
         return $category->getList();
+    }
+
+    /**
+     * 得到子角色的id
+     * @param  int   $id 角色id
+     * @return array
+     */
+    public function getSonRoleIds($id) {
+        $sRoles = M('Role')->field('id')->where("pid={$id}")->select();
+        $sids = array();
+
+        if (is_null($sRoles)) {
+            return $sids;
+        }
+
+        foreach ($sRoles as $sRole) {
+            $sids[] = $sRole['id'];
+            $sids = array_merge($sids, $this->getSonRoleIds($sRole['id']));
+        }
+
+        return $sids;
     }
 
     /**

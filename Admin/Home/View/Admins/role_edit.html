@@ -13,7 +13,7 @@
                 <td>
                     <select name="role[pid]">
                         <volist name="roles" id="item">
-                        <option value="{$item['id']}" <if condition="$role['pid'] eq $item['id']">selected</if> <if condition="$role['id'] eq $item['id']">disabled="true"</if>>{$item['fullname']}</option>
+                        <option value="{$item['id']}" <if condition="$role['pid'] eq $item['id']">selected</if> <if condition="$role['id'] == $item['id'] || in_array($item['id'], $sids)">disabled="true"</if>>{$item['fullname']}</option>
                         </volist>
                     </select>
                 </td>
