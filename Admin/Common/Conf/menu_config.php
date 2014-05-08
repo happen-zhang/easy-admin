@@ -24,16 +24,34 @@ $systemMenu = array(
         'target' => 'Admins/index',
         'sub_menu' => array(
             array('item' => array('Admins/index' => '管理员信息')),
-            array('item' => array('Admins/rolesIndex' => '角色管理')),
-            array('item' => array('Admins/nodesIndex' => '节点管理')),
+            array('item' => array('Roles/index' => '角色管理')),
+            array('item' => array('Nodes/index' => '节点管理')),
             array('item' => array('Admins/add' => '添加管理员')),
-            array('item' => array('Admins/roleAdd' => '添加角色')),
-            array('item' => array('Admins/nodeAdd' => '添加节点')),
+            array('item' => array('Roles/add' => '添加角色')),
             array('item'=>array('Admins/edit'=>'编辑管理员信息'),'hidden'=>true),
-            array('item' => array('Admins/roleEdit'=>'编辑角色信息'),
-                  'hidden'=>true),
-            array('item' => array('Admins/nodeEdit'=>'编辑节点信息'),
-                  'hidden'=>true),
+            array('item' => array('Roles/edit'=>'编辑角色信息'),'hidden'=>true)
+        )
+    ),
+
+    // 角色管理
+    'Roles' => array(
+        'name' => '角色管理',
+        'target' => 'Roles/index',
+        'mapping' => 'Admins',
+        'sub_menu' => array(
+            array('item' => array('Roles/index' => '角色列表')),
+            array('item' => array('Roles/add' => '添加角色')),
+            array('item' => array('Roles/edit' => '编辑角色信息'),'hidden'=>true),
+        )
+    ),
+
+    // 节点管理
+    'Nodes' => array(
+        'name' => '节点管理',
+        'target' => 'Nodes/index',
+        'mapping' => 'Admins',
+        'sub_menu' => array(
+            array('item' => array('Nodes/index' => '节点列表'))
         )
     ),
 
