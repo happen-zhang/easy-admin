@@ -8,6 +8,7 @@
             <tr>
                 <td>角色名称</td>
                 <td>备注</td>
+                <td>状态</td>
                 <td>操作</td>
             </tr>
         </thead>
@@ -16,6 +17,7 @@
             <tr align="center">
                 <td align="left">{$role['fullname']}</td>
                 <td>{$role['description']}</td>
+                <td><if condition="$role['status'] eq 1">已启用<else/>已禁用</if></td>
                 <td>[ <a href="{:U('Admins/roleEdit', array('id' => $role['id']))}">编辑</a> ]</td>
             </tr>
             </volist>

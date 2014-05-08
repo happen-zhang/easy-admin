@@ -19,6 +19,15 @@
                 </td>
             </tr>
             <tr>
+                <th width="80">状态：</th>
+                <td>
+                    <select name="role[status]">
+                        <option value="1" <if condition="$role['status'] eq 1" >selected</if>>启用</option>
+                        <option value="0" <if condition="$role['status'] eq 0" >selected</if>>禁用</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <th width="80">角色描述：</th>
                 <td><textarea class="jq_watermark" rows = "5" cols="68" name="role[description]" placeholder="角色描述">{$role['description']}</textarea></td>
             </tr>

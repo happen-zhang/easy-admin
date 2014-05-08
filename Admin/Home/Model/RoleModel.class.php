@@ -14,6 +14,9 @@ class RoleModel extends CommonModel {
         // 角色名称不能大于32个字符
         array('name', '0,32', '角色名称不能超过32个字符！', 1, 'length', 3),
 
+        // 状态
+        array('status', '0,1', '无效的状态！', 1, 'in', 3),
+
         // 父角色不能为空
         array('pid', 'require', '父角色不能为空！', 1, 'regex', 3),
     );
