@@ -116,6 +116,27 @@ class NodeService extends CommonService {
         return true;
     }
 
+    /**
+     * 设置节点状态
+     * @param  int   $id     节点id
+     * @param  int   $status 节点状态
+     * @return mixed
+     */
+    public function setStatus($id, $status) {
+        return $this->getM()
+                    ->where("id={$id}")
+                    ->save(array('status' => $status));
+    }
+
+    /**
+     * 节点是否存在
+     * @param  int     $id 节点id
+     * @return boolean
+     */
+    public function existNode($id) {
+        return !empty($this->getM()->getById($id));
+    }
+
     protected function getModelName() {
         return 'Node';
     }
