@@ -144,18 +144,28 @@ class CommonController extends Controller {
 
         // 主菜单
         $mainMenu = array();
+        // 已被映射过的键值
+        $mapped = array();
         foreach ($menu as $key => $menuItem) {
             // 主菜单是否存在映射
             if (isset($menuItem['mapping'])) {
                 // 映射名
                 $mapping = $menuItem['mapping'];
                 // 新的菜单键值
-                $key = $menuItem['mapping'] . '-' . $key;
+                if (!empty($mapped[$mapping])) {
+                    $key = "{$mapped[$mapping]}-{$key}";
+                    $mapping = $mapped[$mapping];
+                    var_dump($key);
+                } else {
+                    $key = "{$mapping}-{$key}";
+                }
+
                 // 需要映射的键值已存在，则删除
                 if (isset($mainMenu[$mapping])) {
                     $mainMenu[$key]['name'] = $mainMenu[$mapping]['name'];
                     $mainMenu[$key]['target'] = $mainMenu[$mapping]['target'];
                     unset($mainMenu[$mapping]);
+                    $mapped[$mapping] = $key;
                 }
 
                 continue ;
