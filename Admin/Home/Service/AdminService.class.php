@@ -122,6 +122,18 @@ class AdminService extends CommonService {
         setcookie($loginMarked, "{$shell}", 0, '/');
         $_SESSION['current_account'] = $account;
 
+        // 权限认证
+        if (C('USER_AUTH_ON')) {
+            $_SESSION[C('USER_AUTH_KEY')] = $account['id'];
+            if ($this->isSuperAdmin($account['email'])) {
+                // 超级管理员无需认证
+                $_SESSION[C('ADMIN_AUTH_KEY')] = true;
+            }
+
+            // 缓存访问权限
+            \Org\Util\Rbac::saveAccessList();
+        }
+
         // 更新最后登录时间
         $Admin->where("id={$account['id']}")
               ->save(array('last_login_at' => time()));
@@ -135,6 +147,12 @@ class AdminService extends CommonService {
      */
     public function logout() {
         $this->unsetLoginMarked();
+
+        if (C('USER_AUTH_ON')) {
+            unset($_SESSION[C('USER_AUTH_KEY')]);
+            unset($_SESSION[C('ADMIN_AUTH_KEY')]);
+        }
+
         session_destroy();
     }
 
@@ -261,6 +279,15 @@ class AdminService extends CommonService {
      */
     public function existRole($id) {
         return !is_null(M('Role')->getById($id));
+    }
+
+    /**
+     * 是否为超级管理员
+     * @param  string  $email email
+     * @return boolean
+     */
+    public function isSuperAdmin($email) {
+        return $email == C('ADMIN_AUTH_KEY');
     }
 
     /**

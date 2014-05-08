@@ -6,4 +6,6 @@
   'DB_PWD' => 'happen',
   'DB_PORT' => '3306',
   'DB_PREFIX' => 'ea_',
+
+  'SUPER_ADMIN_EMAIL' => 'zhanghaipeng404@gmail.com'
 ); ?>

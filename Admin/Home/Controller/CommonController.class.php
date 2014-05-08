@@ -30,6 +30,9 @@ class CommonController extends Controller {
             // 面包屑位置
             $this->assignBreadcrumbs();
         }
+
+        // 权限过滤
+        $this->filterAccess();
     }
 
     /**
@@ -41,6 +44,32 @@ class CommonController extends Controller {
         if (!$result['status']) {
             return $this->error($result['data']['error'], U('Public/index'));
         }
+    }
+
+    /**
+     * 权限过滤
+     * @return
+     */
+    protected function filterAccess() {
+        if (!C('USER_AUTH_ON')) {
+            return ;
+        }
+
+        if (\Org\Util\Rbac::AccessDecision(C('MODULE_AUTH_NAME'))) {
+            return ;
+        }
+
+        if (!$_SESSION [C('USER_AUTH_KEY')]) {
+            // 登录认证号不存在
+            return $this->redirect(C('USER_AUTH_GATEWAY'));
+        }
+
+        if ('Index' === CONTROLLER_NAME && 'index' === ACTION_NAME) {
+            // 首页无法进入，则登出帐号
+            D('Admin', 'Service')->logout();
+        }
+
+        return $this->error('您没有权限进入该页！');
     }
 
     /**
