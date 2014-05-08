@@ -96,9 +96,7 @@ class ModelLogic extends CommonLogic {
                 // CURD菜单
                 array('item' => array("{$ctrlName}/index" =>$itemName .'管理')),
                 array('item' => array("{$ctrlName}/add" => '添加' .$itemName)),
-                array('item' => array("{$ctrlName}/show" => $itemName . '信息'),
-                      'hidden' => true),
-                array('item' => array("{$ctrlName}/edit" => '编辑' .$itemName),
+                array('item' => array("{$ctrlName}/edit" => '编辑' .$itemName)
                       'hidden' => true)
             )
         );

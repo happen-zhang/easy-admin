@@ -80,9 +80,15 @@ class ModelService extends CommonService {
             $this->addMenuItem($model);
         }
 
+        // 生成节点
+        $ctrlName = $this->getCtrlName($model['tbl_name']);
+        $nodeService = D('Node', 'Service');
+        $amns = $nodeService->addModuleNodes($model['menu_name'], $ctrlName);
+
         if (false === $addStatus
             || false === $createTblStatus
-            || false === $addFieldStatus) {
+            || false === $addFieldStatus
+            || false === $amns) {
             $Model->rollback();
             return $this->resultReturn(false);
         }
@@ -153,13 +159,17 @@ class ModelService extends CommonService {
             return $this->resultReturn(false);
         }
 
+        $ctrlName = $this->getCtrlName($model['tbl_name']);
+
         $Model->startTrans();
         // 删除数据表
         $dropStatus = $Model->dropTable($model['tbl_name']);
         // 删除模型数据
         $delStatus = $Model->delete($id);
         // 删除菜单项
-        $this->delMenuItem($this->getCtrlName($model['tbl_name']));
+        $this->delMenuItem($ctrlName);
+        // 删除节点
+        D('Node', 'Service')->deleteModuleNodes($ctrlName);
 
         if (false === $dropStatus || false === $delStatus) {
             $Modle->rollback();
