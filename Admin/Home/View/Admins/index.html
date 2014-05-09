@@ -24,7 +24,7 @@
                 <td><if condition="$admin['is_active'] eq 1">已启用<else/>已禁用</if></td>
                 <td>{:date('Y-m-d H:i:s', $admin['created_at'])}</td>
                 <td>{:date('Y-m-d H:i:s', $admin['last_login_at'])}</td>
-                <td>[ <a href="{:U('Admins/edit', array('id' => $admin['id']))}">编辑</a> ]</td>
+                <td><if condition="($admin['email'] == C('SUPER_ADMIN_EMAIL')) && !$_SESSION[C('ADMIN_AUTH_KEY')]">---<else/>[ <a href="{:U('Admins/edit', array('id' => $admin['id']))}">编辑</a> ]</if></td>
             </tr>
             </volist>
         </tbody>

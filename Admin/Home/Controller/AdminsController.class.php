@@ -56,6 +56,10 @@ class AdminsController extends CommonController {
         }
 
         $admin = M('Admin')->getById($_GET['id']);
+        if (C('SUPER_ADMIN_EMAIL') == $admin['email']
+            && !$_SESSION[C('ADMIN_AUTH_KEY')]) {
+            return $this->errorReturn('您没有权限访问该页！');
+        }
 
         $this->assign('admin', $admin);
         $this->assign('roles', D('Role', 'Service')->getRoles());
