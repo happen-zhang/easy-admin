@@ -95,7 +95,7 @@ class RolesController extends CommonController {
 
         $role = M('Role')->getById($_GET['id']);
         if (0 == $role['pid']) {
-            return $this->error('您无权限访问该页！');
+            return $this->error('您无权限进行该操作！');
         }
 
         $access = D('Access')->relation(true)

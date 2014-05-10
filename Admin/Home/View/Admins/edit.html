@@ -30,7 +30,7 @@
                 <td>
                     <select name="admin[role_id]">
                         <volist name="roles" id="role">
-                        <option value="{$role['id']}" <if condition="$admin['role_id'] eq $role['id']" >selected</if>>{$role['fullname']}</option>
+                        <option value="{$role['id']}" <if condition="$admin['role_id'] == $role['id']" >selected</if> <if condition="$role['pid'] eq 0">disabled="true"</if>>{$role['fullname']}</option>
                         </volist>
                     </select>
                 </td>

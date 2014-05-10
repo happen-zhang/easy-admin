@@ -69,7 +69,7 @@ class CommonController extends Controller {
             D('Admin', 'Service')->logout();
         }
 
-        return $this->error('您没有权限访问该页！');
+        return $this->error('您没有权限执行该操作！');
     }
 
     /**
