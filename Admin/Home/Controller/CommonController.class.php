@@ -22,6 +22,9 @@ class CommonController extends Controller {
             $this->filterLogin();
         }
 
+        // 权限过滤
+        $this->filterAccess();
+
         // 菜单分配
         $noMenuModules = array('Public');
         if (!in_array(CONTROLLER_NAME, $noMenuModules)) {
@@ -30,9 +33,6 @@ class CommonController extends Controller {
             // 面包屑位置
             $this->assignBreadcrumbs();
         }
-
-        // 权限过滤
-        $this->filterAccess();
     }
 
     /**
@@ -55,7 +55,7 @@ class CommonController extends Controller {
             return ;
         }
 
-        if (\Org\Util\Rbac::AccessDecision(C('MODULE_AUTH_NAME'))) {
+        if (\Org\Util\Rbac::AccessDecision(C('GROUP_AUTH_NAME'))) {
             return ;
         }
 
@@ -146,7 +146,23 @@ class CommonController extends Controller {
         $mainMenu = array();
         // 已被映射过的键值
         $mapped = array();
+
+        // 访问权限
+        $access = $_SESSION['_ACCESS_LIST'];
+        if (empty($access)) {
+            $authId = $_SESSION[C('USER_AUTH_KEY')];
+            $access = \Org\Util\Rbac::getAccessList($authId);
+        }
+        $authGroup = strtoupper(C('GROUP_AUTH_NAME'));
+
+        // 处理主菜单
         foreach ($menu as $key => $menuItem) {
+            // 不显示无权限访问的主菜单
+            if (!$_SESSION[C('ADMIN_AUTH_KEY')]
+                && !array_key_exists(strtoupper($key), $access[$authGroup])) {
+                continue ;
+            }
+
             // 主菜单是否存在映射
             if (isset($menuItem['mapping'])) {
                 // 映射名
@@ -181,10 +197,20 @@ class CommonController extends Controller {
             $ctrlName = $menu[$ctrlName]['mapping'];
         }
 
+        $actions = $access[$authGroup];
         // 主菜单如果为隐藏，则子菜单也不被显示
         foreach ($menu[$ctrlName]['sub_menu'] as $item) {
-            // 子菜单是需要显示
+            // 子菜单是否需要显示
             if (isset($item['hidden']) && true === $item['hidden']) {
+                continue ;
+            }
+
+            $route = array_shift(array_keys($item['item']));
+            $action = explode('/', strtoupper($route));
+            // 不显示无权限访问的子菜单
+            if (!$_SESSION[C('ADMIN_AUTH_KEY')]
+                && (!array_key_exists($action[0], $actions)
+                    || !array_key_exists($action[1], $actions[$action[0]]))) {
                 continue ;
             }
 

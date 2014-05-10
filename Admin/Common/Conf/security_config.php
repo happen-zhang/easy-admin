@@ -30,7 +30,7 @@ $config = array(
     // 游客识别号
     'GUEST_AUTH_ID' => 'guest',
     // 模块名称（不要修改）
-    'MODULE_AUTH_NAME' => 'Admin',
+    'GROUP_AUTH_NAME' => 'Admin',
     // 无需认证模块
     'NOT_AUTH_MODULE' => 'Public',
     // 需要认证模块
