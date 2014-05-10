@@ -47,6 +47,38 @@ class RoleService extends CommonService {
     }
 
     /**
+     * 分配角色权限
+     * @param  int   $roleId 角色id
+     * @param  array $access 权限访问数组
+     * @return array
+     */
+    public function assignAccess($roleId, array $access) {
+        $Access = M('Access');
+
+        $Access->startTrans();
+        $Access->where("role_id={$roleId}")->delete();
+        if (0 === count($access)) {
+            $Access->commit();
+            return $this->resultReturn(true, '清楚数据成功！');
+        }
+
+        $newAccess = array();
+        foreach ($access as $item) {
+            $item = explode(':', $item);
+            $newAccess[] = array('role_id' => $roleId, 'node_id' => $item[0]);
+        }
+
+        // 插入新权限
+        if (false === $Access->addAll($newAccess)) {
+            $Access->rollback();
+            return $this->errorResultReturn('分配权限失败！');
+        }
+
+        $Access->commit();
+        return $this->resultReturn(true);
+    }
+
+    /**
      * 得到带有层级的role数据
      * @return array
      */

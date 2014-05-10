@@ -42,6 +42,8 @@ $systemMenu = array(
             array('item' => array('Roles/index' => '角色列表')),
             array('item' => array('Roles/add' => '添加角色')),
             array('item' => array('Roles/edit' => '编辑角色信息'),'hidden'=>true),
+            array('item' => array('Roles/assignAccess' => '分配权限'),
+                  'hidden'=>true)
         )
     ),
 

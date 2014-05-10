@@ -26,6 +26,69 @@ class NodeService extends CommonService {
     }
 
     /**
+     * 得到应用节点
+     * @param  array  $where 查询条件
+     * @return array
+     */
+    public function getGroupNodes(array $where) {
+        if (!isset($where) || !is_array($where)) {
+            $where = array();
+        }
+
+        $map = array('level' => 1);
+        return $this->getM()->where(array_merge($map, $where))->select();
+    }
+
+    /**
+     * 得到模块节点
+     * @param  array  $where 查询条件
+     * @return array
+     */
+    public function getModuleNodes(array $where) {
+        if (!isset($where) || !is_array($where)) {
+            $where = array();
+        }
+
+        $map = array('level' => 2);
+        return $this->getM()->where(array_merge($map, $where))->select();
+    }
+
+    /**
+     * 得到操作节点
+     * @param  array  $where 查询条件
+     * @return array
+     */
+    public function getActionNodes(array $where) {
+        if (!isset($where) || !is_array($where)) {
+            $where = array();
+        }
+
+        $map = array('level' => 3);
+        return $this->getM()->where(array_merge($map, $where))->select();
+    }
+
+    /**
+     * 得到带有级别所有的节点
+     * @return array
+     */
+    public function getLevelNodes() {
+        $groups = $this->getGroupNodes();
+        foreach ($groups as $i => $group) {
+            $where['pid'] = $group['id'];
+            $modules = $this->getModuleNodes($where);
+            foreach ($modules as $j => $module) {
+                $where['pid'] = $module['id'];
+                $actions = $this->getActionNodes($where);
+                $modules[$j]['actions'] = $actions;
+            }
+
+            $groups[$i]['modules'] = $modules;
+        }
+
+        return $groups;
+    }
+
+    /**
      * 得到节点的类型
      * @param  int    $type 节点的类型
      * @return string
