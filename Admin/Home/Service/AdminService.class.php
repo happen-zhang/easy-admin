@@ -43,6 +43,9 @@ class AdminService extends CommonService {
             return $this->errorResultReturn('系统错误！');
         }
 
+        M('RoleAdmin')->where("user_id={$admin['id']}")
+                      ->save(array('role_id' => $admin['role_id']));
+
         return $this->resultReturn(true);
     }
 
