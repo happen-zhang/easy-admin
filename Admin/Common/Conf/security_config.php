@@ -26,7 +26,7 @@ $config = array(
     // 认证识别号
     'USER_AUTH_KEY' => 'mineaad',
     // 超级管理员认证号
-    'ADMIN_AUTH_KEY' => $sysConfig['SUPER_ADMIN_EMAIL'],
+    'ADMIN_AUTH_KEY' => 'eaadminae',
     // 游客识别号
     'GUEST_AUTH_ID' => 'guest',
     // 模块名称（不要修改）

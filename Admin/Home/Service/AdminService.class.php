@@ -87,7 +87,7 @@ class AdminService extends CommonService {
         // 权限认证
         if (C('USER_AUTH_ON')) {
             $_SESSION[C('USER_AUTH_KEY')] = $account['id'];
-            if ($this->isSuperAdmin($account['email'])) {
+            if ($account['is_super']) {
                 // 超级管理员无需认证
                 $_SESSION[C('ADMIN_AUTH_KEY')] = true;
             }
@@ -202,15 +202,6 @@ class AdminService extends CommonService {
      */
     public function existAdmin($id) {
         return !is_null($this->getM()->getById($id));
-    }
-
-    /**
-     * 是否为超级管理员
-     * @param  string  $email email
-     * @return boolean
-     */
-    public function isSuperAdmin($email) {
-        return $email == C('ADMIN_AUTH_KEY');
     }
 
     /**
