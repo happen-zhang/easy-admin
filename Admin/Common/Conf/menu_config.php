@@ -14,6 +14,7 @@ $systemMenu = array(
         'target' => 'Index/index',
         'sub_menu' => array(
             array('item' => array('Index/index' => '系统信息')),
+            array('item' => array('Index/siteEdit' => '站点信息')),
             array('item' => array('Cache/index' => '清除缓存'))
         )
     ),

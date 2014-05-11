@@ -43,4 +43,42 @@ class IndexController extends CommonController {
         $this->assign('info', $info);
         $this->display();
     }
+
+    /**
+     * 编辑站点信息
+     * @return
+     */
+    public function siteEdit() {
+        $title = C('SITE_TITLE');
+        $keyword = C('SITE_KEYWORD');
+        $description = C('SITE_DESCRIPTION');
+
+        $this->assign('title', $title);
+        $this->assign('keyword', $keyword);
+        $this->assign('description', $description);
+        $this->display('site_edit');
+    }
+
+    /**
+     * 更新站点信息
+     * @return
+     */
+    public function siteUpdate() {
+        if (!isset($_POST['site'])) {
+            return $this->errorReturn('无效的操作！');
+        }
+
+        $confName = 'system_config';
+
+        $conf = fast_cache($confName, '', C('COMMON_CONF_PATH'));
+        $conf['SITE_TITLE'] = $_POST['site']['title'];
+        $conf['SITE_KEYWORD'] = $_POST['site']['keyword'];
+        $conf['SITE_DESCRIPTION'] = $_POST['site']['description'];
+
+        if (false === fast_cache($confName, $conf, C('COMMON_CONF_PATH'))) {
+            return $this->errorReturn('站点信息更新失败！');
+        }
+
+        return $this->successReturn('站点信息更新成功！');
+    }
 }
