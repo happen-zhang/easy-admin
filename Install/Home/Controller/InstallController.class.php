@@ -258,8 +258,13 @@ class InstallController extends CommonController {
         $config['SITE_KEYWORD'] = $systemConfig['site']['keyword'];
         $config['SITE_DESCRIPTION'] = $systemConfig['site']['description'];
 
-        $data = "<?php return " . var_export($config, true) . "; ?>\r\n";
-        return file_put_contents(C('SYSTEM_CONFIG_PATH'), $data);
+        $data = "<?php return " . var_export($config, true) . ";\r\n";
+        if (false === file_put_contents(C('SYSTEM_CONFIG_PATH'), $data)) {
+            return false;
+        }
+
+        chmod(C('SYSTEM_CONFIG_PATH'), 0777);
+        return true;
     }
 
     /**
