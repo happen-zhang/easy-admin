@@ -48,24 +48,44 @@
         </table>
         <table width="100%">
             <tr>
-                <td class="td1" width="100">创始人信息</td>
+                <td class="td1" width="100">超级管理员信息</td>
                 <td class="td1" width="200">&nbsp;</td>
                 <td class="td1">&nbsp;</td>
             </tr>
             <tr>
-                <td class="tar">管理员邮箱：</td>
+                <td class="tar">登录邮箱：</td>
                 <td><input type="text" name="admin[email]" class="input" value=""></td>
                 <td><div id="J_install_tip_admin_email"><span class="gray">邮箱地址</span></div></td>
             </tr>
             <tr>
-                <td class="tar">密码：</td>
+                <td class="tar">登录密码：</td>
                 <td><input type="text" name="admin[password]" id="J_manager_pwd" class="input" autoComplete="off"></td>
                 <td><div id="J_install_tip_admin_password"></div></td>
             </tr>
             <tr>
-                <td class="tar">重复密码：</td>
+                <td class="tar">确认密码：</td>
                 <td><input type="text" name="admin[confirm_password]" class="input" autoComplete="off"></td>
                 <td><div id="J_install_tip_admin_confirm_password"></div></td>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+                <td class="td1" width="100">站点基本信息</td>
+                <td class="td1" width="200">&nbsp;</td>
+                <td class="td1">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="tar">网站标题：</td>
+                <td><input type="text" name="site[title]" class="input"></td>
+                <td><div id="J_install_tip_site_title"></div></td>
+            </tr>
+            <tr>
+                <td class="tar">网站关键字：</td>
+                <td><input type="text" name="site[keyword]" class="input"></td>
+            </tr>
+            <tr>
+                <td class="tar">网站描述：</td>
+                <td><textarea name="site[description]" cols="30" rows="5" class="input"></textarea></td>
             </tr>
         </table>
         <input type="hidden" name="webPath" value="/" />
@@ -130,7 +150,8 @@ $(function() {
         'db[prefix]' : 'db_prefix',
         'admin[email]' : 'admin_email',
         'admin[password]' : 'admin_password',
-        'admin[confirm_password]' : 'admin_confirm_password'
+        'admin[confirm_password]' : 'admin_confirm_password',
+        'site[title]' : 'site_title'
     }
 
     //聚焦时默认提示
@@ -143,7 +164,8 @@ $(function() {
         'db[prefix]' : '建议使用默认，同一数据库安装多个时需修改',
         'admin[email]' : '管理员登陆邮箱',
         'admin[password]' : '',
-        'admin[confirm_password]' : ''
+        'admin[confirm_password]' : '',
+        'site[title]': ''
     };
 
     var install_form = $("#J_install_form"),
@@ -198,6 +220,9 @@ $(function() {
             'admin[confirm_password]': {
                 required: true,
                 equalTo : '#J_manager_pwd'
+            },
+            'site[title]': {
+                required: true
             }
         },
         highlight: false,
@@ -258,6 +283,9 @@ $(function() {
             'admin[confirm_password]': {
                 required: '重复密码不能为空',
                 equalTo: '两次输入的密码不一致。请重新输入'
+            },
+            'site[title]': {
+                required: '站点标题不能为空'
             }
         },
 

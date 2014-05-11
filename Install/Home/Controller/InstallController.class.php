@@ -244,6 +244,7 @@ class InstallController extends CommonController {
      * @return fixed
      */
     private function saveConfig(array $systemConfig) {
+        // 数据库配置
         $config['DB_TYPE'] = 'mysql';
         $config['DB_HOST'] = $systemConfig['db']['host'];
         $config['DB_NAME'] = $systemConfig['db']['name'];
@@ -251,6 +252,11 @@ class InstallController extends CommonController {
         $config['DB_PWD'] = $systemConfig['db']['password'];
         $config['DB_PORT'] = $systemConfig['db']['port'];
         $config['DB_PREFIX'] = $systemConfig['db']['prefix'];
+
+        // 站点配置
+        $config['SITE_TITLE'] = $systemConfig['site']['title'];
+        $config['SITE_KEYWORD'] = $systemConfig['site']['keyword'];
+        $config['SITE_DESCRIPTION'] = $systemConfig['site']['description'];
 
         $data = "<?php return " . var_export($config, true) . "; ?>\r\n";
         return file_put_contents(C('SYSTEM_CONFIG_PATH'), $data);
