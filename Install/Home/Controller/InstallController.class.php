@@ -24,6 +24,12 @@ class InstallController extends CommonController {
     private $tablePrefix;
 
     /**
+     * 认证mask
+     * @var string
+     */
+    private $AUTH_MASK = 'nimdaae';
+
+    /**
      * 安装表单
      * @return
      */
@@ -109,7 +115,7 @@ class InstallController extends CommonController {
         // 插入 admin 数据
         $admin = $_POST['admin'];
         $admin = array_filter($admin, 'trim');
-        $this->insertRootAdmin($admin);
+        $this->insertRootAdmin($admin, $db['name']);
         $this->closeDb();
 
         // 配置写入到文件中
@@ -202,8 +208,6 @@ class InstallController extends CommonController {
             if (strstr($sql, 'CREATE TABLE')) {
                 // CREATE TABLE
                 preg_match('/CREATE TABLE `([^ ]*)`/', $sql, $matches);
-                // 删除数据库
-                mysql_query("DROP TABLE IF EXISTS `$matches[1]");
 
                 if (mysql_query($sql)) {
                     $info = '<li>'. current_state_support("创建数据表{$matches[1]}完成") . '</li>';
@@ -228,14 +232,17 @@ class InstallController extends CommonController {
      * @param array $admin
      * @return
      */
-    private function insertRootAdmin($admin) {
-        $admin['uuid'] = uuid();
-        $admin['time'] = datetime();
+    private function insertRootAdmin($admin, $dbName) {
+        mysql_select_db($dbName, $this->conn);
 
-        $sql = "INSERT INTO `{$this->tablePrefix}admin` "
-               . "VALUES (null, '{$admin['uuid']}', '{$admin['email']}','{$admin['password']}', '{$admin['time']}', '{$admin['time']}');";
+        $admin['password'] = $this->encrypt($admin['password']);
+
+        $sql = "INSERT INTO `{$this->tablePrefix}admin` (`id`, `role_id`, `email`, `password`, `remark`, `is_super`, `is_active`, `last_login_at`, `created_at`, `updated_at`) VALUES(1, 1, '{$admin['email']}', '{$admin['password']}', '超级管理员', 1, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), UNIX_TIMESTAMP());";
+
+        $raSql = "INSERT INTO `{$this->tablePrefix}role_admin` (`role_id`, `user_id`) VALUES(1, 1);";
 
         mysql_query($sql);
+        mysql_query($raSql);
     }
 
     /**
@@ -287,5 +294,14 @@ class InstallController extends CommonController {
         if ($this->conn) {
             mysql_close($this->conn);
         }
+    }
+
+    /**
+     * 加密数据
+     * @param  string $data 需要加密的数据
+     * @return string
+     */
+    private function encrypt($data) {
+        return md5($this->AUTH_MASK . md5($data));
     }
 }
