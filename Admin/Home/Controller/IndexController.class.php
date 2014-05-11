@@ -45,6 +45,38 @@ class IndexController extends CommonController {
     }
 
     /**
+     * 编辑个人密码
+     * @return
+     */
+    public function editPassword() {
+        $admin = $_SESSION['current_account'];
+
+        $this->assign('admin', $admin);
+        $this->display('edit_password');
+    }
+
+    /**
+     * 更新个人密码
+     * @return
+     */
+    public function updatePassword() {
+        if (!isset($_POST['admin'])) {
+            return $this->errorReturn('无效的操作！');
+        }
+
+        $admin = $_SESSION['current_account'];
+        $admin['password'] = $_POST['admin']['password'];
+        $admin['cfm_password'] = $_POST['admin']['cfm_password'];
+
+        $result = D('Admin', 'Service')->update($admin);
+        if (!$result['status']) {
+            return $this->errorReturn($result['data']['error']);
+        }
+
+        return $this->successReturn('修改密码成功！');
+    }
+
+    /**
      * 编辑站点信息
      * @return
      */
