@@ -13,14 +13,24 @@ class AdminService extends CommonService {
     public function add($admin) {
         $Admin = $this->getD();
 
+        $Admin->startTrans();
         if (false === ($admin = $Admin->create($admin))) {
             return $this->errorResultReturn($Admin->getError());
         }
+        $as = $Admin->add($admin);
 
-        if (false === $Admin->add($admin)) {
-            return $this->errorResultReturn('系统错误！');
+        $roleAdmin = array(
+            'role_id' => $admin['role_id'],
+            'user_id' => $Admin->getLastInsId()
+        );
+        $ras = M('RoleAdmin')->add($roleAdmin);
+
+        if (false === $as || false === $ras) {
+            $Admin->rollback();
+            return $this->errorResultReturn('系统出错了！');
         }
 
+        $Admin->commit();
         return $this->resultReturn(true);
     }
 
