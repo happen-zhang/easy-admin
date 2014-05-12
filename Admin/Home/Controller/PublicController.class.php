@@ -14,7 +14,9 @@ class PublicController extends CommonController {
         parent::_initialize();
 
         // 开启令牌
-        C('TOKEN_ON', true);
+        if (ACTION_NAME == 'index') {
+            C('TOKEN_ON', true);
+        }
 
         // 需要登录才能访问的action
         $filterLogin = array('logout');
@@ -116,6 +118,55 @@ class PublicController extends CommonController {
 
         $info = "密码重置邮件已发，请到{$admin['email']}查收";
         return $this->successReturn($info);
+    }
+
+    /**
+     * 找回密码
+     * @return
+     */
+    public function findPassword() {
+        $hash = substr($_GET['hash'], -32);
+        $id = (int)str_replace($hash, '', $_GET['hash']);
+
+        if (!D('Admin', 'Service')->hasSendMail($id, $_GET['hash'])) {
+            return $this->error('地址不存在或者已经失效了！', U('Public/index'));
+        }
+
+        $admin = M('Admin')->getById($id);
+
+        layout(false);
+        $this->assign('admin', $admin);
+        $this->assign('hash', $_GET['hash']);
+        $this->display('find_password');
+    }
+
+    /**
+     * 重置密码
+     * @return
+     */
+    public function resetPassword() {
+        $Admin = D('Admin');
+        $admin = $Admin->getByMailHash($_POST['hash']);
+
+        if (is_null($admin)) {
+            return $this->errorReturn('无效的操作！');
+        }
+
+        $admin['mail_hash'] = '';
+        $admin['password'] = $_POST['password'];
+        $admin['cfm_password'] = $_POST['cfm_password'];
+
+        $admin = $Admin->create($admin);
+        if (false === $admin) {
+            return $this->errorReturn($Admin->getError());
+        }
+
+        if (false === $Admin->save($admin)) {
+            return $this->errorReturn('系统出错了！');
+        }
+
+        $url = U('Public/index');
+        return $this->successReturn('重置密码成功，跳转登录！', $url);
     }
 
     /**

@@ -215,6 +215,21 @@ class AdminService extends CommonService {
     }
 
     /**
+     * 是否已经发送重置密码邮件
+     * @param  int     $id   管理员id
+     * @param  string  $hash 邮件hash值
+     * @return boolean
+     */
+    public function hasSendMail($id, $hash) {
+        $where = array(
+            'id' => $id,
+            'mail_hash' => $hash
+        );
+
+        return !is_null($this->getM()->where($where)->find());
+    }
+
+    /**
      * 账户是否启用
      * @param  string  $email email
      * @return boolean
