@@ -99,6 +99,7 @@ CREATE TABLE `ea_admin` (
   `role_id` int(11) NOT NULL COMMENT '所属角色id',
   `email` varchar(64) NOT NULL COMMENT '登录邮箱',
   `password` varchar(32) NOT NULL COMMENT '登录密码',
+  `mail_hash` varchar(36) NOT NULL COMMENT '邮件hash值',
   `remark` text NOT NULL COMMENT '管理员备注信息',
   `is_super` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否超级管理员',
   `is_active` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否启用',

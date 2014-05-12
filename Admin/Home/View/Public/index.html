@@ -44,6 +44,15 @@
                 }
                 commonAjaxSubmit('__URL__/login');
             });
+
+            // 找回密码
+            $(".findPwd").click(function() {
+                if($("#email").val() == ''){
+                    popup.alert("请填需要找回密码的登录邮箱！");
+                    return false;
+                }
+                commonAjaxSubmit('__URL__/sendFindPwdMail');
+            });
         });
     </script>
 </body>

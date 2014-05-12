@@ -84,6 +84,41 @@ class PublicController extends CommonController {
     }
 
     /**
+     * 发送找回密码的邮件
+     * @return
+     */
+    public function sendFindPwdMail() {
+        $adminService = D('Admin', 'Service');
+        if (!isset($_POST['admin']['email'])
+            || !$adminService->existAccount($_POST['admin']['email'])) {
+            return $this->errorReturn('登录邮箱不存在！');
+        }
+
+        $email = $_POST['admin']['email'];
+        $admin = M('Admin')->getByEmail($email);
+        $randCode = rand_code(5);
+        $hash = $admin['id'] . md5($randCode);
+
+        $config = C('MAIL');
+        $target = U('Public/findPassword', array('hash' => $hash));
+        $url = $_SERVER['HTTP_HOST'] . $target;
+        $body = str_replace('?', $url, $config['MAIL_BODY']);
+
+        // 发送邮件
+        $result = smtp_mail($email, $email, C('SITE_TITLE'), $body, $config);
+
+        if (true !== $result) {
+            return $this->errorReturn('系统出错了，请稍后再试！');
+        }
+
+        $admin['mail_hash'] = $hash;
+        M('Admin')->save($admin);
+
+        $info = "密码重置邮件已发，请到{$admin['email']}查收";
+        return $this->successReturn($info);
+    }
+
+    /**
      * 验证码图片
      * @return
      */

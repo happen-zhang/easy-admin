@@ -330,3 +330,49 @@ function get_system() {
 
     return $os;
 }
+
+/**
+ * 发送邮件
+ * @param  string $to         收件人邮箱
+ * @param  string $name       收件人名称
+ * @param  string $subject    邮件主题
+ * @param  string $body       邮件正文
+ * @return mixed
+ */
+function smtp_mail($to, $name, $subject = '', $body = '', array $config) {
+    Vendor('PHPMailer.PHPMailerAutoload');
+
+    $mail = new PHPMailer();
+    // 设置字符集
+    $mail->CharSet = $config['SMTP_CHARSET'];
+    // 设定使用SMTP服务
+    $mail->IsSMTP();
+    // html格式内容
+    $mail->IsHTML(true);
+    // 启用 SMTP 验证功能
+    $mail->SMTPAuth = $config['SMTP_AUTH'];
+    // SMTP 安全协议
+    $mail->SMTPSecure = 'ssl';
+    // SMTP 服务器
+    $mail->Host = $config['SMTP_HOST'];
+    // SMTP服务器的端口号
+    $mail->Port = $config['SMTP_PORT'];
+    // SMTP服务器用户名
+    $mail->Username = $config['SMTP_USER_NAME'];
+    // SMTP服务器密码
+    $mail->Password = $config['SMTP_PASSWORD'];
+    // 设置发送者信息
+    $mail->SetFrom($config['MAIL_FROM'], $config['SENDER_NAME']);
+    // 设置邮件回复者信息
+    $mail->AddReplyTo($config['MAIL_REPLY'], $config['REPLYER_NAME']);
+    // 设置邮件主题
+    $mail->Subject = $subject;
+    // 设置邮件内容
+    $mail->MsgHTML($body);
+    // 兼容不支持html的邮件
+    $mail->AltBody = 'This is the body in plain text';
+    //
+    $mail->AddAddress($to, $name);
+
+    return $mail->Send() ? true : $mail->ErrorInfo;
+}

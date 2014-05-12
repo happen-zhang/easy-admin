@@ -3,6 +3,7 @@ $systemConfig = include('Common/Conf/system_config.php');
 $menuConfig = include('menu_config.php');
 $backupConfig = include('backup_config.php');
 $securityConfig = include('security_config.php');
+$mailConfig = include('mail_config.php');
 
 $appConfig =  array(
     // 调试页
@@ -29,6 +30,7 @@ $appConfig =  array(
     // 菜单项配置
     'MENU' => $menuConfig,
     'BACKUP' => $backupConfig,
+    'MAIL' => $mailConfig,
 
     // 系统保留表明
     'SYSTEM_TBL_NAME' => 'model,models,filed,fileds,admin,admins',
@@ -41,4 +43,4 @@ $appConfig =  array(
     'COMMON_CONF_PATH' => WEB_ROOT . 'Common/Conf/'
 );
 
-return array_merge($appConfig, $systemConfig, $securityConfig);
+return array_merge($appConfig, $systemConfig, $securityConfig, $mailConfig);
