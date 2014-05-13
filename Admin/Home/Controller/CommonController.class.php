@@ -16,6 +16,9 @@ class CommonController extends Controller {
         // utf-8编码
         header('Content-Type: text/html; charset=utf-8');
 
+        // 安装过滤
+        $this->filterInstall();
+
         // 登录过滤
         $notLoginModules = explode(',', C('NOT_LOGIN_MODULES'));
         if (!in_array(CONTROLLER_NAME, $notLoginModules)) {
@@ -70,6 +73,36 @@ class CommonController extends Controller {
         }
 
         return $this->error('您没有权限执行该操作！');
+    }
+
+    /**
+     * 过滤安装
+     * @return
+     */
+    public function filterInstall() {
+        // 不存在初始化的超级管理员则认为未安装
+        $installFile = WEB_ROOT . 'install.php';
+
+        if (empty(C('DB_HOST'))
+            || !D('Admin', 'Service')->existInitAdmin()) {
+            if (!file_exists($installFile)) {
+                echo "缺少<b>{$installFile}</b>文件！";
+                exit();
+            }
+
+            // 重定向到安装页
+            $url = "http://{$_SERVER['HTTP_HOST']}".__ROOT__.'/install.php';
+            echo "<script>location.href='{$url}';</script>";
+            exit();
+        }
+
+        $installDir = WEB_ROOT . 'Install';
+        if (is_dir($installDir) && file_exists($installFile)) {
+            // 删除安装目录
+            del_dir_or_file($installDir, true);
+            // 删除安装文件
+            del_dir_or_file($installFile);
+        }
     }
 
     /**
