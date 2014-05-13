@@ -38,4 +38,10 @@ $fill = array(
     'datetime'
 );
 
-fast_cache(FILL_NAME, array_merge($fill, $customFill), FUNC_CONF_DIR_PATH);
+foreach ($fill as $item) {
+    if (!in_array($item, $customFill)) {
+        $customFill[] = $item;
+    }
+}
+
+fast_cache(FILL_NAME, $customFill, FUNC_CONF_DIR_PATH);

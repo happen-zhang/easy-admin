@@ -83,12 +83,16 @@ if (!isset($customFilter) || !is_array($customFilter)) {
     $customFilter = array();
 }
 
-$filter = array(
+$filters = array(
     'sql_injection',
     'strip_sql_injection',
     'filter_special_chars'
 );
 
-fast_cache(FILTER_NAME,
-	         array_merge($filter, $customFilter),
-	         FUNC_CONF_DIR_PATH);
+foreach ($filters as $filter) {
+    if (!in_array($filter, $customFilter)) {
+        $customFilter[] = $filter;
+    }
+}
+
+fast_cache(FILTER_NAME, $customFilter, FUNC_CONF_DIR_PATH);
