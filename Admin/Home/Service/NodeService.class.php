@@ -138,15 +138,21 @@ class NodeService extends CommonService {
         $index = array('title' => "{$name}管理", 'name' => "index");
         // add
         $add = array('title' => "添加{$name}", 'name' => "add");
+        // create
+        $create = array('title' => "创建{$name}", 'name' => "create");
         // edit
         $edit = array('title' => "编辑{$name}", 'name' => "edit");
+        // update
+        $update = array('title' => "更新{$name}", 'name' => "update");
         // delete
         $delete = array('title' => "删除{$name}", 'name' =>"delete");
 
         $nodes = array(
             array_merge($node, $index),
             array_merge($node, $add),
+            array_merge($node, $create),
             array_merge($node, $edit),
+            array_merge($node, $update),
             array_merge($node, $delete)
         );
 
