@@ -215,6 +215,19 @@ class AdminService extends CommonService {
     }
 
     /**
+     * 是否存在初始化的管理员
+     * @return boolean
+     */
+    public function existInitAdmin() {
+        $where = array(
+            'id' => 1,
+            'is_super' => 1
+        );
+
+        return !is_null($this->getM()->where($where)->find());
+    }
+
+    /**
      * 是否已经发送重置密码邮件
      * @param  int     $id   管理员id
      * @param  string  $hash 邮件hash值
