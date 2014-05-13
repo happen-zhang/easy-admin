@@ -81,7 +81,7 @@ class InstallController extends CommonController {
                                             : $db['prefix'];
         // 添加'_'作为分割
         if (false === strpos($db['prefix'], '_')) {
-            $db['prefix'] .= '_';
+            $_POST['db']['prefix'] = $db['prefix'] .= '_';
         }
         $this->tablePrefix = $db['prefix'];
 
