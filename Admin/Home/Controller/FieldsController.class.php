@@ -245,4 +245,25 @@ class FieldsController extends CommonController {
 
         return $this->successReturn('删除字段成功!');
     }
+
+    /**
+     * 切换列表显示状态
+     * @return
+     */
+    public function toggleListShow() {
+        $field = M('Field')->getById($_GET['field_id']);
+        if (is_null($field)) {
+            return $this->errorReturn('需要操作的字段的不存在！');
+        }
+
+        if (1 != $field['is_system']) {
+            return $this->errorReturn('字段不能进行该操作！');
+        }
+
+        if (false === D('Field', 'Service')->toggleListShow($field['id'])) {
+            return $this->errorReturn('操作失败，请稍后再试！');
+        }
+
+        return $this->successReturn('操作成功！');
+    }
 }

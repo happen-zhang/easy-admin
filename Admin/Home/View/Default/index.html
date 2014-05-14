@@ -6,24 +6,18 @@
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
         <thead>
             <tr>
-                <td>表主键ID</td>
                 <volist name="fields" id="field">
-                <if condition="$field['is_system'] eq 0"><td>{$field['comment']}</td></if>
+                <td>{$field['comment']}</td>
                 </volist>
-                <td>创建时间</td>
-                <td>更新时间</td>
                 <td>操作</td>
             </tr>
         </thead>
         <tbody>
             <volist name="rows" id="row">
             <tr align="center">
-                <td>{$row['id']}</td>
                 <volist name="fields" id="field">
                 <td>{$row[$field['name']]}</td>
                 </volist>
-                <td>{:date('Y-m-d H:i:s', $row['created_at'])}</td>
-                <td>{:date('Y-m-d H:i:s', $row['updated_at'])}</td>
                 <td>[ <a href="{:U(CONTROLLER_NAME . '/edit', array('id' => $row['id']))}">编辑</a> ] [ <a href="javascript:void(0);" value="{:U(CONTROLLER_NAME . '/delete', array('id' => $row['id']))}" name="ID={$row['id']}" class="del">删除</a> ]</td>
             </tr>
             </volist>

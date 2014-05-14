@@ -191,6 +191,19 @@ class FieldService extends CommonService {
     }
 
     /**
+     * 切换是否列表显示状态
+     * @param  int     $id 字段id
+     * @return boolean
+     */
+    public function toggleListShow($id) {
+        $field = $this->getM()->getById($id);
+
+        $field['is_list_show'] = $field['is_list_show'] ? 0 : 1;
+
+        return $this->getM()->save($field);
+    }
+
+    /**
      * 检查字段名称是否可用
      * @param  string     $name 字段名称
      * @param     int $model_id 模型id

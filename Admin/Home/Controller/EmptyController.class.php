@@ -38,10 +38,9 @@ class EmptyController extends CommonController {
         $rows = array_map("strip_sql_injection", $result['data']);
         unset($result['data']);
 
-        // 得到模型对应的非系统字段
+        // 得到模型对应的字段
         $where = array(
             'model_id' => $model['id'],
-            'is_system' => 0,
             'is_list_show' => 1
         );
         $fields = D('Field')->relation(true)->where($where)->select();
@@ -49,6 +48,14 @@ class EmptyController extends CommonController {
         // 处理需要替换的字段值
         foreach ($fields as $field) {
             $fn = $field['name'];
+
+            // created_at、updated_at换成日期格式
+            if (($field['is_system'] && $field['is_list_show'])
+                && ('created_at' == $fn || 'updated_at' == $fn)) {
+                foreach ($rows as $key => $row) {
+                    $rows[$key][$fn] = date('Y-m-d H:i:s', $row[$fn]);
+                }
+            }
 
             // checkbox，radio，select类型
             if (in_array($field['input']['type'], $this->types)
