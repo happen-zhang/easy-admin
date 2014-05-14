@@ -10,16 +10,23 @@
         </thead>
         <tbody>
             <tr>
-                <td width="30" align="center"><input type="checkbox" name="cache[]" value="{$key}" /></td>
-                <td>网站前台缓存文件<br/> (/home/happen/php_pro/common_system/Cache/Home/Cache/)</td>
-                <td width="30" align="center"><input type="checkbox" name="cache[]" value="{$key}" /></td>
-                <td>网站前台缓存文件<br/> (/home/happen/php_pro/common_system/Cache/Home/Cache/)</td>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['cache']}" /></td>
+                <td>后台缓存文件<br/> ({$caches['cache']})</td>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['data']}" /></td>
+                <td>后台数据库字段缓存文件<br/> ({$caches['data']})</td>
             </tr>
             <tr>
-                <td width="30" align="center"><input type="checkbox" name="cache[]" value="{$key}" /></td>
-                <td>网站前台缓存文件<br/> (/home/happen/php_pro/common_system/Cache/Home/Cache/)</td>
-            </tr>            
-            <php>if(count($caches)%2==1) echo '<td>&nbsp;</td><td>&nbsp;</td></tr>';</php>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['logs']}" /></td>
+                <td>后台日志缓存文件<br/> ({$caches['logs']})</td>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['temp']}" /></td>
+                <td>网站后台临时缓存文件<br/> ({$caches['temp']})</td>
+            </tr>
+            <tr>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['runtime']}" /></td>
+                <td>后台runtime.php缓存文件<br/> ({$caches['runtime']})</td>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['MinFiles']}" /></td>
+                <td>JS/CSS压缩缓存文件<br/> ({$caches['MinFiles']})</td>
+            </tr>
         </tbody>
         <tfoot>
             <tr>
@@ -31,3 +38,17 @@
 <div class="commonBtnArea" >
     <button class="btn submit">清除已选缓存</button>
 </div>
+
+<script type="text/javascript">
+$(function(){
+    clickCheckbox();
+    $(".submit").click(function(){
+        if($("tbody input[type='checkbox']:checked").size()==0){
+            popup.alert("请先选择要删除的缓存！");
+            return false;
+        }
+
+        commonAjaxSubmit('__URL__/delete');
+    });
+});
+</script>

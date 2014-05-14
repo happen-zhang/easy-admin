@@ -18,11 +18,12 @@ if(version_compare(PHP_VERSION,'5.3.0','<'))  die('require PHP > 5.3.0 !');
 define('WEB_ROOT', dirname(__FILE__) . '/');
 
 // 定义应用目录
+define('APP_NAME', 'Install');
 define('APP_PATH', './Install/');
 define('THINK_PATH', realpath('./ThinkPHP') . '/');
 
 // 运行缓存目录
-define("RUNTIME_PATH", WEB_ROOT . "Cache/Runtime/Install/");
+define('RUNTIME_PATH', WEB_ROOT . 'Cache/Runtime/' . APP_NAME . '/');
 
 // 开启调试
 define('APP_DEBUG', true);
