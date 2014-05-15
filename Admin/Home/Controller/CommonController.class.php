@@ -83,8 +83,8 @@ class CommonController extends Controller {
         // 不存在初始化的超级管理员则认为未安装
         $installFile = WEB_ROOT . 'install.php';
 
-        if (empty(C('DB_HOST'))
-            || !D('Admin', 'Service')->existInitAdmin()) {
+        $host = C('DB_HOST');
+        if (empty($host) || !D('Admin', 'Service')->existInitAdmin()) {
             if (!file_exists($installFile)) {
                 echo "缺少<b>{$installFile}</b>文件！";
                 exit();

@@ -1,10 +1,10 @@
 <script type="text/javascript">
 function submitForm(action) {
     $(".submit").click(function(){
-        if ("" == $("#model_name").val().trim()) {
+        if ("" == $.trim($("#model_name").val())) {
             popup.error("模型名称不能为空");
             return false;
-        } else if ("" == $("#tbl_name").val().trim()) {
+        } else if ("" == $.trim($("#tbl_name").val())) {
             popup.error("数据表名称不能为空");
             return false;
         }

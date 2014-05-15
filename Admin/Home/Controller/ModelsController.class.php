@@ -25,12 +25,12 @@ class ModelsController extends CommonController {
      */
     public function show() {
         if (!isset($_GET['id'])) {
-            $this->error('您需要查看的模型不存在');
+            $this->error('您需要查看的模型不存在！');
         }
 
         $model = D('Model', 'Service')->getById($_GET['id']);
         if (empty($model)) {
-            $this->error('您需要查看的模型不存在');
+            $this->error('您需要查看的模型不存在！');
         }
 
         // 得到input的显示顺序
@@ -66,7 +66,7 @@ class ModelsController extends CommonController {
      */
     public function create() {
         if (!IS_POST || !isset($_POST['model'])) {
-            return $this->errorReturn('无效的操作');
+            return $this->errorReturn('无效的操作！');
         }
 
         $modelService = D('Model', 'Service');
@@ -125,7 +125,7 @@ class ModelsController extends CommonController {
         $result = D('Model', 'Service')->checkMenuName($_GET['menu_name'],
                                                        $_GET['id']);
         if ($result['status']) {
-            return $this->successReturn('菜单名称可用');
+            return $this->successReturn('菜单名称可用！');
         }
 
         return $this->errorReturn($result['data']['error']);
@@ -137,12 +137,12 @@ class ModelsController extends CommonController {
      */
     public function edit() {
         if (!isset($_GET['id'])) {
-            $this->error('您需要编辑的模型不存在');
+            $this->error('您需要编辑的模型不存在！');
         }
 
         $model = M('Model')->getById($_GET['id']);
         if (empty($model)) {
-            $this->error('您需要编辑的模型不存在');
+            $this->error('您需要编辑的模型不存在！');
         }
 
         $start = strpos($model['tbl_name'], '_') + 1;
@@ -158,12 +158,12 @@ class ModelsController extends CommonController {
      */
     public function update() {
         if (!IS_POST || !isset($_POST['model'])) {
-            $this->errorReturn('无效的操作');
+            $this->errorReturn('无效的操作！');
         }
 
         $model = array_map('trim', $_POST['model']);
         if (0 == M('Model')->where(array('id' => $model['id']))->count()) {
-            $this->errorReturn('您需要更新的模型不存在');
+            $this->errorReturn('您需要更新的模型不存在！');
         }
 
         $modelService = D('Model', 'Service');
@@ -175,7 +175,7 @@ class ModelsController extends CommonController {
         // 更新数据
         $result = $modelService->update($model);
         if (false === $result['status']) {
-            return $this->errorReturn('系统出错了');
+            return $this->errorReturn('系统出错了！');
         }
 
         $this->successReturn("更新模型成功", U('Models/index'));
@@ -187,19 +187,19 @@ class ModelsController extends CommonController {
      */
     public function delete() {
         if (!isset($_GET['id'])) {
-            $this->errorReturn('您需要删除的模型不存在');
+            $this->errorReturn('您需要删除的模型不存在！');
         }
 
         $model = M('Model')->getById($_GET['id']);
         if (empty($model)) {
-            $this->errorReturn('您需要删除的模型不存在');
+            $this->errorReturn('您需要删除的模型不存在！');
         }
 
         $result = D('Model', 'Service')->delete($model['id']);
         if (false === $result['status']) {
-            return $this->errorReturn('系统出错了');
+            return $this->errorReturn('系统出错了！');
         }
 
-        $this->successReturn("删除模型 <b>{$model['name']}</b> 成功");
+        $this->successReturn("删除模型 <b>{$model['name']}</b> 成功！");
     }
 }

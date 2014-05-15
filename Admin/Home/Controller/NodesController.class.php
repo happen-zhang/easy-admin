@@ -40,7 +40,7 @@ class NodesController extends CommonController {
             $nodeService->setStatus($_GET['id'], 0);
         }
 
-        $info = $_GET['status'] ? '禁用成功！' : '启用成功';
+        $info = $_GET['status'] ? '禁用成功！' : '启用成功！';
         $this->successReturn($info);
     }
 }

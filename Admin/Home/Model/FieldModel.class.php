@@ -47,23 +47,23 @@ class FieldModel extends CommonModel {
     protected $validateField = array(
         // 字段类型
         array('type', 'CHAR,VARCHAR,TINYINT,SMALLINT,INT,BIGINT,FLOAT,DOUBLE,TEXT,MEDIUMTEXT,LONGTEXT,DATE,DATETIME',
-              '非法字段类型!', 1, 'in', 3),
+              '非法字段类型！', 1, 'in', 3),
         // 字段长度
-        array('length', 'isValidFieldLength', '无效的类型长度!', 2, 'callback',3),
+        array('length', 'isValidFieldLength', '无效的类型长度！', 2, 'callback',3),
         // 字段关联级别
         array('relation_level', 'SET NULL,NOT ACTION,CASCADE,RESTRICT',
-              '无效的关联级别!', 2, 'in', 3),
+              '无效的关联级别！', 2, 'in', 3),
         // 填充时机
         array('fill_time', 'both,insert,update', '自动填充时机类型不正确！',
               1, 'in', 3),
         // 是否必需
-        array('is_require', '0, 1', '字段必需值只能为0或1', 1, 'in', 1),
+        array('is_require', '0, 1', '字段必需值只能为0或1！', 1, 'in', 1),
         // 是否唯一
-        array('is_unique', '0, 1', '字段唯一值只能为0或1', 1, 'in', 1),
+        array('is_unique', '0, 1', '字段唯一值只能为0或1！', 1, 'in', 1),
         // 是否索引
-        array('is_index', '0, 1', '字段索引值只能为0或1', 1, 'in', 1),
+        array('is_index', '0, 1', '字段索引值只能为0或1！', 1, 'in', 1),
         // 是否列表显示
-        array('is_list_show', '0, 1', '列表显示值只能为0或1', 1, 'in', 1)
+        array('is_list_show', '0, 1', '列表显示值只能为0或1！', 1, 'in', 1)
     );
 
     protected $_auto = array(

@@ -116,7 +116,7 @@ class PublicController extends CommonController {
         $admin['mail_hash'] = $hash;
         M('Admin')->save($admin);
 
-        $info = "密码重置邮件已发，请到{$admin['email']}查收";
+        $info = "密码重置邮件已发，请到{$admin['email']}查收！";
         return $this->successReturn($info);
     }
 

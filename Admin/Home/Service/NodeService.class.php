@@ -203,7 +203,8 @@ class NodeService extends CommonService {
      * @return boolean
      */
     public function existNode($id) {
-        return !empty($this->getM()->getById($id));
+        $node = $this->getM()->getById($id);
+        return !empty($node);
     }
 
     protected function getModelName() {

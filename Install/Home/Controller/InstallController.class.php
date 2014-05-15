@@ -237,7 +237,7 @@ class InstallController extends CommonController {
 
         $admin['password'] = $this->encrypt($admin['password']);
 
-        $sql = "INSERT INTO `{$this->tablePrefix}admin` (`id`, `role_id`, `email`, `password`, `remark`, `is_super`, `is_active`, `last_login_at`, `created_at`, `updated_at`) VALUES(1, 1, '{$admin['email']}', '{$admin['password']}', '超级管理员', 1, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), UNIX_TIMESTAMP());";
+        $sql = "INSERT INTO `{$this->tablePrefix}admin` (`id`, `role_id`, `email`, `password`, `remark`, `is_super`, `is_active`, `mail_hash`, `last_login_at`, `created_at`, `updated_at`) VALUES(1, 1, '{$admin['email']}', '{$admin['password']}', '超级管理员', 1, 1, '', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), UNIX_TIMESTAMP());";
 
         $raSql = "INSERT INTO `{$this->tablePrefix}role_admin` (`role_id`, `user_id`) VALUES(1, 1);";
 

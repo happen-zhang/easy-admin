@@ -330,7 +330,8 @@ class DefaultService extends CommonService {
      */
     private function isEmpty($mixed) {
         if (is_array($mixed)) {
-            return empty(array_filter($mixed));
+            $mixed = array_filter($mixed);
+            return empty($mixed);
         } else {
             return empty($mixed);
         }

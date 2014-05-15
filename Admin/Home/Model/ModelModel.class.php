@@ -42,10 +42,10 @@ class ModelModel extends CommonModel {
         array('tbl_name', '1, 24', '数据表名称长度只能少于24个字符！',
               1, 'length', 3),
         // 数据表名正确性验证
-        array('tbl_name', 'isLower', '数据表名称只能由"_"、a~z组成!',
+        array('tbl_name', 'isLower', '数据表名称只能由"_"、a~z组成！',
               1, 'callback', 3),
         // 系统数据表名验证
-        array('tbl_name', 'isNotSysTblName', '不能使用系统保留表名!',
+        array('tbl_name', 'isNotSysTblName', '不能使用系统保留表名！',
               1, 'callback', 3),
         // 数据表名唯一性验证
         array('tbl_name', 'uniqueTblName', '数据表名称已经存在！',
@@ -62,7 +62,7 @@ class ModelModel extends CommonModel {
         array('menu_name', '1, 16', '菜单名称长度只能少于16个字符！',
               1, 'length', 3),
         // 系统数据菜单名验证
-        array('menu_name', 'isNotSysMenuName', '不能使用系统保留菜单名!',
+        array('menu_name', 'isNotSysMenuName', '不能使用系统保留菜单名！',
               1, 'callback', 3),
         // 菜单名唯一性验证
         array('menu_name', 'uniqueMenuName', '菜单名称已经存在！',

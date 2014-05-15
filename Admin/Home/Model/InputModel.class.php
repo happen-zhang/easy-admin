@@ -10,23 +10,23 @@ class InputModel extends CommonModel {
 
     protected $validateInput = array(
         // 是否显示
-        array('is_show', '0, 1', '是否显示只能为0或1!', 1, 'in', 3),
+        array('is_show', '0, 1', '是否显示只能为0或1！', 1, 'in', 3),
         // 表单域标签不能为空
         array('label', 'require', '字段标签不能为空！', 1, 'regex', 3),
         // 表单域类型
         array('type', 'text,password,select,radio,checkbox,textarea,editor,file,date,relation_select',
-              '无效的表单域类型!', 1, 'in', 3),
+              '无效的表单域类型！', 1, 'in', 3),
         // 表单域长度
-        array('width', 'isint', '表单域长度只能是整数!', 2, 'function', 3),
+        array('width', 'isint', '表单域长度只能是整数！', 2, 'function', 3),
         // 表单域宽度
-        array('height', 'isint', '表单域宽度只能是整数!', 2, 'function', 3),
+        array('height', 'isint', '表单域宽度只能是整数！', 2, 'function', 3),
         // 编辑器类型
         array('editor', 'all,simple', '编辑器只能为"all"或"simple"',
               2, 'in', 3),
         // html
-        array('html', 'require', 'html代码不能为空!', 1, 'regex', 3),
+        array('html', 'require', 'html代码不能为空！', 1, 'regex', 3),
         // 显示顺序
-        array('show_order', 'isint', '表单域显示顺序只能是整数!', 2, 'function', 3)
+        array('show_order', 'isint', '表单域显示顺序只能是整数！', 2, 'function', 3)
     );
 
     protected $_auto = array(

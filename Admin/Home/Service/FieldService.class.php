@@ -212,7 +212,7 @@ class FieldService extends CommonService {
      */
     public function checkFieldName($name, $modelId, $id) {
         if (!D('Model', 'Service')->existModel($modelId)) {
-            return $this->errorResultReturn('字段对应的模型不存在');
+            return $this->errorResultReturn('字段对应的模型不存在！');
         }
 
         $Field = $this->getD();
@@ -234,7 +234,7 @@ class FieldService extends CommonService {
      */
     public function checkFieldComment($comment, $modelId, $id) {
         if (!D('Model', 'Service')->existModel($modelId)) {
-            return $this->errorResultReturn('字段对应的模型不存在');
+            return $this->errorResultReturn('字段对应的模型不存在！');
         }
 
         $Field = $this->getD();
@@ -261,7 +261,7 @@ class FieldService extends CommonService {
         }
 
         if (!D('Model', 'Service')->existModel($field['model_id'])) {
-            return $this->errorResultReturn('字段对应的模型不存在');
+            return $this->errorResultReturn('字段对应的模型不存在！');
         }
 
         $Field = $this->getD();
@@ -283,11 +283,11 @@ class FieldService extends CommonService {
             case 'VARCHAR':
                 $field['length'] = $field['length']['intchar'];
                 if (!isset($field['length']) || empty($field['length'])) {
-                    return $this->errorResultReturn('字符串类型长度不能为空');
+                    return $this->errorResultReturn('字符串类型长度不能为空！');
                 }
 
                 if (!isint($field['length'])) {
-                    return $this->errorResultReturn('字符串类型长度只能为整数');
+                    return $this->errorResultReturn('字符串类型长度只能为整数！');
                 }
 
                 break ;
@@ -298,12 +298,12 @@ class FieldService extends CommonService {
             case 'BIGINT':
                 $field['length'] = $field['length']['intchar'];
                 if (!isint($field['length'])) {
-                    return $this->errorResultReturn('整数类型长度只能为整数');
+                    return $this->errorResultReturn('整数类型长度只能为整数！');
                 }
 
                 // 默认值只能为整数
                 if (!empty($field['value']) && !isint($field['value'])) {
-                    return $this->errorResultReturn('整数型默认值只能为有效的整数');
+                    return $this->errorResultReturn('整数型默认值只能为有效的整数！');
                 }
                 break ;
 
@@ -313,14 +313,14 @@ class FieldService extends CommonService {
                 // 长度
                 if (!empty($field['length']['real'])) {
                     if (!isint($field['length']['real'])) {
-                        return $this->errorResultReturn('浮点型长度只能为整数');
+                        return $this->errorResultReturn('浮点型长度只能为整数！');
                     }
                     $realLen[] = $field['length']['real'];
 
                     // 精度
                     if (!empty($field['precision'])) {
                         if (!isint($field['precision'])) {
-                            return $this->errorResultReturn('浮点型精度只能为整数');
+                            return $this->errorResultReturn('浮点型精度只能为整数！');
                         }
                         $realLen[] = $field['precision'];
                         unset($field['precision']);
@@ -332,7 +332,7 @@ class FieldService extends CommonService {
                 // 默认值只能为real
                 if (!empty($field['value'])
                     && !is_numeric($field['value'])) {
-                    return $this->errorResultReturn('浮点型默认值只能为有效的数字');
+                    return $this->errorResultReturn('浮点型默认值只能为有效的数字！');
                 }
                 break ;
 

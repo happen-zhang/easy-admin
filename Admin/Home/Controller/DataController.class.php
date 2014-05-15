@@ -34,11 +34,11 @@ class DataController extends CommonController {
      */
     public function doBackup() {
         if (!IS_POST) {
-            $this->errorReturn('访问出错');
+            $this->errorReturn('访问出错！');
         }
 
         if (!isset($_POST['tables'])) {
-            $this->errorReturn('请先选择需要备份的数据表');
+            $this->errorReturn('请先选择需要备份的数据表！');
         }
 
         $dataLogic = D('Data', 'Logic');
@@ -75,7 +75,7 @@ class DataController extends CommonController {
      */
     public function doRestore() {
         if (!IS_POST) {
-            $this->errorReturn('访问出错');
+            $this->errorReturn('访问出错！');
         }
 
         $dataLogic = D('Data', 'Logic');
@@ -83,7 +83,7 @@ class DataController extends CommonController {
 
         switch ($result['status']) {
             case $dataLogic::FILE_NOT_FOUND:
-                $this->errorReturn('需要导入的文件不存在');
+                $this->errorReturn('需要导入的文件不存在！');
                 break ;
             
             case $dataLogic::EXECUTE_NOT_FINISH:
@@ -103,7 +103,7 @@ class DataController extends CommonController {
                 break ;
 
             default:
-                $this->errorReturn('无效的操作');
+                $this->errorReturn('无效的操作！');
                 break ;
         }
     }
@@ -113,7 +113,7 @@ class DataController extends CommonController {
      * @return
      */
     public function downloadFile() {
-        $info = '需要的下载的文件不存在或者已经被删除了';
+        $info = '需要的下载的文件不存在或者已经被删除了！';
         $fileType = strtolower($_GET['file_type']);
 
         if (empty($_GET['file_name'])
@@ -141,11 +141,11 @@ class DataController extends CommonController {
      */
     public function deleteSqlFiles() {
         if (!IS_POST) {
-            $this->errorReturn('无效的操作');
+            $this->errorReturn('无效的操作！');
         }
 
         if (!isset($_POST['sql_files'])) {
-            $this->errorReturn('请选择需要删除的sql文件');
+            $this->errorReturn('请选择需要删除的sql文件！');
         }
 
         $backupConfig = C('BACKUP');
@@ -163,7 +163,7 @@ class DataController extends CommonController {
      */
     public function zipSqlFiles() {
         if (!IS_POST) {
-            $this->errorReturn('无效的操作');
+            $this->errorReturn('无效的操作！');
         }
 
         if (!isset($_POST['sql_files'])) {
@@ -180,7 +180,7 @@ class DataController extends CommonController {
                           $backupConfig['BACKUP_DIR_PATH'],
                           $backupConfig['BACKUP_ZIP_DIR_PATH'],
                           $zipName)) {
-            $this->errorReturn('文件打包失败，需要打包的文件不存在或目录是不可写');
+            $this->errorReturn('文件打包失败，需要打包的文件不存在或目录是不可写！');
         }
 
         $this->successReturn('文件打包完成', U('Data/zipList'));
@@ -205,7 +205,7 @@ class DataController extends CommonController {
      */
     public function unzipFiles() {
         if (!IS_POST) {
-            return $this->errorReturn('无效的操作');
+            return $this->errorReturn('无效的操作！');
         }
 
         $dataLogic = D('Data', 'Logic');
@@ -213,7 +213,7 @@ class DataController extends CommonController {
 
         switch ($result['status']) {
             case $dataLogic::FILE_NOT_FOUND:
-                $this->errorReturn('请选择需要解压的zip文件');
+                $this->errorReturn('请选择需要解压的zip文件！');
                 break ;
 
             case $dataLogic::EXECUTE_NOT_FINISH:
@@ -231,7 +231,7 @@ class DataController extends CommonController {
                 break ;
 
             default:
-                $this->errorReturn('无效的操作');
+                $this->errorReturn('无效的操作！');
                 break ;
         }
     }
@@ -242,11 +242,11 @@ class DataController extends CommonController {
      */
     public function deleteZipFiles() {
         if (!IS_POST) {
-            $this->errorReturn('无效的操作');
+            $this->errorReturn('无效的操作！');
         }
 
         if (!isset($_POST['zip_files'])) {
-            $this->errorReturn('请选择需要删除的zip文件');
+            $this->errorReturn('请选择需要删除的zip文件！');
         }
 
         $backupConfig = C('BACKUP');
@@ -311,21 +311,21 @@ class DataController extends CommonController {
         if (!IS_POST
             || !isset($_POST['action'])
             || !in_array($_POST['action'], array('optimize', 'repair'))) {
-            $this->errorReturn('无效的操作');
+            $this->errorReturn('无效的操作！');
         }
 
         $M = D('Common');
         $tables = implode(',', $_POST['tables']);
         if ('optimize' == $_POST['action']) {
             if ($M->optimizeTables($tables)) {
-                return $this->successReturn("优化表 {$tables} 成功");
+                return $this->successReturn("优化表 {$tables} 成功！");
             }
         } else if ('repair' == $_POST['action']) {
             if ($M->repairTables($tables)) {
-                return $this->successReturn("修复表 {$tables} 成功");
+                return $this->successReturn("修复表 {$tables} 成功！");
             }
         }
 
-        $this->errorReturn("操作失败");
+        $this->errorReturn("操作失败！");
     }
 }

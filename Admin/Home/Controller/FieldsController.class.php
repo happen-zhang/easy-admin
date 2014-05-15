@@ -28,7 +28,7 @@ class FieldsController extends CommonController {
      */
     public function add() {
         if (!isset($_GET['model_id'])) {
-            return $this->error('您需要添加字段的模型不存在');
+            return $this->error('您需要添加字段的模型不存在！');
         }
 
         // 得到可选的关联模型
@@ -40,7 +40,7 @@ class FieldsController extends CommonController {
 
         $model = M('Model')->getById($_GET['model_id']);
         if (empty($model)) {
-            return $this->error('您需要添加字段的模型不存在');
+            return $this->error('您需要添加字段的模型不存在！');
         }
 
         $this->assign('models', $models);
@@ -56,7 +56,7 @@ class FieldsController extends CommonController {
      */
     public function create() {
         if (!IS_POST || !isset($_POST['field']) || !isset($_POST['input'])) {
-            return $this->errorReturn('无效的操作');
+            return $this->errorReturn('无效的操作！');
         }
 
         $fieldService = D('Field', 'Service');
@@ -65,7 +65,7 @@ class FieldsController extends CommonController {
         $input = $_POST['input'];
 
         if (!D('Model', 'Service')->existModel($field['model_id'])) {
-            return $this->error('您需要添加字段的模型不存在');
+            return $this->error('您需要添加字段的模型不存在！');
         }
 
         if (0 == $input['is_show']) {
@@ -89,18 +89,18 @@ class FieldsController extends CommonController {
         // 插入field
         $result = $fieldService->add($field);
         if (!$result['status']) {
-            return $this->errorReturn('系统出错了!');
+            return $this->errorReturn('系统出错了！');
         }
 
         // 插入input
         $input['field_id'] = $result['data']['id'];
         $result = $inputService->add($input);
         if (!$result['status']) {
-            return $this->errorReturn('系统出错了!');
+            return $this->errorReturn('系统出错了！');
         }
 
         $url = U('Models/show', array('id' => $field['model_id']));
-        return $this->successReturn('字段添加成功!', $url);
+        return $this->successReturn('字段添加成功！', $url);
     }
 
     /**
@@ -143,7 +143,7 @@ class FieldsController extends CommonController {
             || !isset($_GET['field_id'])
             || !D('Model', 'Service')->existModel($_GET['model_id'])
             || !D('Field', 'Service')->existField($_GET['field_id'])) {
-            return $this->error('您需要编辑的字段不存在');
+            return $this->error('您需要编辑的字段不存在！');
         }
 
         $model = M('Model')->getById($_GET['model_id']);
@@ -170,7 +170,7 @@ class FieldsController extends CommonController {
      */
     public function update() {
         if (!IS_POST || !isset($_POST['field']) || !isset($_POST['input'])) {
-            return $this->errorReturn('无效的操作');
+            return $this->errorReturn('无效的操作！');
         }
 
         $fieldService = D('Field', 'Service');
@@ -183,11 +183,11 @@ class FieldsController extends CommonController {
         }
 
         if (!D('Model', 'Service')->existModel($field['model_id'])) {
-            return $this->error('您需要修改字段的模型不存在');
+            return $this->error('您需要修改字段的模型不存在！');
         }
 
         if (!$fieldService->existField($field['id'])) {
-            return $this->error('您需要修改的字段不存在');
+            return $this->error('您需要修改的字段不存在！');
         }
 
         // field
@@ -207,17 +207,17 @@ class FieldsController extends CommonController {
         // 更新field
         $result = $fieldService->update($field);
         if (!$result['status']) {
-            return $this->errorReturn('系统出错了!');
+            return $this->errorReturn('系统出错了！');
         }
 
         // 更新input
         $result = $inputService->update($input);
         if (!$result['status']) {
-            return $this->errorReturn('系统出错了!');
+            return $this->errorReturn('系统出错了！');
         }
 
         $url = U('Models/show', array('id' => $field['model_id']));
-        return $this->successReturn('字段更新成功!', $url);
+        return $this->successReturn('字段更新成功！', $url);
     }
 
     /**
@@ -226,24 +226,24 @@ class FieldsController extends CommonController {
      */
     public function delete() {
         if (!isset($_GET['model_id'])) {
-            return $this->errorReturn('需要删除字段所在的模型不存在!');
+            return $this->errorReturn('需要删除字段所在的模型不存在！');
         }
 
         if (!isset($_GET['field_id'])) {
-            return $this->errorReturn('需要删除的字段不存在!');
+            return $this->errorReturn('需要删除的字段不存在！');
         }
 
         if (!D('Model', 'Service')->hasField($_GET['model_id'],
                                             $_GET['field_id'])) {
-            return $this->errorReturn('无效的操作');
+            return $this->errorReturn('无效的操作！');
         }
 
         $result = D('Field', 'Service')->delete($_GET['field_id']);
         if (!$result['status']) {
-            return $this->errorReturn('系统出错了!');
+            return $this->errorReturn('系统出错了！');
         }
 
-        return $this->successReturn('删除字段成功!');
+        return $this->successReturn('删除字段成功！');
     }
 
     /**
