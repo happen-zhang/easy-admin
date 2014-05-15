@@ -3,15 +3,15 @@
         <volist name="main_menu" id="menu_item" key="i">
             <if condition="$i eq 1">
                 <li class="fisrt {:activedLink($key, null, 'fisrt_current')}">
-                	<span><a href="{$menu_item['target']}">{$menu_item['name']}</a></span>
+                	<span><a href="{:U($menu_item['target'])}">{$menu_item['name']}</a></span>
                 </li>
             <elseif condition="$i eq count($main_menu)" />
                 <li class="end {:activedLink($key, null, 'end_current')}">
-                	<span><a href="{$menu_item['target']}">{$menu_item['name']}</a></span>
+                	<span><a href="{:U($menu_item['target'])}">{$menu_item['name']}</a></span>
                 </li>
             <else />
                 <li class="{:activedLink($key, null, 'current')}">
-                	<span><a href="{$menu_item['target']}">{$menu_item['name']}</a></span>
+                	<span><a href="{:U($menu_item['target'])}">{$menu_item['name']}</a></span>
                 </li>
             </if>
         </volist>
