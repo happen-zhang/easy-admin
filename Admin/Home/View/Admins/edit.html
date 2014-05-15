@@ -25,6 +25,7 @@
                     </select>
                 </td>
             </tr>
+            <if condition="false == $admin['is_super']">
             <tr>
                 <th width="80">所属角色：</th>
                 <td>
@@ -35,6 +36,7 @@
                     </select>
                 </td>
             </tr>
+            </if>
             <tr>
                 <th width="80">备注信息：</th>
                 <td><textarea class="jq_watermark" rows = "5" cols="68" name="admin[remark]" placeholder="管理员备注信息">{$admin['remark']}</textarea></td>
