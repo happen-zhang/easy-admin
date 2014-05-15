@@ -81,10 +81,10 @@ class ModelsController extends CommonController {
         // 添加数据
         $result = $modelService->add($model);
         if (false === $result['status']) {
-            return $this->errorReturn('系统出错了');
+            return $this->errorReturn('系统出错了！');
         }
 
-        $this->successReturn("添加模型 <b>{$model['name']}</b> 成功",
+        $this->successReturn("添加模型 <b>{$model['name']}</b> 成功！",
                              U('Models/index'));
     }
 
@@ -96,7 +96,7 @@ class ModelsController extends CommonController {
         $result = D('Model', 'Service')->checkModelName($_GET['model_name'],
                                                         $_GET['id']);
         if ($result['status']) {
-            return $this->successReturn('模型名称可用');
+            return $this->successReturn('模型名称可用！');
         }
 
         return $this->errorReturn($result['data']['error']);
@@ -111,7 +111,7 @@ class ModelsController extends CommonController {
         $result = D('Model', 'Service')->checkTblName($tblName, $_GET['id']);
 
         if ($result['status']) {
-            return $this->successReturn('数据表名称可用');
+            return $this->successReturn('数据表名称可用！');
         }
 
         return $this->errorReturn($result['data']['error']);
@@ -178,7 +178,7 @@ class ModelsController extends CommonController {
             return $this->errorReturn('系统出错了！');
         }
 
-        $this->successReturn("更新模型成功", U('Models/index'));
+        $this->successReturn("更新模型成功！", U('Models/index'));
     }
 
     /**

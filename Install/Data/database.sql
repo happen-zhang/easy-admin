@@ -18,7 +18,6 @@ CREATE TABLE `ea_field` (
   `auto_fill` varchar(32) NOT NULL COMMENT '自动完成函数',
   `fill_time` varchar(16) NOT NULL DEFAULT 'both' COMMENT '填充时机',
   `relation_model` int(11) NOT NULL COMMENT '关联的模型',
-  `relation_level` varchar(16) NOT NULL COMMENT '关联级别',
   `relation_field` varchar(128) NOT NULL COMMENT '关联的字段',
   `relation_value` varchar(128) NOT NULL COMMENT '关联显示的值',
   `created_at` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',

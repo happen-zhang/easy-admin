@@ -50,9 +50,6 @@ class FieldModel extends CommonModel {
               '非法字段类型！', 1, 'in', 3),
         // 字段长度
         array('length', 'isValidFieldLength', '无效的类型长度！', 2, 'callback',3),
-        // 字段关联级别
-        array('relation_level', 'SET NULL,NOT ACTION,CASCADE,RESTRICT',
-              '无效的关联级别！', 2, 'in', 3),
         // 填充时机
         array('fill_time', 'both,insert,update', '自动填充时机类型不正确！',
               1, 'in', 3),
