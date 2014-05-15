@@ -183,7 +183,7 @@ class DataController extends CommonController {
             $this->errorReturn('文件打包失败，需要打包的文件不存在或目录是不可写！');
         }
 
-        $this->successReturn('文件打包完成', U('Data/zipList'));
+        $this->successReturn('文件打包完成！', U('Data/zipList'));
     }
 
     /**
@@ -227,7 +227,7 @@ class DataController extends CommonController {
 
             case $dataLogic::EXECUTE_FINISH:
                 $info = "已解压完成，耗时：{$result['data']['time']} 秒";
-                $this->successReturn($info);
+                $this->successReturn($info, U('Data/restore'));
                 break ;
 
             default:
