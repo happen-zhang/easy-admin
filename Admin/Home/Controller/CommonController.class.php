@@ -17,7 +17,7 @@ class CommonController extends Controller {
         header('Content-Type: text/html; charset=utf-8');
 
         // 安装过滤
-        // $this->filterInstall();
+        $this->filterInstall();
 
         // 登录过滤
         $notLoginModules = explode(',', C('NOT_LOGIN_MODULES'));
