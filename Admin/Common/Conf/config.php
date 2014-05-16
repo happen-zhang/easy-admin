@@ -38,7 +38,7 @@ $appConfig =  array(
     'SYSTEM_MENU_NAME' => '首页,模型,数据',
 
     // 文件上传根目录
-    'UPLOAD_ROOT' => WEB_ROOT . 'Public/uploads/',
+    'UPLOAD_ROOT' =>  'Public/uploads/',
     // 系统公用配置目录
     'COMMON_CONF_PATH' => WEB_ROOT . 'Common/Conf/'
 );

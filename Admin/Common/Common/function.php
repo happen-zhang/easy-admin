@@ -177,7 +177,7 @@ function upload($save_path, $size = -1, $rule = 'uniqid') {
     // 文件大小
     $upload->maxSize = $size;
      //设置附件上传目录
-    $upload->savePath = $save_path;
+    $upload->savePath = WEB_ROOT . $save_path;
     // 上传文件名唯一
     $upload->saveRule = $rule;
 
@@ -189,7 +189,7 @@ function upload($save_path, $size = -1, $rule = 'uniqid') {
     // 得到上传的文件路径
     $info = $upload->getUploadFileInfo();
     foreach ($info as $key => $item) {
-        $info[$key]['path'] = $item['savepath'] . $item['savename'];
+        $info[$key]['path'] = $save_path . $item['savename'];
     }
 
     return array('status' => true, 'info' => $info);

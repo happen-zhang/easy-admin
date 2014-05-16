@@ -57,7 +57,7 @@ class DefaultService extends CommonService {
                         // 删除已上传的文件
                         foreach ($uploadInfo['info'] as $upload) {
                             // 删除文件
-                            unlink($upload['path']);
+                            unlink(WEB_ROOT . $upload['path']);
                         }
 
                         // 超过限制大小
