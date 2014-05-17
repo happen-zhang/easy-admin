@@ -39,7 +39,7 @@
 <div class="commonBtnArea" >
     <span class="fr" id="opStatus" style="width:450px; display: none; margin: -8px; line-height: 16px;"></span>
     <button class="btn delZipFiles">删除所选</button>
-    <button class="btn unzipSelect">解压缩所选</button>
+    <!-- <button class="btn unzipSelect">解压缩所选</button> -->
 </div>
 
 <script type="text/javascript">
@@ -69,35 +69,35 @@
         }
 
         // 解压所选择的zip文件
-        $(".unzipSelect").click(function(){
-            if($(this).attr("disabledSubmit")){
-                popup.alert("已提交，系统在处理中...");
-                return false;
-            }
-            if($("tbody input[type='checkbox']:checked").size()==0){
-                popup.alert("请先选择你需要解压的zip文件吧！");
-                return false;
-            }
-            var files=[];
-            $("tbody input[type='checkbox'][name='zip_files[]']:checked").each(function(i){
-                files[i]=$(this).val();
-            });
-            $.post("__URL__/unzipFiles", {'zip_files[]':files}, function(json){
-                if(json.status==1){
-                    if(json.url){
-                        $("#opStatus").show().html(json.info);
-                        repeat(json.url);
-                    }else{
-                        popup.success(json.info);
-                    }
-                    popup.close("asyncbox_alert");
-                }else{
-                    popup.error(json.info);
-                }
-            });
-
-            return false;
-        });
+        // $(".unzipSelect").click(function(){
+        //     if($(this).attr("disabledSubmit")){
+        //         popup.alert("已提交，系统在处理中...");
+        //         return false;
+        //     }
+        //     if($("tbody input[type='checkbox']:checked").size()==0){
+        //         popup.alert("请先选择你需要解压的zip文件吧！");
+        //         return false;
+        //     }
+        //     var files=[];
+        //     $("tbody input[type='checkbox'][name='zip_files[]']:checked").each(function(i){
+        //         files[i]=$(this).val();
+        //     });
+        //     $.post("__URL__/unzipFiles", {'zip_files[]':files}, function(json){
+        //         if(json.status==1){
+        //             if(json.url){
+        //                 $("#opStatus").show().html(json.info);
+        //                 repeat(json.url);
+        //             }else{
+        //                 popup.success(json.info);
+        //             }
+        //             popup.close("asyncbox_alert");
+        //         }else{
+        //             popup.error(json.info);
+        //         }
+        //     });
+        //
+        //     return false;
+        // });
 
         $(".unzip").click(function(){
             $.post("__URL__/unzipFiles",{'zip_files[]':$(this).attr("file")},function(json){
