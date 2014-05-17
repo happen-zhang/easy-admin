@@ -82,7 +82,7 @@
             $("input[type='checkbox']").prop("checked",false);
         });
         $(".submit").click(function(){
-            commonAjaxSubmit('__URL__/doAssignAccess');
+            commonAjaxSubmit("{:U('Roles/doAssignAccess')}");
         });
     });
 </script>

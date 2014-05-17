@@ -65,7 +65,7 @@
                 return false;
             }
             $("#action").val(act);
-            commonAjaxSubmit("__URL__/doOptimize");
+            commonAjaxSubmit("{:U('Data/doOptimize')}");
         }
         $(".optimize").click(function(){ handle("optimize"); });
         $(".repair").click(function(){  handle("repair"); });

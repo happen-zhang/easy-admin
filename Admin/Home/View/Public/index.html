@@ -42,7 +42,7 @@
                     popup.alert("请填写完整的表单后进行登录！");
                     return false;
                 }
-                commonAjaxSubmit('__URL__/login');
+                commonAjaxSubmit("{:U('Public/login')}");
             });
 
             // 找回密码
@@ -51,7 +51,7 @@
                     popup.alert("请填需要找回密码的登录邮箱！");
                     return false;
                 }
-                commonAjaxSubmit('__URL__/sendFindPwdMail');
+                commonAjaxSubmit("{:U('Public/sendFindPwdMail')}");
             });
         });
     </script>

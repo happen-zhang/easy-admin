@@ -57,7 +57,7 @@
                 popup.alert("已提交，系统在处理中...");
             }else{
                 $(this).attr("disabledSubmit",true).html("提交处理中...");
-                commonAjaxSubmit("__URL__/doBackup");
+                commonAjaxSubmit("{:U('Data/doBackup')}");
 //                        popup.alert("系统处理中，如果数据库中数据较多可能需要较长时间，请稍候....");
                 setTimeout(function(){
                     popup.close("asyncbox_alert");
