@@ -26,7 +26,7 @@ define('THINK_PATH', realpath('./ThinkPHP') . '/');
 define('RUNTIME_PATH', WEB_ROOT . 'Cache/Runtime/' . APP_NAME . '/');
 
 // 开启调试
-// define('APP_DEBUG', true);
+define('APP_DEBUG', true);
 
 // 引入ThinkPHP入口文件
 require THINK_PATH . 'ThinkPHP.php';
