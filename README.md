@@ -79,8 +79,11 @@ Easy-Admin
 
 ```
 字符型：char, varchar
+
 整型：tinyint, int, smallint, bigint
+
 浮点型：float, double
+
 文本型：text, mediumtext, longtext
 ```
 
@@ -88,14 +91,23 @@ Easy-Admin
 
 ```
 text：文本域
+
 password：密码域
+
 select：下拉框
+
 radio：单选框
+
 checkbox：复选框
+
 textarea：多行文本域
+
 file：文件上传，返回的值是文件存放的位置
+
 date：日期控件
+
 editor：编辑器，KingEditor全功能和简介功能
+
 relationlink：可关联其他模型的下拉框
 ```
 
@@ -119,9 +131,13 @@ relationlink：可关联其他模型的下拉框
 )
 
 'Posts'：菜单对应的模块名称（Controller的名字）
+
 'name'：主菜单中显示出来的名字
+
 'target'：点击主菜单后跳转到的操作
+
 'sub_menu'：主菜单下的子菜单，即左侧的菜单
+
 'mapping'：把该子菜单映射到某个主菜单下
 ```
 
@@ -176,7 +192,9 @@ registry_fill(array(
 自定义填充函数和自定义过滤函数是一样的。
 
 > 过滤函数必须要有一个参数和一个返回值，填充函数需要一个返回值。
+
 > 内置filter：sql_injection、strip_sql_injection、filter_special_chars
+
 > 内置fill：uuid、datetime
 
 ## 可配置项 ##
@@ -311,17 +329,25 @@ registry_fill(array(
 
 ```
 add：数据表单添加页面
+
 create：对提交的表单数据处理后存到数据库
+
 edit：数据表单编辑页面
+
 update：对提交的表单数据处理后更新到数据库
 ```
 
 ```
 方法名：helloWorld()
+
 类中的变量名（包括方法中的变量）：$helloWorld = 'hi'
+
 函数：hello_world()
+
 类外部的变量名：$hello_world = 'hi'
+
 键值: beginer['hello_world'] = 'hi'
+
 表单域名：<input type='text' name='goods[some_detail]' />
 ```
 
