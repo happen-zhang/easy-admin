@@ -351,6 +351,22 @@ update：对提交的表单数据处理后更新到数据库
 表单域名：<input type='text' name='goods[some_detail]' />
 ```
 
+## 扩展库说明 ##
+
+本系统的开发没有修改过ThinkPHP中的核心系框架中的内容，如果需要，你可以尝试着对ThinkPHP版本的升级。
+
+下面是引用到的PHP第三方库：
+
+* Min：Public/Min
+* PHPMailer：ThinkPHP/Library/Vendor/PHPMailer：ThinkPHP
+
+下面是ThinkPHP工具类，均放在 ThinkPHP/Library/Org/Util/ 目录下：
+
+* Page.class.php：分页类 __有改动__
+* Rbac.class.php：角色权限管理
+* UploadFile.class.php：文件上传类 __有改动__
+* Category.class.php：无限分级类
+
 ## 补充说明 ##
 
 1. 本系统的**页面**来源于 @leohdr ，在此感谢 @leohdr 兄的分享。
