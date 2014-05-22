@@ -87,11 +87,11 @@ class AdminService extends CommonService {
         $shell = $this->genShell($account['id'], $account['password']);
 
         // 生成登录session
-        $_SESSION[$loginMarked] = "{$shell}";
+        $_SESSION[$loginMarked] = $shell;
 
         // 生成登录cookie
         $shell .= '_' . time();
-        setcookie($loginMarked, "{$shell}", 0, '/');
+        setcookie($loginMarked, $shell, 0, '/');
         $_SESSION['current_account'] = $account;
 
         // 权限认证
