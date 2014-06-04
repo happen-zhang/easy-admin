@@ -10,22 +10,40 @@
         </thead>
         <tbody>
             <tr>
-                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['cache']}" /></td>
-                <td>后台缓存文件<br/> ({$caches['cache']})</td>
-                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['data']}" /></td>
-                <td>后台数据库字段缓存文件<br/> ({$caches['data']})</td>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['Admincache']}" /></td>
+                <td>后台缓存文件<br/> ({$caches['Admincache']})</td>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['Admindata']}" /></td>
+                <td>后台数据库字段缓存文件<br/> ({$caches['Admindata']})</td>
             </tr>
             <tr>
-                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['logs']}" /></td>
-                <td>后台日志缓存文件<br/> ({$caches['logs']})</td>
-                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['temp']}" /></td>
-                <td>网站后台临时缓存文件<br/> ({$caches['temp']})</td>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['Adminlogs']}" /></td>
+                <td>后台日志缓存文件<br/> ({$caches['Adminlogs']})</td>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['Admintemp']}" /></td>
+                <td>网站后台临时缓存文件<br/> ({$caches['Admintemp']})</td>
             </tr>
             <tr>
-                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['runtime']}" /></td>
-                <td>后台runtime.php缓存文件<br/> ({$caches['runtime']})</td>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['Adminruntime']}" /></td>
+                <td>后台runtime.php缓存文件<br/> ({$caches['Adminruntime']})</td>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['Homecache']}" /></td>
+                <td>前台缓存文件<br/> ({$caches['Homecache']})</td>
+            </tr>
+            <tr>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['Homedata']}" /></td>
+                <td>前台数据库字段缓存文件<br/> ({$caches['Homedata']})</td>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['Homelogs']}" /></td>
+                <td>前台日志缓存文件<br/> ({$caches['Homelogs']})</td>
+            </tr>
+            <tr>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['Hometemp']}" /></td>
+                <td>网站前台临时缓存文件<br/> ({$caches['Hometemp']})</td>
+                <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['Homeruntime']}" /></td>
+                <td>前台runtime.php缓存文件<br/> ({$caches['Homeruntime']})</td>
+            </tr>
+            <tr>
                 <td width="30" align="center"><input type="checkbox" name="caches[]" value="{$caches['MinFiles']}" /></td>
                 <td>JS/CSS压缩缓存文件<br/> ({$caches['MinFiles']})</td>
+                <td width="30" align="center"></td>
+                <td></td>
             </tr>
         </tbody>
         <tfoot>
