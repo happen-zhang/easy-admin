@@ -12,11 +12,16 @@ class CacheController extends CommonController {
      */
     public function index() {
         $caches = array(
-            'cache' => RUNTIME_PATH . 'Cache/',
-            "data" => RUNTIME_PATH . 'Data/',
-            "logs" => RUNTIME_PATH . 'Logs/',
-            "temp" => RUNTIME_PATH . 'Temp/',
-            "runtime" => RUNTIME_PATH . '~runtime.php/',
+            'Admincache' => RUNTIME_PATH . 'Cache/',
+            "Admindata" => RUNTIME_PATH . 'Data/',
+            "Adminlogs" => RUNTIME_PATH . 'Logs/',
+            "Admintemp" => RUNTIME_PATH . 'Temp/',
+            "Adminruntime" => RUNTIME_PATH . '~runtime.php/',
+            'Homecache' => WEB_ROOT . 'Cache/Runtime/Home/Cache/',
+            "Homedata" => WEB_ROOT . 'Cache/Runtime/Home/Data/',
+            "Homelogs" => WEB_ROOT . 'Cache/Runtime/Home/Logs/',
+            "Hometemp" => WEB_ROOT . 'Cache/Runtime/Home/Temp/',
+            "Homeruntime" => WEB_ROOT . 'Cache/Runtime/Home/~runtime.php/',
             "MinFiles" => WEB_ROOT . 'Cache/MinFiles/'
         );
 
