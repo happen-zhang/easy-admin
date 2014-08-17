@@ -221,6 +221,16 @@ class CommonController extends Controller {
 
             $mainMenu[$key]['name'] = $menuItem['name'];
             $mainMenu[$key]['target'] = $menuItem['target'];
+            
+            //如果默认的target用户无权访问，则显示sub_menu中的用户有权访问的第一个页面
+            $actions = $access[$authGroup][strtoupper($key)];
+            $action = explode('/', strtoupper($mainMenu[$key]['target']));
+            while (!$_SESSION[C('ADMIN_AUTH_KEY')] && !array_key_exists($action[1], $actions)) {
+                $nextSubMenu = next($menu[$key]['sub_menu']);
+                if (empty($nextSubMenu)) break;
+                $mainMenu[$key]['target'] = key(current($nextSubMenu));
+                $action = explode('/', strtoupper($mainMenu[$key]['target']));
+            }
         }
 
         // 子菜单
