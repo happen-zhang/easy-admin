@@ -32,9 +32,9 @@ $appConfig =  array(
     'BACKUP' => $backupConfig,
     'MAIL' => $mailConfig,
 
-    // 系统保留表明
+    // 系统保留表名
     'SYSTEM_TBL_NAME' => 'model,models,filed,fileds,admin,admins',
-    // 系统保留菜单明
+    // 系统保留菜单名
     'SYSTEM_MENU_NAME' => '首页,模型,数据',
 
     // 文件上传根目录
