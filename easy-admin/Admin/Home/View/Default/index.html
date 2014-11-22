@@ -1,0 +1,61 @@
+<div class="Item hr">
+    <span class="fr">系统现有数据 <b>{$rows_count}</b> 行</span>
+    <div class="current"><b>{$model['name']}</b> 数据列表</div>
+</div>
+<form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+        <thead>
+            <tr>
+                <volist name="fields" id="field">
+                <td>{$field['comment']}</td>
+                </volist>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <volist name="rows" id="row">
+            <tr align="center">
+                <volist name="fields" id="field">
+                <td>{$row[$field['name']]}</td>
+                </volist>
+                <td>[ <a href="{:U(CONTROLLER_NAME . '/edit', array('id' => $row['id']))}">编辑</a> ] [ <a href="javascript:void(0);" value="{:U(CONTROLLER_NAME . '/delete', array('id' => $row['id']))}" name="ID={$row['id']}" class="del">删除</a> ]</td>
+            </tr>
+            </volist>
+        </tbody>
+    </table>
+</form>
+
+<div class="page">
+    {$page}
+</div>
+
+<script type="text/javascript">
+$(function(){
+    $(".del").click(function(){
+        var del_link = $(this).attr("value");
+        popup.confirm('您真的打算删除 '+$(this).attr("name")+' 的数据吗?','温馨提示',function(action){
+            if(action == 'ok'){
+                $.getJSON(del_link, function(json){
+                    if (json.status) {
+                        popup.success(json.info);
+                        setTimeout(function(){
+                            popup.close("asyncbox_success");
+                        },2000);
+                    } else {
+                        popup.error(json.info);
+                        setTimeout(function(){
+                            popup.close("asyncbox_error");
+                        },2000);
+                    }
+
+                    setTimeout(function(){
+                        top.window.location.reload();
+                    },1000);
+                });
+            }
+        });
+
+        return false;
+    });
+});
+</script>

@@ -1,0 +1,39 @@
+<script type="text/javascript">
+function submitForm(action) {
+    $(".submit").click(function(){
+        if ("" == $.trim($("#model_name").val())) {
+            popup.error("模型名称不能为空");
+            return false;
+        } else if ("" == $.trim($("#tbl_name").val())) {
+            popup.error("数据表名称不能为空");
+            return false;
+        }
+
+        var url = ('create' == action) ? "{:U('Models/create')}" : "{:U('Models/update')}";
+
+
+        commonAjaxSubmit(url);
+        return false;
+    });
+}
+
+$(function(){
+    $("#check_model_name").click(function(){
+        $.getJSON("{:U('Models/checkModelName', array('id' => $model['id']))}", { model_name: $("#model_name").val() }, function(json){
+            $("#check_model_name").css("color",json.status==1?"#0f0":"#f00").html(json.info);
+        });
+    });
+
+    $("#check_tal_name").click(function(){
+        $.getJSON("{:U('Models/checkTblName', array('id' => $model['id']))}", { tbl_name:$("#tbl_name").val()}, function(json){
+            $("#check_tal_name").css("color",json.status==1?"#0f0":"#f00").html(json.info);
+        });
+    });
+
+    $("#check_menu_name").click(function(){
+        $.getJSON("{:U('Models/checkMenuName', array('id' => $model['id']))}", { menu_name:$("#menu_name").val()}, function(json){
+            $("#check_menu_name").css("color",json.status==1?"#0f0":"#f00").html(json.info);
+        });
+    });
+});
+</script>

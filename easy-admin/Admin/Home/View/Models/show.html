@@ -1,0 +1,125 @@
+<div class="Item hr">
+    <div class="current">模型基本信息</div>
+</div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+    <tr>
+        <th width="100">模型名称：</th>
+        <td>{$model['name']}</td>
+    </tr>
+    <tr>
+        <th width="100">数据表名：</th>
+        <td>{$model['tbl_name']}</td>
+    </tr>
+    <tr>
+        <th width="100">是否为内部表：</th>
+        <td><if condition="$model['is_inner'] == 1">是<else/>否</if></td>
+    </tr>
+    <tr>
+        <th width="100">字段数：</th>
+        <td>{$model['fields_count']}</td>
+    </tr>
+    <tr>
+        <th width="100">记录行数：</th>
+        <td>{$model['rows']}</td>
+    </tr>
+    <tr>
+        <th>模型描述：</th>
+        <td>{$model['description']}</td>
+    </tr>
+</table>
+
+<div class="Item hr">
+    <div class="current">模型字段信息</div>
+</div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+    <thead>
+        <tr>
+            <td>表单域顺序</td>
+            <td>字段名称</td>
+            <td>字段标签</td>
+            <td>字段类型</td>
+            <td>是否必填</td>
+            <td>是否唯一</td>
+            <td>是否索引</td>
+            <td>系统字段</td>
+            <td>字段操作</td>
+        </tr>
+    </thead>
+    <tbody>
+        <volist name="model['fields']" id="field">
+        <tr align="center">
+            <td><if condition="0 == $field['show_order']">---<else/>{$field['show_order']}</if></td>
+            <td>{$field['name']}</td>
+            <td>{$field['comment']}</td>
+            <td>{$field['type']}</td>
+            <td><if condition="$field['is_require'] eq 1">是<else/>否</if></td>
+            <td><if condition="$field['is_unique'] eq 1">是<else/>否</if></td>
+            <td><if condition="$field['is_index'] eq 1">是<else/>否</if></td>
+            <td><if condition="$field['is_system'] eq 1">是<else/>否</if></td>
+            <td><if condition="$field['is_system'] eq 0">[ <a href="{:U('Fields/edit', array('model_id' => $model['id'], 'field_id' => $field['id']))}">编辑</a> ] [ <a href="{:U('Fields/delete', array('model_id' => $model['id'], 'field_id' => $field['id']))}" name="{$field['name']}" class="del">删除</a> ]<else/><a href="javascript:void(0);" class="toggle" value="{:U('Fields/toggleListShow', array('field_id' => $field['id']))}" status="{$field['is_list_show']}" name="{$field['name']}"><if condition="$field['is_list_show'] eq 1">不在数据列表中显示<else/>数据列表中显示</if></a></if></td>
+        </tr>
+        </volist>
+    </tbody>
+</table>
+<div class="commonBtnArea" >
+    <button class="btn submit" onclick="window.location.href='{:U('Fields/add', array('model_id' => $model['id']))}'">添加字段</button>
+</div>
+
+<script type="text/javascript">
+$(function(){
+    $(".del").click(function(){
+        var url = $(this).attr("href");
+        popup.confirm('你真的打算删除 <b>'+$(this).attr("name")+'</b> 吗?','温馨提示',function(action){
+            if(action == 'ok'){
+                $.getJSON(url, function(json) {
+                    if (json.status) {
+                        popup.success(json.info);
+                        setTimeout(function(){
+                            popup.close("asyncbox_success");
+                            top.window.location.reload();
+                        }, 2000);
+                    } else {
+                        popup.error(json.info);
+                        setTimeout(function(){
+                            popup.close("asyncbox_error");
+                        }, 2000);
+                    }
+                });
+            }
+        });
+        return false;
+    });
+
+    $(".toggle").click(function(){
+        var url = $(this).attr("value");
+        var name = $(this).attr("name");
+        var status = $(this).attr("status") || 0;
+        status = status == 0 ? '显示' : '不显示';
+
+        popup.confirm('您确定在数据列表中'+ status + " <b>" + name + "</b> 字段吗？", '温馨提示',function(action){
+            if(action == 'ok'){
+                $.getJSON(url, function(json){
+                    if (json.status) {
+                        popup.success(json.info);
+                        setTimeout(function(){
+                            popup.close("asyncbox_success");
+                        },2000);
+                    } else {
+                        popup.error(json.info);
+                        setTimeout(function(){
+                            popup.close("asyncbox_error");
+                        },2000);
+                    }
+
+                    setTimeout(function(){
+                        top.window.location.reload();
+                    },1000);
+                });
+            }
+        });
+
+        return false;
+    });
+
+});
+</script>

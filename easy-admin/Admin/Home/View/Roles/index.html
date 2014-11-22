@@ -1,0 +1,26 @@
+<div class="Item hr">
+    <span class="fr">现有角色<b>{$rows_count}</b>个</span>
+    <div class="current">角色列表</div>
+</div>
+<form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+        <thead>
+            <tr>
+                <td>角色名称</td>
+                <td>备注</td>
+                <td>状态</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <volist name="roles" id="role">
+            <tr align="center">
+                <td align="left">{$role['fullname']}</td>
+                <td>{$role['description']}</td>
+                <td><if condition="$role['status'] eq 1">已启用<else/>已禁用</if></td>
+                <td>[ <a href="{:U('Roles/edit', array('id' => $role['id']))}">编辑</a> ] <if condition="($role['id'] != $_SESSION['current_account']['role_id']) && ($role['pid'] != 0)">[ <a href="{:U('Roles/assignAccess', array('id' => $role['id']))}">分配权限</a> ]</if></td>
+            </tr>
+            </volist>
+        </tbody>
+    </table>
+</form>

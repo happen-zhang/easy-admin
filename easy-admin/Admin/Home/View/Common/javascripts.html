@@ -1,0 +1,18 @@
+<script type="text/javascript" src="__PUBLIC__/Min/?f=__PUBLIC__/javascripts/admin/jquery-1.7.2.min.js|__PUBLIC__/javascripts/admin/jquery.lazyload.js|__PUBLIC__/javascripts/admin/functions.js|__PUBLIC__/javascripts/admin/base.js|__PUBLIC__/javascripts/admin/jquery.form.js|__PUBLIC__/javascripts/admin/asyncbox/asyncbox.js|__PUBLIC__/javascripts/admin/jquery.watermark.js|__PUBLIC__/javascripts/admin/datepicker/datetimepicker_css.js">
+</script>
+
+<script type="text/javascript">
+    $(window).resize(autoSize);
+    $(function(){
+        autoSize();
+        $(".loginOut").click(function(){
+            var url=$(this).attr("href");
+            popup.confirm('你确定要退出吗？','你确定要退出吗',function(action){
+                if(action == 'ok'){ window.location=url; }
+            });
+            return false;
+        });
+
+        var time=self.setInterval(function(){$("#today").html(date("Y-m-d H:i:s"));},1000);
+    });
+</script>

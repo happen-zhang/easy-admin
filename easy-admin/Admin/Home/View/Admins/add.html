@@ -1,0 +1,54 @@
+<div class="contentArea">
+    <div class="Item hr">
+        <div class="current">添加管理员</div>
+    </div>
+    <form>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+            <tr>
+                <th width="80">登录邮箱：</th>
+                <td><input name="admin[email]" type="text" class="input" size="30" /></td>
+            </tr>
+            <tr>
+                <th width="80">新密码：</th>
+                <td><input class="input" name="admin[password]" type="password" size="30" /></td>
+            </tr>
+            <tr>
+                <th width="80">确认密码：</th>
+                <td><input class="input" name="admin[cfm_password]" type="password" size="30" /></td>
+            </tr>
+            <tr>
+                <th width="80">状态：</th>
+                <td>
+                    <select name="admin[is_active]">
+                        <option value="1" selected>启用</option>
+                        <option value="0">禁用</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th width="80">所属角色：</th>
+                <td>
+                    <select name="admin[role_id]">
+                        <volist name="roles" id="role">
+                        <option value="{$role['id']}" <if condition="$role['pid'] eq 0">disabled="true"</if>>{$role['fullname']}</option>
+                        </volist>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th width="80">备注信息：</th>
+                <td><textarea class="jq_watermark" rows = "5" cols="68" name="admin[remark]" placeholder="管理员备注信息"></textarea></td>
+            </tr>
+        </table>
+    </form>
+    <div class="commonBtnArea" >
+        <button class="btn submit">提交</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(".submit").click(function(){
+    commonAjaxSubmit("{:U('Admins/create')}");
+    return false;
+});
+</script>

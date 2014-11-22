@@ -1,0 +1,55 @@
+<div class="Item hr">
+    <div class="current">添加模型</div>
+</div>
+<form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+        <tr>
+            <th width="100">模型名称：</th>
+            <td><input id="model_name" type="text" class="input" size="20" name="model[name]" /> <a href="javascript:void(0)" id="check_model_name">检测是否可用</a>（不能包含特殊字符）</td>
+        </tr>
+        <tr>
+            <th width="100">数据表名：</th>
+            <td><input id="tbl_name" type="text" class="input" size="20" name="model[tbl_name]" /> <a href="javascript:void(0)" id="check_tal_name">检测是否可用</a>（存放该模型的数据表名称，只能由"_"、a~z组成）</td>
+        </tr>
+        <tr>
+            <th width="100">主菜单名：</th>
+            <td><input id="menu_name" type="text" class="input" size="20" name="model[menu_name]" /> <a href="javascript:void(0)" id="check_menu_name">检测是否可用</a>（用于在主菜单和子菜单上显示，比如"文章"，系统则会生成"文章管理"菜单）</td>
+        </tr>
+        <tr>
+            <th width="100">是否为内部表：</th>
+            <td><label><input type="radio" name="model[is_inner]" value="0" checked="checked" /> 否</label> &nbsp; <label><input type="radio" name="model[is_inner]" value="1" /> 是</label> （内部表将不会被显示在菜单上）</td>
+        </tr>
+<!--         <tr>
+            <th width="100">是否生成主键：</th>
+            <td><label><input type="radio" name="model[has_pk]" value="0" /> 否</label> &nbsp; <label><input type="radio" name="model[has_pk]" value="1" checked="checked" /> 是</label> （如果生成主键则会在数据表中生成一个名为id自动递增的字段）</td>
+        </tr> -->
+        <tr>
+        <th width="100">引擎类型：</th>
+            <td>
+                <select name="model[tbl_engine]">
+                    <option value="InnoDB">InnoDB</option>
+                    <option value="MyISAM">MyISAM</option>
+                    <option value="MEMORY">MEMORY</option>
+                    <option value="BLACKHOLE">BLACKHOLE</option>
+                    <option value="MRG_MYISAM">MRG_MYISAM</option>
+                    <option value="ARCHIVE">ARCHIVE</option>
+                </select>（生成后不可修改）
+            </td>
+        </tr>
+        <tr>
+            <th>模型描述：</th>
+            <td><textarea id="content" class="input" style="height: 80px; width: 50%;" name="model[description]" placeholder="模型的注释，同时也会作为表的注释"></textarea></td>
+        </tr>
+        <input type="hidden" name="model[has_pk]" value="1" />
+    </table>
+</form>
+<div class="commonBtnArea" >
+    <button class="btn submit">提交</button>
+</div>
+
+<include file="Models/javascript" />
+<script type="text/javascript">
+$(function(){
+    submitForm("create");
+});
+</script>

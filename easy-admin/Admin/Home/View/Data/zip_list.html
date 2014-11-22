@@ -1,0 +1,135 @@
+<div class="Item hr">
+    <span class="fr">共有<b>{$files_count}</b>个压缩包文件，共计<b>{$total_size}</b></span>
+    <div class="current">数据库压缩包文件列表</div>
+</div>
+<form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+        <thead>
+            <tr>
+                <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+                <td>压缩包名称</td>
+                <td>压缩时间</td>
+                <td>文件大小</td>
+                <td>解压</td>
+            </tr>
+        </thead>
+        <tbody>
+            <volist name="info_list" id="info">
+            <tr align="center">
+                <td><input type="checkbox" name="zip_files[]" value="{$info['file']}"/></td>
+                <td align="left"><a href="{:U('Data/downloadFile', array('file_name' => $info['file'], 'file_type' => 'zip'))}" target="_blank">{$info['file']}</a></td>
+                <td>{$info['time']}</td>
+                <td>{$info['size']}</td>
+                <td><button class="btn unzip" file="{$info['file']}">解压</button></td>
+            </tr>
+            </volist>
+        </tbody>
+        <tfoot align="center">
+            <tr>
+                <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+                <td>压缩包名称</td>
+                <td>备份时间</td>
+                <td>总计：{$total_size}</td>
+                <td>解压</td>
+            </tr>
+        </tfoot>
+    </table>
+    <input type="hidden" name="" value="" />
+</form>
+<div class="commonBtnArea" >
+    <span class="fr" id="opStatus" style="width:450px; display: none; margin: -8px; line-height: 16px;"></span>
+    <button class="btn delZipFiles">删除所选</button>
+    <!-- <button class="btn unzipSelect">解压缩所选</button> -->
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        //全新反选
+        clickCheckbox();
+
+        var repeat=function(url){
+            $.post(url, function(json){
+                if(json.status==1){
+                    if(json.url){
+                        $("#opStatus").html(json.info);
+                        repeat(json.url);
+                    }else{
+                        popup.success(json.info,'oh yeah',function(action){
+                            if(action == 'ok'){
+                                $("#opStatus").hide('solw');
+                                $(".unzipSelect").html('解压缩所选');
+                            }
+                        });
+                        $(".btn").removeAttr("disabledSubmit");
+                    }
+                }else{
+                    popup.error(json.info);
+                }
+            });
+        }
+
+        // 解压所选择的zip文件
+        // $(".unzipSelect").click(function(){
+        //     if($(this).attr("disabledSubmit")){
+        //         popup.alert("已提交，系统在处理中...");
+        //         return false;
+        //     }
+        //     if($("tbody input[type='checkbox']:checked").size()==0){
+        //         popup.alert("请先选择你需要解压的zip文件吧！");
+        //         return false;
+        //     }
+        //     var files=[];
+        //     $("tbody input[type='checkbox'][name='zip_files[]']:checked").each(function(i){
+        //         files[i]=$(this).val();
+        //     });
+        //     $.post("__URL__/unzipFiles", {'zip_files[]':files}, function(json){
+        //         if(json.status==1){
+        //             if(json.url){
+        //                 $("#opStatus").show().html(json.info);
+        //                 repeat(json.url);
+        //             }else{
+        //                 popup.success(json.info);
+        //             }
+        //             popup.close("asyncbox_alert");
+        //         }else{
+        //             popup.error(json.info);
+        //         }
+        //     });
+        //
+        //     return false;
+        // });
+
+        $(".unzip").click(function(){
+            $.post("{:U('Data/unzipFiles')}",{'zip_files[]':$(this).attr("file")},function(json){
+                json.status==1?popup.success(json.info):popup.error(json.info);
+                $(".btn").removeAttr("disabledSubmit");
+                if(json.url&&json.url!=''){
+                    setTimeout(function(){
+                        top.window.location.href=json.url;
+                    },2000);
+                }
+            });
+            return false;
+        });
+
+        //删除zip文件
+        $(".delZipFiles").click(function(){
+            if($(this).attr("disabledSubmit")){
+                popup.alert("已提交，系统在处理中...");
+
+            }
+            if($("tbody input[type='checkbox']:checked").size()==0){
+                popup.alert("请先选择你要删除的zip文件吧！");
+                return false;
+            }
+            popup.confirm('你确定要删除zip文件吗？','温馨提示',function(action){
+                if(action == 'ok'){
+                    $(".btn").attr("disabledSubmit",true);
+                    $(this).html("提交处理中...");
+                    commonAjaxSubmit("{:U('Data/deleteZipFiles')}");
+                }
+            });
+            return false;
+        });
+    });
+</script>

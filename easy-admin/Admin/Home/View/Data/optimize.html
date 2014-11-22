@@ -1,0 +1,73 @@
+<div class="Item hr">
+    <span class="fr">数据库中共有<b>{$tables_count}</b>张表，共计<b>{$total_size['table']}</b></span>
+    <div class="current">数据库优化修复</div>
+</div>
+<form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+        <thead>
+            <tr>
+                <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+                <td>表名</td>
+                <td>表用途</td>
+                <td>记录行数</td>
+                <td>引擎类型</td>
+                <td>字符集</td>
+                <td>碎片大小</td>
+                <td>表大小</td>
+                <td>数据大小</td>
+                <td>索引大小</td>
+            </tr>
+        </thead>
+        <tbody>
+            <volist name='tables_info' id='table_info'>
+            <tr align="center">
+                <td><input type="checkbox" name="tables[]" value="{$table_info['Name']}"/></td>
+                <td align="left">{$table_info['Name']}</td>
+                <td>{$table_info['Comment']}</td>
+                <td>{$table_info['Rows']}</td>
+                <td>{$table_info['Engine']}</td>
+                <td>{$table_info['Collation']}</td>
+                <td>{$table_info['Data_free']}</td>
+                <td>{$table_info['size']}</td>
+                <td>{$table_info['Data_length']}</td>
+                <td>{$table_info['Index_length']}</td>
+            </tr>
+            </volist>
+        </tbody>
+        <tfoot align="center">
+            <tr>
+                <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+                <td>表名</td>
+                <td>表用途</td>
+                <td>记录行数</td>
+                <td>引擎类型</td>
+                <td>字符集</td>
+                <td><b>{$total_size['free']}</b></td>
+                <td><b>{$total_size['table']}</b></td>
+                <td><b>{$total_size['data']}</b></td>
+                <td><b>{$total_size['index']}</b></td>
+            </tr>
+        </tfoot>
+    </table>
+    <input type="hidden" name="action" id="action" />
+</form>
+<div class="commonBtnArea" >
+    <button class="btn optimize">优化所选</button>
+    <button class="btn repair">修复所选</button>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        clickCheckbox();
+        var handle=function(act){
+            if($("tbody input[type='checkbox']:checked").size()==0){
+                popup.alert("请先选择你要优化的数据库表吧");
+                return false;
+            }
+            $("#action").val(act);
+            commonAjaxSubmit("{:U('Data/doOptimize')}");
+        }
+        $(".optimize").click(function(){ handle("optimize"); });
+        $(".repair").click(function(){  handle("repair"); });
+    });
+</script>

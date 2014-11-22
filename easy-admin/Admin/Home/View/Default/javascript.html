@@ -1,0 +1,43 @@
+<script type="text/javascript">
+function formSubmit(url) {
+    $(".submit").click(function(){
+        var fileForm = "<form id='ajaxupload' action='" + url + "' method='post' enctype='multipart/form-data'></form>";
+
+        var inputs = $('#form_inputs');
+        inputs.wrap(fileForm);
+
+        $("#ajaxupload").ajaxSubmit({
+            dataType: 'text',
+            success: function (data) {
+                data = eval('(' + data + ')');
+                if(data.status==1){
+                    popup.success(data.info);
+                    setTimeout(function(){
+                        popup.close("asyncbox_success");
+                    },2000);
+                }else{
+                    popup.error(data.info);
+                    setTimeout(function(){
+                        popup.close("asyncbox_error");
+                    },2000);
+                }
+
+                if(data.url&&data.url!=''){
+                    setTimeout(function(){
+                        top.window.location.href=data.url;
+                    },2000);
+                }
+
+                if(data.status==1&&data.url==''){
+                    setTimeout(function(){
+                        top.window.location.reload();
+                    },1000);
+                }
+                $(inputs).unwrap();
+            }
+        });
+
+        return false;
+    });
+}
+</script>

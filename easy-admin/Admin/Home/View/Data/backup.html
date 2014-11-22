@@ -1,0 +1,68 @@
+<div class="Item hr">
+    <span class="fr">数据库中共有<b>{$table_num}</b>张表，共计<b>{$total_size}</b></span>
+    <div class="current">数据库表结构列表</div>
+</div>
+<form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+        <thead>
+            <tr>
+                <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+                <td>表名</td>
+                <td>表用途</td>
+                <td>记录行数</td>
+                <td>引擎类型</td>
+                <td>字符集</td>
+                <td>表大小</td>
+            </tr>
+        </thead>
+        <tbody>
+            <volist name="tables_info" id="table_info">
+            <tr align="center">
+                <td><input type="checkbox" name="tables[]" value="{$table_info['Name']}"/></td>
+                <td align="left">{$table_info['Name']}</td>
+                <td>{$table_info['Comment']}</td>
+                <td>{$table_info['Rows']}</td>
+                <td>{$table_info['Engine']}</td>
+                <td>{$table_info['Collation']}</td>
+                <td>{$table_info['size']}</td>
+            </tr>
+            </volist>
+        </tbody>
+        <tfoot align="center">
+            <tr>
+                <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+                <td>表名</td>
+                <td>表用途</td>
+                <td>记录行数</td>
+                <td>引擎类型</td>
+                <td>字符集</td>
+                <td>总计：{$total_size}</td>
+            </tr>
+        </tfoot>       
+    </table>
+</form>
+<div class="commonBtnArea" >
+    <button class="btn submit">备份所选</button>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        clickCheckbox();
+        $(".submit").click(function(){
+            if($("tbody input[type='checkbox']:checked").size()==0){
+                popup.alert("请先选择你要备份的数据库表吧");
+                return false;
+            }
+            if($(this).attr("disabledSubmit")){
+                popup.alert("已提交，系统在处理中...");
+            }else{
+                $(this).attr("disabledSubmit",true).html("提交处理中...");
+                commonAjaxSubmit("{:U('Data/doBackup')}");
+//                        popup.alert("系统处理中，如果数据库中数据较多可能需要较长时间，请稍候....");
+                setTimeout(function(){
+                    popup.close("asyncbox_alert");
+                },2000);
+            }
+        });
+    });
+</script>

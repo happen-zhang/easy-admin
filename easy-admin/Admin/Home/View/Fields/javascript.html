@@ -1,0 +1,146 @@
+<script type="text/javascript">
+function submitForm(action) {
+    $(".submit").click(function(){
+        commonAjaxSubmit("__URL__/" + action);
+        return false;
+    });
+}
+
+$(function(){
+    $("#auto_filter option[value='{$field['auto_filter']}']").attr('selected', true);
+    $("#auto_fill option[value='{$field['auto_fill']}']").attr('selected', true);
+    $("#fill_time option[value='{$field['fill_time']}']").attr('selected', true);
+    $("#field_type option[value='{$field['type']}']").attr('selected', true);
+    toggle_type_length('{$field['type']}' || "VARCHAR");
+    $("#field_type").change(function() {
+        toggle_type_length($(this).val());
+
+        if (-1 == $(this).val().indexOf('TEXT')) {
+            $("#field_value").show();
+            $('.untext_index').show();
+        } else {
+            $("#field_value").hide();
+            $('.untext_index').hide();
+        }
+    });
+    $("#field_type").trigger("change");
+
+    $("#check_field_name").click(function(){
+        $.getJSON("__URL__/checkFieldName", { field_name: $("#field_name").val(), model_id: "{$model['id']}", field_id: "{$field['id']}" }, function(json){
+            $("#check_field_name").css("color",json.status==1?"#0f0":"#f00").html(json.info);
+        });
+    });
+
+    $("#check_field_label").click(function(){
+        $.getJSON("__URL__/checkFieldLabel", { field_label: $("#field_label").val(), model_id: "{$model['id']}", field_id: "{$field['id']}" }, function(json){
+            $("#check_field_label").css("color",json.status==1?"#0f0":"#f00").html(json.info);
+        });
+    });
+
+    $(".sub_relation_select").hide();
+    $("#relation_model").change(function() {
+        // 所有可选择的model
+        var models = eval('{:json_encode($models)}');
+        var selected = $(this).val();
+
+        if (!selected) {
+            $(".sub_relation_select").hide();
+            return ;
+        }
+
+        $("#relation_field option").remove();
+        $("#relation_value option").remove();
+        for (i = 0; i < models.length; i++) {
+            if (models[i].id == selected) {
+                for (j = 0; j < models[i].fields.length; j++) {
+                    $("#relation_field").append('<option value="' + models[i].fields[j].name +'">' + models[i].fields[j].name + '</option>');
+                    $("#relation_value").append('<option value="' + models[i].fields[j].name +'">' + models[i].fields[j].name + '</option>');
+                }
+            }
+        }
+
+        $("#relation_field").val('{$field['relation_field']}' || '');
+        $("#relation_value").val('{$field['relation_value']}' || '');
+        $(".sub_relation_select").show();
+    });
+    $("#relation_model").val('{$field['relation_model']}' || '');
+    $("#relation_model").trigger("change");
+
+    // 表单类型
+    var dom = ['.input_text', '.input_password', '.input_select',
+               '.input_radio', '.input_checkbox', '.input_textarea',
+               '.input_editor', '.input_file', '.input_date',
+               '.input_relation_select'];
+    var domLength = dom.length;
+
+    var input_type = '{$input['type']}' || $("#input_type").val();
+    toggle_input_field(input_type);
+    $("#input_type option[value='{$input['type']}']").attr("selected", true);
+    var html = $("#html").val();
+    var curType = $("#input_type").val();
+    $("#input_type").change(function() {
+        if ($(this).val() == curType) {
+            $("#html").val(html || '');
+        } else {
+            $("#html").val('');
+        }
+        toggle_input_field($(this).val());
+    });
+
+    var current = $("#td_is_show").siblings(":visible");
+    $(".input_is_show").change(function() {
+        if (1 == $(this).val()) {
+            current.show();
+        } else {
+            current = $("#td_is_show").siblings(":visible");
+            current.hide();
+        }
+    });
+    $(".input_is_show[value={$input['is_show']}]").attr("checked", true);
+    $(".input_is_show[value={$input['is_show']}]").trigger("change");
+
+    function toggle_type_length(type) {
+        if ("TEXT" == type
+            || "MEDIUMTEXT" == type
+            || "LONGTEXT" == type
+            || "DATE" == type
+            || "DATETIME" == type) {
+            $("#field_precision").hide();
+            $("#field_length").hide();
+        } else if ("FLOAT" == type || "DOUBLE" == type) {
+            $("#field_precision").show();
+            $("#field_length").hide();
+        } else {
+            $("#field_precision").hide();
+            $("#field_length").show();
+        }
+    }
+
+    function toggle_input_field(val) {
+        var type = ".input_" + val;
+        for (var i = 0; i < domLength; i++) {
+            if (type == dom[i]) {
+                $(dom[i]).show();
+            } else {
+                $(dom[i]).hide();
+            }
+        }
+
+        if (type != dom[9]) {
+            $(".sub_relation_select").hide();
+        }
+
+        if (type == dom[0]) {
+            $(dom[1]).show();
+        } else if (type == dom[2] || type == dom[3] || type == dom[4]) {
+            $(dom[2]).show();
+        } else if (type == dom[7]) {
+            $(dom[7]).show();
+        } else if (type == dom[6]) {
+            $(dom[6]).show();
+        } else if (type == dom[9]) {
+            $("#relation_model").trigger("change");
+        }
+    }
+});
+</script>

@@ -1,0 +1,15 @@
+<div id="Tags">
+    <div class="userPhoto"><img src="{:getGravatar($_SESSION[current_account][email])}" /> </div>
+    <div class="navArea">
+        <div class="userInfo">
+            <div>
+                <a href="{:U('Public/logout')}" class="loginOut"><span>&nbsp;</span>退出系统</a>
+            </div>
+            欢迎您，{$Think.session.current_account.email}
+        </div>
+        <div class="nav">
+            <font id="today">{:date("Y-m-d H:i:s")}</font>
+            您的位置：{$breadcrumbs}
+        </div>
+    </div>
+</div>

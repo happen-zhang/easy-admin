@@ -1,0 +1,31 @@
+<div class="contentArea">
+    <div class="Item hr">
+        <div class="current">编辑站点信息</div>
+    </div>
+    <form>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+            <tr>
+                <th width="80">网站标题：</th>
+                <td><input name="site[title]" type="text" class="input" size="30" value="{$title}" placeholder="网站标题（SITE_TITLE）" /></td>
+            </tr>
+            <tr>
+                <th width="80">网站关键字：</th>
+                <td><input class="input" name="site[keyword]" type="text" size="30" value="{$keyword}" placeholder="网站关键字（SITE_KEYWORD）" /></td>
+            </tr>
+            <tr>
+                <th width="80">网站描述：</th>
+                <td><textarea class="jq_watermark" rows = "5" cols="68" name="site[description]" placeholder="网站描述（SITE_DESCRIPTION）">{$description}</textarea></td>
+            </tr>
+        </table>
+    </form>
+    <div class="commonBtnArea" >
+        <button class="btn submit">提交</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(".submit").click(function(){
+    commonAjaxSubmit("{:U('Index/siteUpdate')}");
+    return false;
+});
+</script>

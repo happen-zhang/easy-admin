@@ -1,0 +1,57 @@
+<div class="contentArea">
+    <div class="Item hr">
+        <div class="current">编辑管理员信息</div>
+    </div>
+    <form>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+            <tr>
+                <th width="80">登录邮箱：</th>
+                <td><input name="admin[email]" type="text" readonly class="input" size="30" value="{$admin['email']}" /></td>
+            </tr>
+            <tr>
+                <th width="80">新密码：</th>
+                <td><input class="input" name="admin[password]" type="password" size="30" /></td>
+            </tr>
+            <tr>
+                <th width="80">确认密码：</th>
+                <td><input class="input" name="admin[cfm_password]" type="password" size="30" /></td>
+            </tr>
+            <tr>
+                <th width="80">状态：</th>
+                <td>
+                    <select name="admin[is_active]">
+                        <option value="1" <if condition="$admin['is_active'] eq 1" >selected</if>>启用</option>
+                        <option value="0" <if condition="$admin['is_active'] eq 0" >selected</if>>禁用</option>
+                    </select>
+                </td>
+            </tr>
+            <if condition="false == $admin['is_super']">
+            <tr>
+                <th width="80">所属角色：</th>
+                <td>
+                    <select name="admin[role_id]">
+                        <volist name="roles" id="role">
+                        <option value="{$role['id']}" <if condition="$admin['role_id'] == $role['id']" >selected</if> <if condition="$role['pid'] eq 0">disabled="true"</if>>{$role['fullname']}</option>
+                        </volist>
+                    </select>
+                </td>
+            </tr>
+            </if>
+            <tr>
+                <th width="80">备注信息：</th>
+                <td><textarea class="jq_watermark" rows = "5" cols="68" name="admin[remark]" placeholder="管理员备注信息">{$admin['remark']}</textarea></td>
+            </tr>
+            <input type="hidden" name="admin[id]" value="{$admin['id']}" />
+        </table>
+    </form>
+    <div class="commonBtnArea" >
+        <button class="btn submit">提交</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(".submit").click(function(){
+    commonAjaxSubmit("{:U('Admins/update')}");
+    return false;
+});
+</script>

@@ -1,0 +1,46 @@
+<div class="contentArea">
+    <div class="Item hr">
+        <div class="current">添加角色</div>
+    </div>
+    <form>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+            <tr>
+                <th width="80">角色名称：</th>
+                <td><input name="role[name]" type="text" class="input" size="30" /></td>
+            </tr>
+            <tr>
+                <th width="80">父角色：</th>
+                <td>
+                    <select name="role[pid]">
+                        <volist name="roles" id="role">
+                        <option value="{$role['id']}">{$role['fullname']}</option>
+                        </volist>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th width="80">状态：</th>
+                <td>
+                    <select name="role[status]">
+                        <option value="1" selected>启用</option>
+                        <option value="0">禁用</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th width="80">角色描述：</th>
+                <td><textarea class="jq_watermark" rows = "5" cols="68" name="role[description]" placeholder="角色描述"></textarea></td>
+            </tr>
+        </table>
+    </form>
+    <div class="commonBtnArea" >
+        <button class="btn submit">提交</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(".submit").click(function(){
+    commonAjaxSubmit("{:U('Roles/create')}");
+    return false;
+});
+</script>

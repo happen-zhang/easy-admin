@@ -1,0 +1,148 @@
+<div class="Item hr">
+    <span class="fr">系统数据库备份目录下共有<b>{$files_count}</b>个SQL备份文件，共计<b>{$total_size}</b></span>
+    <div class="current">备份SQL文件列表</div>
+</div>
+<form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+        <thead>
+            <tr>
+                <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+                <td>SQL文件名</td>
+                <td>备份时间</td>
+                <td>文件大小</td>
+                <td>文件备注</td>
+                <td>导入</td>
+            </tr>
+        </thead>
+        <tbody>
+            <volist name="info_list" id="info">
+            <tr align="center">
+                <td><input pre="{$info['prefix']}" type="checkbox" name="sql_files[]" value="{$info['name']}"/></td>
+                <td align="left"><a href="{:U('Data/downloadFile', array('file_name' => $info['name'], 'file_type' => 'sql'))}" target="_blank">{$info['name']}</a></td>
+                <td>{$info['time']}</td>
+                <td>{$info['size']}</td>
+                <td class="description" title="{$info['description']}">查看备注信息</td>
+                <td><button class="btn restore" sqlPre="{$info['prefix']}">导入</button></td>
+            </tr>
+            </volist>
+        </tbody>
+        <tfoot align="center">
+            <tr>
+                <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+                <td>SQL文件名</td>
+                <td>备份时间</td>
+                <td>总计：{$total_size}</td>
+                <td>文件备注</td>
+                <td>导入</td>
+            </tr
+        </tfoot>
+    </table>
+</form>
+<div class="commonBtnArea" >
+    <span class="fr" id="opStatus" style="width:450px; display: none; margin: -8px; line-height: 16px;"></span>
+    <button class="btn delSqlFiles">删除所选</button>
+    <button class="btn zip">压缩SQL为ZIP</button>
+</div>
+
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Min/?f=__PUBLIC__/javascripts/poshytip/tip-yellow/tip-yellow.css|__PUBLIC__/javascripts/admin/poshytip/tip-yellowsimple/tip-yellowsimple.css" />
+<script type="text/javascript" src="__PUBLIC__/Min/?f=__PUBLIC__/javascripts/admin/poshytip/jquery.poshytip.min.js"></script>
+
+<script type="text/javascript">
+$(function(){
+    //刷新操作
+    var repeat=function(url,type){
+        $.post(url, function(json){
+            if(json.status==1){
+                if(json.url){
+                    $("#opStatus").html(json.info);
+                    repeat(json.url,type);
+                }else{
+                    popup.success(json.info,'oh yeah',function(action){
+                        if(action == 'ok'){
+                            $("#opStatus").hide('solw');
+                            $("."+type).html("导入");
+                        }
+                    });
+                    $(".btn").removeAttr("disabledSubmit");
+                }
+            }else{
+                popup.error(json.info);
+            }
+        });
+    }
+
+    //显示SQL文件说明信息
+    $('.description').poshytip({className: 'tip-yellowsimple', showTimeout: 0.5,alignX: 'center',offsetY: 0,allowTipHover: true});
+    clickCheckbox();//全新反选
+
+    //同一备份版本任意一个卷选中则选中该卷所有文件
+    $("tbody input[type='checkbox']").click(function(){$("tbody input[type='checkbox'][pre='"+$(this).attr("pre")+"']").prop("checked",$(this).prop('checked'));});
+
+    //提交数据导入操作
+    $(".restore").click(function(){
+        // 已有导入数据提交
+        if($(this).attr("disabledSubmit")){
+            popup.alert("已提交，系统在处理中...");
+            return false;
+        }
+        var sqlPre=$(this).attr("sqlPre");
+        // 修改按钮状态
+        $(".restore[sqlPre='"+sqlPre+"']").attr("disabledSubmit",true).html("导入中...");
+        // 禁用其他操作
+        $(".btn").attr("disabledSubmit",true);
+        $.post("{:U('Data/doRestore')}", {file_prefix: sqlPre}, function(json){
+            if(json.status==1){
+                if(json.url){
+                    $("#opStatus").show().html(json.info);
+                    repeat(json.url, "restore");
+                }else{
+                    $(".restore").html("导入");
+                    $(".btn").removeAttr("disabledSubmit");
+                    popup.success(json.info);
+                }
+                popup.close("asyncbox_alert");
+            }else{
+                popup.error(json.info);
+            }
+        });
+        popup.alert("系统处理中，如果导入文件较大可能需要较长时间，勿刷新，请稍候....");
+        return false;
+    });
+
+    //删除备份文件
+    $(".delSqlFiles").click(function(){
+        if($(this).attr("disabledSubmit")){
+            popup.alert("已提交，系统在处理中...");
+            return false;
+        }
+        if($("tbody input[type='checkbox']:checked").size()==0){
+            popup.alert("请先选择你要删除的数据库表吧");
+            return false;
+        }
+        popup.confirm('你确定要删除备份文件吗？','温馨提示',function(action){
+            if(action == 'ok'){
+                $(".btn").attr("disabledSubmit",true);
+                $(this).html("提交处理中...");
+                commonAjaxSubmit("{:U('Data/deleteSqlFiles')}");
+            }
+        });
+        return false;
+    });
+
+    // 压缩备份文件
+    $(".zip").click(function(){
+        if($(this).attr("disabledSubmit")){
+            popup.alert("已提交，系统在处理中...");
+            return false;
+        }
+        if($("tbody input[type='checkbox']:checked").size()==0){
+            popup.alert("请先选择你要压缩的数据库表吧");
+            return false;
+        }
+        commonAjaxSubmit("{:U('Data/zipSqlFiles')}");
+        $(".btn").attr("disabledSubmit",true);
+        $(this).html("压缩中...");
+        return false;
+    });
+});
+</script>

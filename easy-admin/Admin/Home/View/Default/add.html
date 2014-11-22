@@ -1,0 +1,22 @@
+<script type="text/javascript" src="__PUBLIC__/javascripts/admin/kindeditor/kindeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/javascripts/admin/kindeditor/lang/zh_CN.js"></script>
+
+<div class="Item hr">
+    <div class="current">添加数据</div>
+</div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1" id="form_inputs">
+   <volist name="inputs" id="input">
+    <tr>
+        <th width="100">{$input['label']}：</th>
+        <td>{$input['html']}<php>if ($input['remark'] != '' && $input['type'] != 'textarea' && $input['type'] != 'editor') { echo "（$input[remark]）"; }</php></td>
+    </tr>
+    </volist>
+</table>
+<div class="commonBtnArea" >
+    <button class="btn submit">提交</button>
+</div>
+
+<include file="Default/javascript" />
+<script type="text/javascript">
+formSubmit("{:U(CONTROLLER_NAME . '/create')}");
+</script>

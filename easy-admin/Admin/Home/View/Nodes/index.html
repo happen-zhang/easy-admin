@@ -1,0 +1,63 @@
+<div class="Item hr">
+    <span class="fr">现有节点<b>{$rows_count}</b>个</span>
+    <div class="current">节点列表</div>
+</div>
+<form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+        <thead>
+            <tr>
+                <td>节点结构</td>
+                <td>节点名称</td>
+                <td>节点类型</td>
+                <td>状态</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <volist name="nodes" id="node">
+            <tr align="center">
+                <td align="left">{$node['fullname']}</td>
+                <td>{$node['name']}</td>
+                <td>{$node['type']}</td>
+                <td><if condition="$node['status'] eq 1">已启用<else/>已禁用</if></td>
+                <td>[ <a href="javascript:void(0);" value="{:U('Nodes/toggleStatus', array('id' => $node['id'], 'status' => $node['status']))}" name="{$node['title']}" status="{$node['status']}" class="toggle"><if condition="$node['status'] eq 1">禁用<else/>启用</if></a> ]</td>
+            </tr>
+            </volist>
+        </tbody>
+    </table>
+</form>
+
+<script type="text/javascript">
+$(function(){
+    $(".toggle").click(function(){
+        var url = $(this).attr("value");
+        var name = $(this).attr("name");
+        var status = $(this).attr("status") || 0;
+        status = status ? '启用' : '禁用';
+
+        popup.confirm('您确定'+ status + " <b>" + name + "</b> 节点吗？", '温馨提示',function(action){
+            if(action == 'ok'){
+                $.getJSON(url, function(json){
+                    if (json.status) {
+                        popup.success(json.info);
+                        setTimeout(function(){
+                            popup.close("asyncbox_success");
+                        },2000);
+                    } else {
+                        popup.error(json.info);
+                        setTimeout(function(){
+                            popup.close("asyncbox_error");
+                        },2000);
+                    }
+
+                    setTimeout(function(){
+                        top.window.location.reload();
+                    },1000);
+                });
+            }
+        });
+
+        return false;
+    });
+});
+</script>
