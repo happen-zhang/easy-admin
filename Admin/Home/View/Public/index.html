@@ -28,6 +28,7 @@
             </form>
             <div class="clear"></div>
             <div class="operation"><button class="btn submit">登录</button>   <button class="btn findPwd">找回密码</button></div>
+            <div class="check-tips"></div>
         </div>
     </div>
 
@@ -42,9 +43,24 @@
                     popup.alert("请填写完整的表单后进行登录！");
                     return false;
                 }
-                commonAjaxSubmit("{:U('Public/login')}");
+                /*commonAjaxSubmit("{:U('Public/login')}");*/
+                $("form").submit();
             });
+        $("form").submit(function(){
+            var self = $(this); 
+            $.post("{:U('Public/login')}", self.serialize(), success, "json");
+            return false;
 
+            function success(data){
+                if(data.status){
+                    window.location.href = data.url;
+                } else {
+                    $(".check-tips").text(data.info);
+                    //刷新验证码
+                    $(".row2 img").click();
+                }
+            }
+        });
             // 找回密码
             $(".findPwd").click(function() {
                 if($("#email").val() == ''){

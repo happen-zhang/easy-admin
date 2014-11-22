@@ -282,3 +282,7 @@ div.page span.disabled {
     color: #929292;
     margin-right: 2px;
 }
+.check-tips {
+    color: #f00;
+    text-align: center;
+}
