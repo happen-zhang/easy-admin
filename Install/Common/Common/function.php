@@ -8,11 +8,12 @@ include 'helper.php';
 function get_system() {
     $sys = $_SERVER['HTTP_USER_AGENT'];
 
-    if (stripos($sys, "NT 6.1")) {
+    if (stripos($sys, "NT 6.3")) {
+    } else if (stripos($sys, "NT 6.1")) {
         $os = "Windows 7";
     } else if (stripos($sys, "NT 6.0")) {
         $os = "Windows Vista";
-    }  else if (stripos($sys, "NT 5.1")) {
+    } else if (stripos($sys, "NT 5.1")) {
         $os = "Windows XP";
     } else if (stripos($sys, "NT 5.2")) {
         $os = "Windows Server 2003";
