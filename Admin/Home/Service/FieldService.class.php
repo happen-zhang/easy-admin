@@ -61,6 +61,18 @@ class FieldService extends CommonService {
         return $this->resultReturn(true, array('id' => $id));
     }
 
+    public function just_add_field($field) {
+        $model = M('Model')->getById($field['model_id']);
+        $Field = $this->getD();
+
+        $field = $Field->create($field);
+        // 插入数据
+        $status = $Field->add($field);
+        $id = $Field->getLastInsID();
+
+        return $this->resultReturn(true, array('id' => $id));
+    }
+
     /**
      * 更新字段
      * @param  array $field

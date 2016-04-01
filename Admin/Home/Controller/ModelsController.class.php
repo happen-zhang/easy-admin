@@ -94,7 +94,9 @@ class ModelsController extends CommonController
         $modelService = D('Model', 'Service');
         $model = array_map('trim', $_POST['model']);
         if ($model ['radio'] == 'old' && ! empty ( $model ['tbl_name_old'] )) {
-            $model ['tbl_name'] = $model ['tbl_name2'];
+            $model ['tbl_name'] = $model['db_data'].$model ['tbl_name_old'];
+        } else {
+            $model['tbl_name'] = $model['db_data'].$model ['tbl_name'];
         }
 
         // 检查数据是否合法
@@ -104,7 +106,12 @@ class ModelsController extends CommonController
         }
 
         // 添加数据
-        $result = $modelService->add($model);
+        if ($model ['radio'] == 'old' && ! empty ( $model ['tbl_name_old'] )) {
+            $result = $modelService->add_old_table($model);
+        } else {
+            $result = $modelService->add($model);
+        }
+
         if (false === $result['status']) {
             return $this->errorReturn('系统出错了！');
         }

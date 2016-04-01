@@ -4,13 +4,12 @@ function submitForm(action) {
         if ("" == $.trim($("#model_name").val())) {
             popup.error("模型名称不能为空");
             return false;
-        } else if ("" == $.trim($("#tbl_name").val())) {
+        } else if ("" == $.trim($("#tbl_name").val()) && ("" == $.trim($("#tbl_name_old").val()))) {
             popup.error("数据表名称不能为空");
             return false;
         }
 
         var url = ('create' == action) ? "{:U('Models/create')}" : "{:U('Models/update')}";
-
 
         commonAjaxSubmit(url);
         return false;

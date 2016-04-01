@@ -176,7 +176,7 @@ class ModelModel extends CommonModel {
      * @return boolean      是否有效的名称       
      */
     protected function isLower($name) {
-        if (preg_match("/^[a-z_]+$/", $name)) {
+        if (preg_match("/^[a-z0-9_.]+$/", $name)) {
             return true;
         }
 
