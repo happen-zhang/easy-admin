@@ -8,9 +8,35 @@
             <td><input id="model_name" type="text" class="input" size="20" name="model[name]" /> <a href="javascript:void(0)" id="check_model_name">检测是否可用</a>（不能包含特殊字符）</td>
         </tr>
         <tr>
+            <th width="100">选择条件：</th>
+            <td>
+                <input type="radio" name="model[radio]" value='new' class="tbl_type" checked='checked'> 新建数据表
+                <input type="radio" name="model[radio]" value='old' class="tbl_type"> 选择已有数据表
+            </td>
+        </tr>
+        <tr>
+            <th width="100">选择数据库：</th>
+            <td>
+                <select name="model[db_name]" id="database">
+                    <foreach name="db_data" item="vo" key="k" >
+                        <option value='{$k}'>{$k}</option>
+                    </foreach>
+                </volist>
+                </select>
+            </td>
+        </tr>
+        <tr class="create_table" id="table_new">
             <th width="100">数据表名：</th>
             <td><input id="tbl_name" type="text" class="input" size="20" name="model[tbl_name]" /> <a href="javascript:void(0)" id="check_tal_name">检测是否可用</a>（存放该模型的数据表名称，只能由"_"、a~z组成）</td>
         </tr>
+
+        <tr class="create_table dpn" id="table_old">
+            <th width="100">选择数据表：</th>
+            <td>
+                <select name="model[tbl_name_old]" id="tbl_name_old"></select>
+            </td>
+        </tr>
+
         <tr>
             <th width="100">主菜单名：</th>
             <td><input id="menu_name" type="text" class="input" size="20" name="model[menu_name]" /> <a href="javascript:void(0)" id="check_menu_name">检测是否可用</a>（用于在主菜单和子菜单上显示，比如"文章"，系统则会生成"文章管理"菜单）</td>
@@ -47,9 +73,31 @@
     <button class="btn submit">提交</button>
 </div>
 
+<style>
+    .dpn {
+        display: none;
+    }
+</style>
+
 <include file="Models/javascript" />
 <script type="text/javascript">
-$(function(){
-    submitForm("create");
-});
+    data_list = <?php echo json_encode($db_data);?>;
+
+    $(function(){
+        submitForm("create");
+        $(".tbl_type").click(function () {
+            $(".create_table").hide();
+            $("#table_" + $(this).val()).show();
+            $("#database").change();
+        })
+    });
+
+    $("#database").change(function () {
+        var table = data_list[$(this).val()];
+        var html = "";
+        $(table).each (function (k,b) {
+            html += '<option value="' + b + '">' + b + '</option>';
+        });
+        $("#tbl_name_old").html(html);
+    })
 </script>
