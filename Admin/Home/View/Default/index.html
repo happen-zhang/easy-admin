@@ -2,7 +2,7 @@
     <span class="fr">系统现有数据 <b>{$rows_count}</b> 行</span>
     <div class="current"><b>{$model['name']}</b> 数据列表</div>
 </div>
-<form>
+<form class="list-body">
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
         <thead>
             <tr>
@@ -45,6 +45,14 @@
     {$page}
 </div>
 
+<div class="commonBtnArea" >
+    <span>批量操作：</span>
+    <select id="multiopt">
+        <option value="delete">删除</option>
+    </select>
+    <button class="btn multiedit">确定</button>
+</div>
+
 <script type="text/javascript">
 $(function(){
     clickCheckbox();
@@ -74,5 +82,27 @@ $(function(){
 
         return false;
     });
+
+    $(".multiedit").click(function () {
+        var that = $(this);
+        var m_type = $("#multiopt").val();
+
+        if($("tbody input[type='checkbox']:checked").size()==0){
+            popup.alert("请先选择你要操作的数据吧");
+            return false;
+        }
+
+        form = $("form.list-body");
+        if(m_type == "delete") {
+            form.append('<input name="edit_type" type="hidden" class="medit_element" value="delete" />')
+        }
+
+        commonAjaxSubmit("{:U(CONTROLLER_NAME.'/medit')}", "", function () {
+            $(".medit_element").remove();
+            setTimeout(function () {
+                location.reload();
+            }, 2000)
+        });
+    })
 });
 </script>

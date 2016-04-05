@@ -307,4 +307,10 @@ class EmptyController extends CommonController {
 
         return $pk;
     }
+
+    public function medit() {
+        if(IS_AJAX) {
+
+        }
+    }
 }

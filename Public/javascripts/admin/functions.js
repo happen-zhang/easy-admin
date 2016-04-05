@@ -15,7 +15,7 @@ function getBodySize(get) {
  * @param  {string} url    表单提交地址
  * @param  {string} formObj    待提交的表单对象或ID
  */
-function commonAjaxSubmit(url,formObj){
+function commonAjaxSubmit(url, formObj, callback){
     if(!formObj||formObj==''){
         var formObj="form";
     }
@@ -26,7 +26,6 @@ function commonAjaxSubmit(url,formObj){
         url:url,
         type:"POST",
         success:function(data, st) {
-            //                var data = eval("(" + data + ")");
             if(data.status==1){
                 popup.success(data.info);
                 setTimeout(function(){
@@ -47,6 +46,10 @@ function commonAjaxSubmit(url,formObj){
                 setTimeout(function(){
                     top.window.location.reload();
                 },1000);
+            }
+
+            if(callback){
+                callback()
             }
         }
     });
