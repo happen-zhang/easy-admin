@@ -218,8 +218,10 @@ class EmptyController extends CommonController {
      * @return
      */
     public function delete() {
+        $m = $this->getModel();
+
         if (!isset($_GET['id'])
-            || is_null(M(CONTROLLER_NAME)->getById($_GET['id']))) {
+            || is_null($m->getById($_GET['id']))) {
             return $this->errorReturn('需要删除的数据不存在！');
         }
 
