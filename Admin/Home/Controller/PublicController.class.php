@@ -175,9 +175,9 @@ class PublicController extends CommonController {
      */
     public function verifyCode() {
         $config = array(
-            'imageW' => 88,
-            'imageH' => 30,
-            'fontSize' => 12,
+            'imageW' => 100,
+            'imageH' => 26,
+            'fontSize' => 14,
             'length' => 4,
             'useNoise' => false,
             'codeSet' => '0123456789'
