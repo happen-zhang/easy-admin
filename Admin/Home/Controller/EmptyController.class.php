@@ -46,6 +46,9 @@ class EmptyController extends CommonController {
         );
         $fields = D('Field')->relation(true)->where($where)->select();
 
+        // 主键
+        $pk = $this->getPrimaryKey();
+
         // 处理需要替换的字段值
         foreach ($fields as $field) {
             $fn = $field['name'];
@@ -98,6 +101,7 @@ class EmptyController extends CommonController {
             }
         }
 
+        $this->assign('pk', $pk);
         $this->assign('model', $model);
         $this->assign('fields', $fields);
         $this->assign('rows', $rows);
@@ -145,15 +149,6 @@ class EmptyController extends CommonController {
                                     U($this->getCtrName() . '/index'));
     }
 
-    protected function getModel() {
-        $ctrName = $this->getCtrName();
-        if(strpos($ctrName, '.') !== false) {
-            return M($ctrName, null);
-        } else {
-            return M($ctrName);
-        }
-    }
-
     /**
      * 编辑模型数据
      * @return
@@ -180,7 +175,6 @@ class EmptyController extends CommonController {
 
     /**
      * 更新模型数据
-     * @return
      */
     public function update() {
         $ctrName = $this->getCtrName();
@@ -252,5 +246,65 @@ class EmptyController extends CommonController {
         if (!array_key_exists($ctrName, $menu)) {
             return $this->_empty();
         }
+    }
+
+    protected function getModel() {
+        $ctrName = $this->getCtrName();
+        if(strpos($ctrName, '.') !== false) {
+            return M($ctrName, null);
+        } else {
+            return M($ctrName);
+        }
+    }
+
+    /**
+     * 查询主键-字符串
+     * @return
+     */
+    public function getPrimaryKeyStr() {
+        $pks = $this->getPrimaryKey();
+        return implode(',', $pks);
+    }
+
+    /**
+     * 查询主键-列表
+     * @param $tblName
+     * @return array
+     */
+    public function getPrimaryKey($tblName) {
+        // 得到数据表名称
+        $ctrName = $this->getCtrName();
+        if(!$tblName){
+            $tblName = D('Model', 'Service')->getTblName($ctrName);
+        }
+
+        $model = M('Model')->getByTblName($tblName);
+        if (!$model) {
+            return $this->error('系统出现错误了！');
+        }
+
+        $pk = [];
+        if(strpos($tblName,".") !== false){
+            $tn_ary = explode('.', $tblName);
+            $db = $tn_ary[0];
+            $tableName = $tn_ary[1];
+        } else {
+            $db = C('DB_NAME');
+            $tableName = $tblName;
+        }
+
+        $sql ="select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where table_name='{$tableName}' and TABLE_SCHEMA='{$db}' and COLUMN_KEY='PRI'";
+        $result = D('Field')->query($sql);
+        if($result){
+            foreach ($result as $v){
+                $c_pk[]=$v['COLUMN_NAME'];
+            }
+            $pk = $c_pk;
+        }else{
+            $result = D('Field')->query("show columns from $db.$tableName");
+            $pk = array($result[0]['Field']);
+        }
+
+        return $pk;
     }
 }

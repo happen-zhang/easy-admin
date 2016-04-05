@@ -6,8 +6,9 @@
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
         <thead>
             <tr>
+                <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
                 <volist name="fields" id="field">
-                <td>{$field['comment']}</td>
+                    <td>{$field['comment']}</td>
                 </volist>
                 <td>操作</td>
             </tr>
@@ -16,12 +17,27 @@
             <volist name="rows" id="row">
             <tr align="center">
                 <volist name="fields" id="field">
-                <td>{$row[$field['name']]}</td>
+                    <if condition="$pk[0] eq $field['name']">
+                        <td><input type="checkbox" name="{$pk[0]}[]" value="{$row[$pk[0]]}"/></td>
+                    </if>
+                    <td>{$row[$field['name']]}</td>
                 </volist>
                 <td>[ <a href="{:U(CONTROLLER_NAME . '/edit', array('id' => $row['id']))}">编辑</a> ] [ <a href="javascript:void(0);" value="{:U(CONTROLLER_NAME . '/delete', array('id' => $row['id']))}" name="ID={$row['id']}" class="del">删除</a> ]</td>
             </tr>
             </volist>
         </tbody>
+
+        <if condition="count($rows) gt 15">
+            <tfoot align="center">
+                <tr>
+                    <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+                    <volist name="fields" id="field">
+                        <td>{$field['comment']}</td>
+                    </volist>
+                    <td>操作</td>
+                </tr>
+            </tfoot>
+        </if>
     </table>
 </form>
 
@@ -31,6 +47,7 @@
 
 <script type="text/javascript">
 $(function(){
+    clickCheckbox();
     $(".del").click(function(){
         var del_link = $(this).attr("value");
         popup.confirm('您真的打算删除 '+$(this).attr("name")+' 的数据吗?','温馨提示',function(action){

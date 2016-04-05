@@ -40,4 +40,21 @@ function formSubmit(url) {
         return false;
     });
 }
+
+function clickCheckbox(){
+    $(".chooseAll").click(function(){
+        var status=$(this).prop('checked');
+        $("tbody input[type='checkbox']").prop("checked",status);
+        $(".chooseAll").prop("checked",status);
+        $(".unsetAll").prop("checked",false);
+    });
+    $(".unsetAll").click(function(){
+        var status=$(this).prop('checked');
+        $("tbody input[type='checkbox']").each(function(){
+            $(this).prop("checked",! $(this).prop("checked"));
+        });
+        $(".unsetAll").prop("checked",status);
+        $(".chooseAll").prop("checked",false);
+    });
+}
 </script>
