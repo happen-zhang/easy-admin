@@ -35,6 +35,7 @@ class EmptyController extends CommonController {
 
         // 得到分页数据
         $result = $this->getPagination('Default', null, null, 'id DESC');
+
         $rows = array_map("strip_sql_injection", $result['data']);
         unset($result['data']);
 
@@ -144,12 +145,22 @@ class EmptyController extends CommonController {
                                     U($this->getCtrName() . '/index'));
     }
 
+    protected function getModel() {
+        $ctrName = $this->getCtrName();
+        if(strpos($ctrName, '.') !== false) {
+            return M($ctrName, null);
+        } else {
+            return M($ctrName);
+        }
+    }
+
     /**
      * 编辑模型数据
      * @return
      */
     public function edit() {
-        $data = M(CONTROLLER_NAME)->where("id={$_GET['id']}")->find();
+        $m = $this->getModel();
+        $data = $m->where("id={$_GET['id']}")->find();
 
         if (is_null($data)) {
             return $this->error('需要编辑的数据不存在！');
@@ -158,7 +169,7 @@ class EmptyController extends CommonController {
         $tblNmae = D('Model', 'Service')->getTblName($this->getCtrName());
         $inputs = D('Input','Service')->getEditInputsByTblName($tblNmae,$data);
         $hidden = array(
-            'name' => strtolower(CONTROLLER_NAME) . '[id]',
+            'name' => strtolower($this->getCtrName()) . '[id]',
             'value' => $_GET['id']
         );
 
@@ -172,27 +183,28 @@ class EmptyController extends CommonController {
      * @return
      */
     public function update() {
-        $iname = strtolower(CONTROLLER_NAME);
-        if (!isset($_POST[$iname]['id'])
-            || is_null(M(CONTROLLER_NAME)->getById($_POST[$iname]['id']))) {
+        $ctrName = $this->getCtrName();
+        $m = $this->getModel();
+        $data = $_POST[str_replace('.', '_', $ctrName)];
+
+        if (!isset($data['id']) || is_null($m->getById($data['id']))) {
             return $this->errorReturn('无效的操作！');
         }
 
         $defaultService = D('Default', 'Service');
-        $fields = D('Field', 'Service')->getByCtrlName(CONTROLLER_NAME);
+        $fields = D('Field', 'Service')->getByCtrlName($ctrName);
 
         // 创建数据
-        $data = $_POST[$iname];
         $result = $defaultService->create($data,
-                                          $fields,
-                                          CONTROLLER_NAME,
-                                          'update');
+            $fields,
+            $ctrName,
+            'update');
         if (!$result['status']) {
             return $this->errorReturn($result['data']['error']);
         }
 
         // 更新数据
-        $result = $defaultService->update($result['data'], CONTROLLER_NAME);
+        $result = $defaultService->update($result['data'], $ctrName);
         if (!$result['status']) {
             return $this->errorReturn('更新数据失败！');
         }

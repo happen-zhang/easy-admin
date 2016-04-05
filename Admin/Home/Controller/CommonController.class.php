@@ -131,6 +131,7 @@ class CommonController extends Controller {
      */
     protected function getPagination($modelName, $where, $fields, $order) {
         $service = D($modelName, 'Service');
+
         // 总数据行数
         $totalRows = $service->getCount($where);
         // 实例化分页

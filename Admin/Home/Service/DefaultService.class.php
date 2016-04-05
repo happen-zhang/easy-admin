@@ -363,6 +363,6 @@ class DefaultService extends CommonService {
     }
 
     protected function getModelName() {
-        return CONTROLLER_NAME;
+        return $this->getCtrName();
     }
 }

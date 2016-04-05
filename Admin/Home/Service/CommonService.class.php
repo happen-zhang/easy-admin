@@ -11,7 +11,8 @@ abstract class CommonService {
      * @return int
      */
     public function getCount(array $where) {
-        return $this->getM()->where($where)->count();
+        $ret = $this->getM()->where($where)->count();
+        return $ret;
     }
 
     /**
@@ -23,8 +24,7 @@ abstract class CommonService {
      */
     public function getPagination($where, $fields,$order,$firstRow,$listRows) {
         // 是否关联模型
-        $M = $this->isRelation() ? $this->getD()->relation(true)
-                                 : $this->getM();
+        $M = $this->isRelation() ? $this->getD()->relation(true) : $this->getM();
 
         // 需要查找的字段
         if (isset($fields)) {
@@ -76,7 +76,12 @@ abstract class CommonService {
      * @return Model
      */
     protected function getM() {
-        return M($this->getModelName());
+        $model_name = $this->getModelName();
+        if (strpos($model_name, '.') !== false) {
+            return M($model_name, null);
+        } else {
+            return M($model_name);
+        }
     }
 
     /**
@@ -100,4 +105,14 @@ abstract class CommonService {
      * @return string
      */
     protected abstract function getModelName();
+
+    protected function getCtrName() {
+        $ctrName = CONTROLLER_NAME;
+
+        if(strpos($ctrName, '.') !== false && strtoupper($ctrName[0]) === $ctrName[0]) {
+            $ctrName[0] = strtolower($ctrName[0]);
+        }
+
+        return $ctrName;
+    }
 }
