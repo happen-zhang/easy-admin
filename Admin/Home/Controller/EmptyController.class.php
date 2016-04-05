@@ -27,7 +27,7 @@ class EmptyController extends CommonController {
      */
     public function index() {
         // 得到数据表名称
-        $tblName = D('Model', 'Service')->getTblName(CONTROLLER_NAME);
+        $tblName = D('Model', 'Service')->getTblName($this->getCtrName());
         $model = M('Model')->getByTblName($tblName);
         if (!$model) {
             return $this->error('系统出现错误了！');
@@ -110,7 +110,7 @@ class EmptyController extends CommonController {
      * @return
      */
     public function add() {
-        $tblName = D('Model', 'Service')->getTblName(CONTROLLER_NAME);
+        $tblName = D('Model', 'Service')->getTblName($this->getCtrName());
         $inputs = D('Input', 'Service')->getAddInputsByTblName($tblName);
 
         $this->assign('inputs', $inputs);
@@ -123,24 +123,25 @@ class EmptyController extends CommonController {
      */
     public function create() {
         // 得先得到这个模型的所有字段
-        $fields = D('Field', 'Service')->getByCtrlName(CONTROLLER_NAME);
+        $fields = D('Field', 'Service')->getByCtrlName($this->getCtrName());
         $defaultService = D('Default', 'Service');
 
         // 创建数据
-        $data = $_POST[strtolower(CONTROLLER_NAME)];
-        $result = $defaultService->create($data, $fields, CONTROLLER_NAME);
+        $data = $_POST[str_replace('.', '_', strtolower($this->getCtrName()))];
+        $result = $defaultService->create($data, $fields, $this->getCtrName());
+
         if (!$result['status']) {
             return $this->errorReturn($result['data']['error']);
         }
 
         // 插入数据
-        $result = $defaultService->add($result['data'], CONTROLLER_NAME);
+        $result = $defaultService->add($result['data'], $this->getCtrName());
         if (!$result['status']) {
             return $this->errorReturn('添加数据失败！');
         }
 
         return $this->successReturn('成功添加数据！',
-                                    U(CONTROLLER_NAME . '/index'));
+                                    U($this->getCtrName() . '/index'));
     }
 
     /**
@@ -154,7 +155,7 @@ class EmptyController extends CommonController {
             return $this->error('需要编辑的数据不存在！');
         }
 
-        $tblNmae = D('Model', 'Service')->getTblName(CONTROLLER_NAME);
+        $tblNmae = D('Model', 'Service')->getTblName($this->getCtrName());
         $inputs = D('Input','Service')->getEditInputsByTblName($tblNmae,$data);
         $hidden = array(
             'name' => strtolower(CONTROLLER_NAME) . '[id]',
@@ -197,7 +198,7 @@ class EmptyController extends CommonController {
         }
 
         return $this->successReturn('更新数据成功！',
-                                    U(CONTROLLER_NAME . '/index'));
+                                    U($this->getCtrName() . '/index'));
     }
 
     /**
@@ -210,7 +211,7 @@ class EmptyController extends CommonController {
             return $this->errorReturn('需要删除的数据不存在！');
         }
 
-        $result = D('Default', 'Service')->delete($_GET['id'],CONTROLLER_NAME);
+        $result = D('Default', 'Service')->delete($_GET['id'], $this->getCtrName());
         if (!$result['status']) {
             return $this->errorReturn('删除数据失败！');
         }
@@ -232,7 +233,9 @@ class EmptyController extends CommonController {
      */
     protected function ensureExistContoller() {
     	$menu = fast_cache('model_menu', '', APP_PATH . '/Common/Conf/');
-        if (!array_key_exists(CONTROLLER_NAME, $menu)) {
+
+        $ctrName = $this->getCtrName();
+        if (!array_key_exists($ctrName, $menu)) {
             return $this->_empty();
         }
     }

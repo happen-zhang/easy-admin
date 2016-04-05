@@ -183,11 +183,13 @@ class DefaultService extends CommonService {
      * @return array
      */
     public function add(array $data, $ctrlName) {
-        if (false === M($ctrlName)->add($data)) {
+        $m = $this->getModel($ctrlName);
+        if (false === $m->add($data)) {
+            echo $m->getLastSql();
             return $this->resultReturn(false);
         }
 
-        $data['id'] = M($ctrlName)->getLastInsId();
+        $data['id'] = $m->getLastInsId();
         $tblName = D('Model', 'Service')->getTblName($ctrlName);
         $model = M('Model')->getByTblName($tblName);
 
@@ -334,6 +336,14 @@ class DefaultService extends CommonService {
             return empty($mixed);
         } else {
             return empty($mixed);
+        }
+    }
+
+    protected function getModel($ctrName) {
+        if(strpos($ctrName, '.') !== false) {
+            return M($ctrName, null);
+        } else {
+            return M($ctrName);
         }
     }
 

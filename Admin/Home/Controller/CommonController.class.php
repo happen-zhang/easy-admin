@@ -235,7 +235,7 @@ class CommonController extends Controller {
 
         // 子菜单
         $subMenu = array();
-        $ctrlName = CONTROLLER_NAME;
+        $ctrlName = $this->getCtrName();
         if (isset($menu[$ctrlName]['mapping'])) {
             $ctrlName = $menu[$ctrlName]['mapping'];
         }
@@ -281,12 +281,13 @@ class CommonController extends Controller {
     public function getBreadcrumbs() {
         $menu = C('MENU');
 
-        $menuItem = $menu[CONTROLLER_NAME];
+        $ctrName = $this->getCtrName();
+        $menuItem = $menu[$ctrName];
         // 主菜单显示名称
         $main = $menuItem['name'];
         // 子菜单显示名称
         $sub = 'unkonwn';
-        $route = CONTROLLER_NAME . '/' . ACTION_NAME;
+        $route = $ctrName . '/' . ACTION_NAME;
         foreach ($menuItem['sub_menu'] as $item) {
             // 以键值匹配路由
             if (array_key_exists($route, $item['item'])) {
@@ -340,9 +341,18 @@ class CommonController extends Controller {
      */
     protected function download($filePath, $fileName) {
         header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; '
-               . 'filename="' . $fileName . '"');
+        header('Content-Disposition: attachment; '. 'filename="' . $fileName . '"');
         header('Content-Length: ' . filesize($filePath));
         readfile($filePath);
+    }
+
+    protected function getCtrName() {
+        $ctrName = CONTROLLER_NAME;
+
+        if(strpos($ctrName, '.') !== false && strtoupper($ctrName[0]) === $ctrName[0]) {
+            $ctrName[0] = strtolower($ctrName[0]);
+        }
+
+        return $ctrName;
     }
 }

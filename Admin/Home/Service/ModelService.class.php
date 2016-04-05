@@ -108,7 +108,7 @@ class ModelService extends CommonService {
 
         $new_db = $model ['db_name'];
         $new_table = $model ['tbl_name_old'];
-        $model ['tbl_name'] = $model ['tbl_name_old'].'.'.$model ['tbl_name'];
+        $model ['tbl_name'] = $model ['db_name'].'.'.$model ['tbl_name_old'];
 
         $Model->startTrans ();
         $model = $Model->create ( $model );
@@ -434,6 +434,7 @@ class ModelService extends CommonService {
         $modelLogic = D('Model', 'Logic');
         // 得到模型的控制器名称
         $ctrlName = $this->getCtrlName($model['tbl_name']);
+
         // 生成菜单项
         $item = $modelLogic->genMenuItem($model['menu_name'], $ctrlName);
         // 添加菜单项
@@ -472,13 +473,17 @@ class ModelService extends CommonService {
      * @return string
      */
     public function getCtrlName($tblName) {
-        // 去掉表前缀
-        $tblName = substr($tblName, strpos($tblName, '_') + 1);
-        $tblName = str_replace('_', ' ', $tblName);
-        // 单词首字母转为大写
-        $tblName = ucwords($tblName);
+        if (strpos($tblName, '.') === false) {
+            // 去掉表前缀
+            $tblName = substr($tblName, strpos($tblName, '_') + 1);
+            $tblName = str_replace('_', ' ', $tblName);
+            // 单词首字母转为大写
+            $tblName = ucwords($tblName);
 
-        return str_replace(' ', '', $tblName);
+            $tblName = str_replace(' ', '', $tblName);
+        }
+
+        return $tblName;
     }
 
     /**
@@ -488,18 +493,25 @@ class ModelService extends CommonService {
      */
     public function getTblName($ctrlName) {
         $tblName = '';
+        $ctrArr = explode('.', $ctrlName);
 
-        for ($i = 0, $len = strlen($ctrlName); $i < $len; $i++) {
-            if (strtoupper($ctrlName[$i]) === $ctrlName[$i]) {
-                // 大写字母
-                $tblName .= '_' . strtolower($ctrlName[$i]);
-                continue ;
+        if (strpos($ctrlName, '.') === false || (strpos($ctrlName, '.') &&  $ctrArr[0] == C('DB_NAME') && $ctrlName = $ctrArr[1])) {
+            for ($i = 0, $len = strlen($ctrlName); $i < $len; $i++) {
+                if (strtoupper($ctrlName[$i]) === $ctrlName[$i]) {
+                    // 大写字母
+                    $tblName .= '_' . strtolower($ctrlName[$i]);
+                    continue ;
+                }
+
+                $tblName .= $ctrlName[$i];
             }
 
-            $tblName .= $ctrlName[$i];
+            $tblName = C('DB_PREFIX') . substr($tblName, 1);
+        } else {
+            $tblName = $ctrlName;
         }
 
-        return C('DB_PREFIX') . substr($tblName, 1);
+        return $tblName;
     }
 
     protected function getModelName() {

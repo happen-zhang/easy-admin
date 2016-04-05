@@ -14,7 +14,6 @@ class InputService extends CommonService {
         $Input = $this->getD();
         $input = $Input->create($input);
         $ret = $Input->add($input);
-        echo $Input->getLastSql();
 
         if (false === $ret) {
             return $this->resultReturn(false);
