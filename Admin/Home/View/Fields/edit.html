@@ -52,6 +52,12 @@
                 <input type="text" class="input" size="20" name="field[value]" value="{$field['value']}" />
             </td>
         </tr>
+        <tr>
+            <th width="100">字段排序：</th>
+            <td>
+                <label><input type="radio" name="field[order_by]" value="0" <if condition="$field['order_by'] eq 0">checked="checked"</if> /> 否</label>  <label><input type="radio" name="field[order_by]" value="1" <if condition="$field['order_by'] eq 1">checked="checked"</if> /> 是      &nbsp;&nbsp;&nbsp;&nbsp;排序规则：<input type="radio" name="field[sort]" value="ASC" <if condition="$field['sort'] eq 'ASC'">checked="checked"</if> />小到大</label> &nbsp; <label><input type="radio" name="field[sort]" value="DESC" <if condition="$field['sort'] eq 'DESC'">checked="checked"</if> /> 大到小</label>
+            </td>
+        </tr>
      </table>
 
     <!-- 特殊属性 -->
