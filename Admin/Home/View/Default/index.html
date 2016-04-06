@@ -6,7 +6,9 @@
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
         <thead>
             <tr>
-                <td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+                <td width="90">
+                    <input type="hidden" name="pk" value="{$pk[0]}" />
+                    <label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
                 <volist name="fields" id="field">
                     <td>{$field['comment']}</td>
                 </volist>

@@ -309,8 +309,30 @@ class EmptyController extends CommonController {
     }
 
     public function medit() {
-        if(IS_AJAX) {
+        if(IS_POST) {
+            $t = I('post.edit_type');
+            $pk = I('post.pk');
+            $ids = implode('\',\'', I('post.'.$pk));
 
+            if(count(I('post.'.$pk)) > 1) {
+                $map = " $pk in ('".$ids."') ";
+            } else {
+                $map = " $pk = '".implode('',I('post.'.$pk))."' ";
+            }
+
+            $ret = false;
+            $m = $this->getModel();
+            switch($t) {
+                case "delete":
+                    $ret = $m->where($map)->delete();
+                    break;
+            }
+
+            if($ret !== false) {
+                $this->successReturn("操作成功!");
+            } else {
+                $this->errorReturn("操作失败!");
+            }
         }
     }
 }

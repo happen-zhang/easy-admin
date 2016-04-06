@@ -99,18 +99,18 @@ class FieldService extends CommonService {
             || $field['type'] != $old['type']
             || $field['length'] != $old['length']) {
             $Field->alterColumnAttr($model['tbl_name'],
-                                            $old['name'],
-                                            $field['name'],
-                                            $field['type'],
-                                            $field['length'],
-                                            $field['comment']);
+                                    $old['name'],
+                                    $field['name'],
+                                    $field['type'],
+                                    $field['length'],
+                                    $field['comment']);
         }
 
         // value
         if ($field['value'] != $old['value']) {
             $Field->alterColumnValue($model['tbl_name'],
-                                             $field['name'],
-                                             $field['value']);
+                                     $field['name'],
+                                     $field['value']);
         }
 
         // 先删除索引，再进行添加
