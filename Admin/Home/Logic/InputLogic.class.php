@@ -117,13 +117,18 @@ class InputLogic extends CommonLogic {
             $html = genTextarea($fn, $value, $width, $height, $remark);
         } else if ('date' == $type) {
             $html = genDate($fn, $value, $class);
+        }else if ('date_time' == $type || 'date_utime' == $type || 'date_microtime' == $type) {
+            $html = genDatetime($fn, $value, $class);
         } else if ('relation_select' == $type) {
             $relaOpts = $this->getRelationOpts($field);
             $input['opt_value'] = $this->optArrayToString($relaOpts);
             $html = genSelect($fn, $relaOpts['opt_value']);
         } else if ('editor' == $type) {
-            $html = genEditor($fn, empty($value) ? $remark : $value,
-                              $width, $height, $input['editor']);
+            $html = genEditor($fn, empty($value) ? $remark : $value,$width, $height, $input['editor']);
+        }else if ('div' == $type) {
+            $html = genDiv(empty($value) ? $input['html'] : $value);
+        }else if ('img' == $type) {
+            $html = genImg($fn, $value);
         }
 
         $input['html'] = $html;
