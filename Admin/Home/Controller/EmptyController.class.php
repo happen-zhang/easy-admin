@@ -33,11 +33,15 @@ class EmptyController extends CommonController {
             return $this->error('系统出现错误了！');
         }
 
-        // 得到分页数据
-        $result = $this->getPagination('Default', null, null, 'id DESC');
+        // 查询主键
+        $pk = $this->getPrimaryKey();
 
-        $rows = array_map("strip_sql_injection", $result['data']);
-        unset($result['data']);
+        //组装排序
+        $order_by_str = '';
+        foreach ($pk as $v_pk){
+            $order_by_str .=' '.$v_pk.' DESC,';
+        }
+        $order_by_str= substr($order_by_str, 0, strlen($order_by_str)-1);
 
         // 得到模型对应的字段
         $where = array(
@@ -46,8 +50,23 @@ class EmptyController extends CommonController {
         );
         $fields = D('Field')->relation(true)->where($where)->select();
 
-        // 主键
-        $pk = $this->getPrimaryKey();
+        // 排序
+        $u_order = '';
+        foreach($fields as $val) {
+            if($val['order_by'] == 1) {
+                $u_order .=' '.$val['name'].' '.$val['sort'].',';
+            }
+        }
+        if($u_order) {
+            $u_order= substr( $u_order, 0, strlen($u_order) -1 );
+            $order_by_str = $u_order;
+        }
+
+        // 得到分页数据
+        $result = $this->getPagination('Default', null, null, $order_by_str);
+
+        $rows = array_map("strip_sql_injection", $result['data']);
+        unset($result['data']);
 
         // 处理需要替换的字段值
         foreach ($fields as $field) {
