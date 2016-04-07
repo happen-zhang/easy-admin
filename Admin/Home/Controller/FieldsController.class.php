@@ -6,9 +6,9 @@ namespace Home\Controller;
  * 字段管理
  */
 class FieldsController extends CommonController {
+
     /**
      * 字段列表
-     * @return
      */
     public function index(){
         $this->display();
@@ -16,15 +16,13 @@ class FieldsController extends CommonController {
 
     /**
      * 字段信息
-     * @return
      */
     public function show() {
         $this->display();
-    }    
+    }
 
     /**
      * 添加字段
-     * @return
      */
     public function add() {
         if (!isset($_GET['model_id'])) {
@@ -52,7 +50,6 @@ class FieldsController extends CommonController {
 
     /**
      * 创建字段
-     * @return
      */
     public function create() {
         if (!IS_POST || !isset($_POST['field']) || !isset($_POST['input'])) {
