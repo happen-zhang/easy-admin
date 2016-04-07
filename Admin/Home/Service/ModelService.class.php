@@ -517,4 +517,141 @@ class ModelService extends CommonService {
     protected function getModelName() {
         return 'Model';
     }
+
+    public function diff_table($model_id, $tbl_name, $sync = false) {
+        $m = $this->getM();
+        $db_name = C("DB_NAME");
+        $tmp_name = $tbl_name;
+
+        if(strpos($tbl_name, ".") !== false) {
+            $tmp = explode(".", $tbl_name);
+            $db_name = $tmp[0];
+            $tbl_name = $tmp[1];
+        }
+
+        $model_field = $m->query("select name,type,length,value,comment,id from ea_field where model_id= $model_id");
+        $table_field = $m->query("SELECT `COLUMN_NAME`,DATA_TYPE,COLUMN_TYPE,COLUMN_COMMENT FROM information_schema.columns WHERE table_schema ='".$db_name."' AND table_name = '".$tbl_name."'" );
+
+        $result = [];
+        $field_names = [];
+        $diff_result = [];
+        if($table_field) {
+            foreach ( $table_field as $tk => $tv) {
+                $length = "";
+                if(preg_match('/\d+/',$tv['COLUMN_TYPE'], $arr)){
+                    $length = $arr[0];
+                }
+                $tmp = [
+                    'name'=>$tv['COLUMN_NAME'],
+                    'type'=>$tv['DATA_TYPE'],
+                    'length'=>$length,
+                    'comment'=>$tv['COLUMN_COMMENT']
+                ];
+
+                $field_names[] = $tmp['name'];
+                $result[$tmp['name']] = $tmp;
+            }
+        }
+
+        if($model_field) {
+            foreach ( $model_field as $mk => $mv ) {
+                if( !in_array($mv['name'], $field_names)) {
+
+                } else {
+                    $tmp = $result[$mv['name']];
+                    $tmp['id'] = $mv['id'];
+                    unset($result[$mv['name']]);
+                    foreach($tmp as $k=>$v) {
+                        if(strtolower($mv[$k]) != strtolower($v)) {
+                            unset($mv['value']);
+                            $diff_result['diff'][$mv['name']] = [$tmp, $mv];
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if($result) {
+            $diff_result['new'] = $result;
+        }
+
+        if($sync) {
+            foreach($diff_result['new'] as $dv) {
+                $r = $this->update_field(0, $model_id, $tmp_name, $dv['name'], $dv['comment'], $dv['type'], $dv['length']);
+            }
+
+            foreach($diff_result['diff'] as $dv) {
+                $dv = $dv[0];
+                $r = $this->update_field($dv['id'], $model_id, $tmp_name, $dv['name'], $dv['comment'], $dv['type'], $dv['length']);
+            }
+            return true;
+        }
+
+        return $diff_result;
+    }
+
+    protected function update_field($field_id, $model_id, $tablename, $name, $comment, $type, $len) {
+        //获取目标表字段到本库
+        $fieldService = D ( 'Field', 'Service' );
+        $inputService = D('input', 'Service');
+
+        $field = array (
+            'model_id' => $model_id,
+            'name' => $name,
+            'comment' => $comment,
+            'type' => $type,
+            'length'=> $len,
+            'is_requier' => 0,
+            'is_unique' => 0,
+            'is_index' => 0,
+            'is_system' => 0,
+            'created_at' => time(),
+            'updated_at' => time(),
+            'is_old' => 1
+        );
+
+        $is_update = false;
+
+        if($field_id) {
+            $is_update = true;
+            $field['id'] = $field_id;
+            $retField = $fieldService->update($field);
+        }else {
+            $retField = $fieldService->add($field);
+            $field_id = $retField['data'] ['id'];
+        }
+
+        //插入input
+        $input = array (
+            'field_id' => $field_id,
+            'is_show' => 1,
+            'label' => $comment,
+            'remark' => $comment,
+            'type' => 'text',
+            'width' => 20,
+            'height' => 0,
+            'opt_value' => '',
+            'value' => '',
+            'editor' => 'all',
+            'html' => "<input type='text' class='input' size='20' name=".$tablename."[{$name}]' value='' />",
+            'show_order' => 1,
+            'created_at' => time (),
+            'updated_at' => time ()
+        );
+
+        if($is_update) {
+            $id = M('Input')->where(['field_id' => $field_id])->getField('id');
+            $input['id'] = $id;
+            $retInput = $inputService->update($input);
+        } else {
+            $retInput = $inputService->add($input);
+        }
+
+        if($retField['status'] && $retInput['status']) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

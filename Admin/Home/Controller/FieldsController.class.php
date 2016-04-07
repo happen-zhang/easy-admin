@@ -148,6 +148,7 @@ class FieldsController extends CommonController {
 
         $model = M('Model')->getById($_GET['model_id']);
         $field = D('Field')->relation(true)->getById($_GET['field_id']);
+
         $input = $field['input'];
         $models = D('Model', 'Service')->getAll();
         $filters = get_registry_filter();

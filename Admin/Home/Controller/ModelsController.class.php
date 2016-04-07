@@ -234,4 +234,65 @@ class ModelsController extends CommonController
 
         $this->successReturn("删除模型 <b>{$model['name']}</b> 成功！");
     }
+
+    /**
+     * 检查表差异
+     */
+    public function check_table() {
+        $model_id = I("post.id");
+        $tbl_name = I("post.name");
+        $ret = D('Model', 'Service')->diff_table($model_id, $tbl_name);
+
+        if($ret) {
+            $html = '<div class="field_diff_box">';
+
+            foreach ($ret as $k => $v) {
+                if($k == "new") {
+                    $html.= '<strong>新增</strong>';
+                    $html.= '<ul>';
+                    foreach($v as $vo) {
+                        $html.= '<li> '.$vo['name'].": ";
+                        unset($vo['id']);
+                        unset($vo['name']);
+                        $html.= '<em>'.implode(' </em>, <em>', $vo).' </em>';
+                    }
+                    $html.= '</ul>';
+                }
+
+                if($k == "diff") {
+                    $html.= '<strong>更新</strong>';
+                    $html.= '<ul>';
+                    foreach($v as $vo) {
+                        $html.= '<li> '.$vo[1]['name'].": ";
+                        unset($vo[1]['id']);
+                        unset($vo[1]['name']);
+                        unset($vo[0]['id']);
+                        unset($vo[0]['name']);
+                        $html.= '<em>'.implode(' </em>, <em>', $vo[0]).' => '.implode(' </em>, <em>', $vo[1]).' </em>';
+                    }
+                    $html.= '</ul>';
+                }
+            }
+
+            $html .= "<button class=\"btn do_sync\">同步</button>";
+        } else {
+            $html = "<div class=\"field_diff_box\"><h3>无差异</h3></div>";
+        }
+        $html .= "</div>";
+
+        $ret['html'] = $html;
+
+        return $this->successReturn($ret);
+    }
+
+    /**
+     * 差异同步至模型
+     */
+    public function sync_model() {
+        $model_id = I("post.id");
+        $tbl_name = I("post.name");
+        $ret = D('Model', 'Service')->diff_table($model_id, $tbl_name, true);
+
+        $this->successReturn("操作成功");
+    }
 }

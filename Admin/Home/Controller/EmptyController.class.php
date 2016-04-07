@@ -72,6 +72,20 @@ class EmptyController extends CommonController {
         foreach ($fields as $field) {
             $fn = $field['name'];
 
+            //时间戳转换
+            if ($field['input']['type']=='date_utime'){
+                foreach ($rows as $key => $row) {
+                    $rows[$key][$fn] = date('Y-m-d H:i:s', $row[$fn]);
+                }
+            }
+            //时间戳转换
+            if ($field['input']['type']=='date_microtime'){
+                foreach ($rows as $key => $row) {
+                    $row[$fn] = floor(($row[$fn]/1000));
+                    $rows[$key][$fn] = date('Y-m-d H:i:s', $row[$fn]);
+                }
+            }
+
             // created_at、updated_at换成日期格式
             if (($field['is_system'] && $field['is_list_show'])
                 && ('created_at' == $fn || 'updated_at' == $fn)) {
