@@ -5,12 +5,13 @@ namespace Home\Controller;
  * ModelsController
  * 模型管理
  */
-class ModelsController extends CommonController {
+class ModelsController extends CommonController
+{
     /**
      * 模型列表
-     * @return
      */
-    public function index(){
+    public function index()
+    {
         $result = $this->getPagination('Model');
 
         $this->assign('models', $result['data']);
@@ -21,9 +22,10 @@ class ModelsController extends CommonController {
 
     /**
      * 模型信息
-     * @return
+     * @return mixed|void
      */
-    public function show() {
+    public function show()
+    {
         if (!isset($_GET['id'])) {
             $this->error('您需要查看的模型不存在！');
         }
@@ -37,8 +39,8 @@ class ModelsController extends CommonController {
         $orders = array();
         foreach ($model['fields'] as $key => $field) {
             $input = M('Input')->field('show_order')
-                               ->where("field_id={$field['id']}")
-                               ->find();
+                ->where("field_id={$field['id']}")
+                ->find();
             $model['fields'][$key]['show_order'] =
                 (is_null($input) || 0 == $input['show_order'])
                     ? 0 : $input['show_order'];
@@ -54,23 +56,48 @@ class ModelsController extends CommonController {
 
     /**
      * 添加模型
-     * @return
      */
-    public function add() {
+    public function add()
+    {
+
+        $db_data = [];
+
+        $m = M();
+        $databases = $m->query('select SCHEMA_NAME as db_name from information_schema.SCHEMATA');
+        if ($databases) {
+            foreach($databases as $db_row) {
+                if ($db_row["db_name"] == "information_schema")
+                    continue;
+
+                $tables = $m->query('select TABLE_NAME as tb_name from information_schema.TABLES where TABLE_SCHEMA = "'.$db_row['db_name'].'"');
+                $tmp = [];
+                foreach($tables as $tb_row) {
+                    $tmp[] = $tb_row['tb_name'];
+                }
+                $db_data[$db_row['db_name']] = $tmp;
+            }
+        }
+
+        $this->assign('db_data', $db_data);
         $this->display();
     }
 
     /**
      * 创建模型
-     * @return
      */
-    public function create() {
+    public function create()
+    {
         if (!IS_POST || !isset($_POST['model'])) {
             return $this->errorReturn('无效的操作！');
         }
 
         $modelService = D('Model', 'Service');
         $model = array_map('trim', $_POST['model']);
+        if ($model ['radio'] == 'old' && ! empty ( $model ['tbl_name_old'] )) {
+            $model ['tbl_name'] = $model['db_data'].$model ['tbl_name_old'];
+        } else {
+            $model['tbl_name'] = $model['db_data'].$model ['tbl_name'];
+        }
 
         // 检查数据是否合法
         $result = $modelService->checkModel($model);
@@ -79,22 +106,26 @@ class ModelsController extends CommonController {
         }
 
         // 添加数据
-        $result = $modelService->add($model);
+        if ($model ['radio'] == 'old' && ! empty ( $model ['tbl_name_old'] )) {
+            $result = $modelService->add_old_table($model);
+        } else {
+            $result = $modelService->add($model);
+        }
+
         if (false === $result['status']) {
             return $this->errorReturn('系统出错了！');
         }
 
-        $this->successReturn("添加模型 <b>{$model['name']}</b> 成功！",
-                             U('Models/index'));
+        $this->successReturn("添加模型 <b>{$model['name']}</b> 成功！", U('Models/index'));
     }
 
     /**
      * 检查模型名可用性
-     * @return
      */
-    public function checkModelName() {
+    public function checkModelName()
+    {
         $result = D('Model', 'Service')->checkModelName($_GET['model_name'],
-                                                        $_GET['id']);
+            $_GET['id']);
         if ($result['status']) {
             return $this->successReturn('模型名称可用！');
         }
@@ -104,9 +135,10 @@ class ModelsController extends CommonController {
 
     /**
      * 检查数据表名可用性
-     * @return
+     * @param null $tableName
      */
-    public function checkTblName($tableName = null) {
+    public function checkTblName($tableName = null)
+    {
         $tblName = isset($tableName) ? $tableName : $_GET['tbl_name'];
         $result = D('Model', 'Service')->checkTblName($tblName, $_GET['id']);
 
@@ -119,11 +151,11 @@ class ModelsController extends CommonController {
 
     /**
      * 检查菜单名可用性
-     * @return
      */
-    public function checkMenuName() {
+    public function checkMenuName()
+    {
         $result = D('Model', 'Service')->checkMenuName($_GET['menu_name'],
-                                                       $_GET['id']);
+            $_GET['id']);
         if ($result['status']) {
             return $this->successReturn('菜单名称可用！');
         }
@@ -133,9 +165,9 @@ class ModelsController extends CommonController {
 
     /**
      * 编辑模型
-     * @return
      */
-    public function edit() {
+    public function edit()
+    {
         if (!isset($_GET['id'])) {
             $this->error('您需要编辑的模型不存在！');
         }
@@ -154,9 +186,9 @@ class ModelsController extends CommonController {
 
     /**
      * 更新模型
-     * @return
      */
-    public function update() {
+    public function update()
+    {
         if (!IS_POST || !isset($_POST['model'])) {
             $this->errorReturn('无效的操作！');
         }
@@ -183,9 +215,9 @@ class ModelsController extends CommonController {
 
     /**
      * 删除模型
-     * @return
      */
-    public function delete() {
+    public function delete()
+    {
         if (!isset($_GET['id'])) {
             $this->errorReturn('您需要删除的模型不存在！');
         }

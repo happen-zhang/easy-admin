@@ -146,6 +146,8 @@ class NodeService extends CommonService {
         $update = array('title' => "更新{$name}", 'name' => "update");
         // delete
         $delete = array('title' => "删除{$name}", 'name' =>"delete");
+        // medit
+        $medit = array('title' => "批量操作{$name}", 'name' =>"medit");
 
         $nodes = array(
             array_merge($node, $index),
@@ -153,7 +155,8 @@ class NodeService extends CommonService {
             array_merge($node, $create),
             array_merge($node, $edit),
             array_merge($node, $update),
-            array_merge($node, $delete)
+            array_merge($node, $delete),
+            array_merge($node, $medit),
         );
 
         $ns = $Node->addAll($nodes);

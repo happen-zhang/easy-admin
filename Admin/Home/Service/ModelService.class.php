@@ -98,6 +98,99 @@ class ModelService extends CommonService {
     }
 
     /**
+     * 添加旧的数据表
+     * @param $model
+     * @return array
+     */
+    public function add_old_table($model) {
+        $Model = $this->getD();
+        $model = array_map ( 'trim', $model );
+
+        $new_db = $model ['db_name'];
+        $new_table = $model ['tbl_name_old'];
+        $model ['tbl_name'] = $model ['db_name'].'.'.$model ['tbl_name_old'];
+
+        $Model->startTrans ();
+        $model = $Model->create ( $model );
+        $addStatus = $Model->add ( $model );
+
+        $sql = "SELECT `COLUMN_NAME`,DATA_TYPE,COLUMN_COMMENT,COLUMN_TYPE FROM information_schema.columns WHERE table_schema ='".$new_db."' AND table_name = '".$new_table."'";
+        $table_attribute = $Model->query ( $sql );
+        $modelId = $Model->getLastInsID ();
+
+        $fieldService = D ( 'Field', 'Service' );
+        $inputService = D('input', 'Service');
+
+        //查询此表主键
+        $qu_key['name'] = $model ['tbl_name'];
+
+        foreach ( $table_attribute as $ke => $val ) {
+            $column_name = $val ['COLUMN_NAME'];
+            $comment = $val ['COLUMN_COMMENT'];
+            $model_name = $model ['tbl_name'];
+            $length = "";
+            if(preg_match('/\d+/',$val['COLUMN_TYPE'], $arr)){
+                $length = $arr[0];
+            }
+
+            $field = array (
+                'model_id' => $modelId,
+                'name' => $column_name,
+                'comment' => $comment,
+                'type' => $val ['DATA_TYPE'],
+                'length'=> $length,
+                'is_requier' => 0,
+                'is_unique' => 0,
+                'is_index' => 0,
+                'is_system' => 0,
+                'auto_fill' =>'',
+                'created_at' => time (),
+                'updated_at' => time (),
+                'is_old' => 1
+            );
+
+            $addFieldStatus = $fieldService->just_add_field ( $field );
+
+            $input = array (
+                'field_id' => $addFieldStatus ['data'] ['id'],
+                'is_show' => 1,
+                'label' => $column_name,
+                'remark' => $comment,
+                'type' => 'text',
+                'width' => 20,
+                'height' => 0,
+                'opt_value' => '',
+                'value' => '',
+                'editor' => 'all',
+                'html' => "<input type='text' class='input' size='20' name='".$model_name."[".$column_name."]' value='' />",
+                'show_order' => 1,
+                'created_at' => time (),
+                'updated_at' => time ()
+            );
+            $inputService->add ( $input );
+        }
+
+        // 生成菜单项
+        if (isset($model['is_inner']) && 0 == $model['is_inner']) {
+            $this->addMenuItem($model);
+        }
+
+        // 生成节点
+        $ctrlName = $this->getCtrlName($model['tbl_name']);
+        $nodeService = D('Node', 'Service');
+        $amns = $nodeService->addModuleNodes($model['menu_name'], $ctrlName);
+
+        if (false === $addStatus
+            || false === $addFieldStatus
+            || false === $amns) {
+            $Model->rollback();
+            return $this->resultReturn(false);
+        }
+        $Model->commit();
+        return $this->resultReturn(true);
+    }
+
+    /**
      * 更新模型并更新数据表
      * @param array $model
      * @return array
@@ -341,6 +434,7 @@ class ModelService extends CommonService {
         $modelLogic = D('Model', 'Logic');
         // 得到模型的控制器名称
         $ctrlName = $this->getCtrlName($model['tbl_name']);
+
         // 生成菜单项
         $item = $modelLogic->genMenuItem($model['menu_name'], $ctrlName);
         // 添加菜单项
@@ -379,13 +473,17 @@ class ModelService extends CommonService {
      * @return string
      */
     public function getCtrlName($tblName) {
-        // 去掉表前缀
-        $tblName = substr($tblName, strpos($tblName, '_') + 1);
-        $tblName = str_replace('_', ' ', $tblName);
-        // 单词首字母转为大写
-        $tblName = ucwords($tblName);
+        if (strpos($tblName, '.') === false) {
+            // 去掉表前缀
+            $tblName = substr($tblName, strpos($tblName, '_') + 1);
+            $tblName = str_replace('_', ' ', $tblName);
+            // 单词首字母转为大写
+            $tblName = ucwords($tblName);
 
-        return str_replace(' ', '', $tblName);
+            $tblName = str_replace(' ', '', $tblName);
+        }
+
+        return $tblName;
     }
 
     /**
@@ -395,18 +493,25 @@ class ModelService extends CommonService {
      */
     public function getTblName($ctrlName) {
         $tblName = '';
+        $ctrArr = explode('.', $ctrlName);
 
-        for ($i = 0, $len = strlen($ctrlName); $i < $len; $i++) {
-            if (strtoupper($ctrlName[$i]) === $ctrlName[$i]) {
-                // 大写字母
-                $tblName .= '_' . strtolower($ctrlName[$i]);
-                continue ;
+        if (strpos($ctrlName, '.') === false || (strpos($ctrlName, '.') &&  $ctrArr[0] == C('DB_NAME') && $ctrlName = $ctrArr[1])) {
+            for ($i = 0, $len = strlen($ctrlName); $i < $len; $i++) {
+                if (strtoupper($ctrlName[$i]) === $ctrlName[$i]) {
+                    // 大写字母
+                    $tblName .= '_' . strtolower($ctrlName[$i]);
+                    continue ;
+                }
+
+                $tblName .= $ctrlName[$i];
             }
 
-            $tblName .= $ctrlName[$i];
+            $tblName = C('DB_PREFIX') . substr($tblName, 1);
+        } else {
+            $tblName = $ctrlName;
         }
 
-        return C('DB_PREFIX') . substr($tblName, 1);
+        return $tblName;
     }
 
     protected function getModelName() {

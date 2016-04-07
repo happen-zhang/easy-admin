@@ -183,11 +183,13 @@ class DefaultService extends CommonService {
      * @return array
      */
     public function add(array $data, $ctrlName) {
-        if (false === M($ctrlName)->add($data)) {
+        $m = $this->getModel($ctrlName);
+        if (false === $m->add($data)) {
+            echo $m->getLastSql();
             return $this->resultReturn(false);
         }
 
-        $data['id'] = M($ctrlName)->getLastInsId();
+        $data['id'] = $m->getLastInsId();
         $tblName = D('Model', 'Service')->getTblName($ctrlName);
         $model = M('Model')->getByTblName($tblName);
 
@@ -337,6 +339,14 @@ class DefaultService extends CommonService {
         }
     }
 
+    protected function getModel($ctrName) {
+        if(strpos($ctrName, '.') !== false) {
+            return M($ctrName, null);
+        } else {
+            return M($ctrName);
+        }
+    }
+
     /**
      * 删除文件
      * @param  array $files 需要删除的文件路径
@@ -353,6 +363,6 @@ class DefaultService extends CommonService {
     }
 
     protected function getModelName() {
-        return CONTROLLER_NAME;
+        return $this->getCtrName();
     }
 }

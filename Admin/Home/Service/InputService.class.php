@@ -13,7 +13,9 @@ class InputService extends CommonService {
     public function add($input) {
         $Input = $this->getD();
         $input = $Input->create($input);
-        if (false === $Input->add($input)) {
+        $ret = $Input->add($input);
+
+        if (false === $ret) {
             return $this->resultReturn(false);
         }
 
