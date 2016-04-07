@@ -22,6 +22,8 @@ CREATE TABLE `ea_field` (
   `relation_value` varchar(128) NOT NULL COMMENT '关联显示的值',
   `created_at` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `updated_at` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `order_by` int(11) NOT NULL DEFAULT '0' COMMENT '是否排序字段',
+  `sort` varchar(32) NOT NULL DEFAULT 'ASC' COMMENT 'desc 倒序 asc 正序',
   PRIMARY KEY (`id`),
   KEY `fk_field_model` (`model_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='数据模型字段' AUTO_INCREMENT=0 ;
