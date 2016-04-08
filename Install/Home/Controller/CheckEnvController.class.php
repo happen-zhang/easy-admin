@@ -80,7 +80,7 @@ class CheckEnvController extends CommonController {
     }
 
     private function getMysqlInfo() {
-        if (function_exists('mysql_connect')) {
+        if (function_exists('mysqli_connect')) {
             return current_state_support('已安装');
         }
 
