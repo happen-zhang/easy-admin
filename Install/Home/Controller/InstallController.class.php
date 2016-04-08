@@ -144,7 +144,7 @@ class InstallController extends CommonController {
                 'info' => '数据库连接失败！'));
         }
 
-        $mysqli = mysqli_init();
+        $mysqli->init();
         return $mysqli;
     }
 
