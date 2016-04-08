@@ -63,7 +63,7 @@ class EmptyController extends CommonController {
         }
 
         // 得到分页数据
-        $result = $this->getPagination('Default', null, null, $order_by_str);
+        $result = $this->getPagination('Default', [], null, $order_by_str);
 
         $rows = array_map("strip_sql_injection", $result['data']);
         unset($result['data']);
