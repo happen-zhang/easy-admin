@@ -140,16 +140,15 @@ class InstallController extends CommonController {
      * @return handler
      */
     private function connectDb(array $dbConfig) {
-        $conn = mysql_connect($dbConfig['host'] . ':' . $dbConfig['port'],
-                              $dbConfig['username'],
-                              $dbConfig['password']);
-        if (!$conn) {
-            // 数据库连接失败
+        $mysqli = new \mysqli($dbConfig['host'], $dbConfig['username'], $dbConfig['password'], 'test', $dbConfig['port']);
+
+        if ($mysqli->connect_error) {
             $this->ajaxReturn(array('step' => 0,
-                                    'info' => '数据库连接失败！'));
+                'info' => '数据库连接失败！'));
         }
 
-        return $conn;
+        $mysqli = mysqli_init();
+        return $mysqli;
     }
 
     /**
@@ -157,7 +156,7 @@ class InstallController extends CommonController {
      * @return
      */
     private function invalidMysqlVersion() {
-        $mysqlVersion = mysql_get_server_info($this->conn);
+        $mysqlVersion = $this->conn->server_version;
         if ($mysqlVersion < 4.1) {
             $this->closeDb();
             $this->ajaxReturn(array('step' => 0,
@@ -172,11 +171,11 @@ class InstallController extends CommonController {
      */
     private function selectDb($dbName) {
         // 设置数据库字符集
-        mysql_query('SET NAMES "utf8"');
+        $this->conn->query('SET NAMES "utf8"');
         // 打开指定的数据库
-        if (!mysql_select_db($dbName, $this->conn)) {
+        if (!$this->conn->select_db($dbName)) {
             // 指定数据库不存在，创建数据库
-            if (!create_database($dbName, $this->conn)) {
+            if (!$this->conn->query('create database '.$dbName)) {
                 $this->closeDb();
                 // 没有权限创建数据库
                 $this->ajaxReturn(array('step' => 0,
@@ -209,7 +208,7 @@ class InstallController extends CommonController {
                 // CREATE TABLE
                 preg_match('/CREATE TABLE `([^ ]*)`/', $sql, $matches);
 
-                if (mysql_query($sql)) {
+                if ($this->conn->query($sql)) {
                     $info = '<li>'. current_state_support("创建数据表{$matches[1]}完成") . '</li>';
                 } else {
                     $info = '<li>'. current_state_support("创建数据表{$matches[1]}失败") . '</li>';
@@ -220,7 +219,7 @@ class InstallController extends CommonController {
                                         'info' => $info));
             } else {
                 // DROP TABLE 或 INSERT INTO
-                mysql_query($sql);
+                $this->conn->query($sql);
             }
         }
 
@@ -233,7 +232,7 @@ class InstallController extends CommonController {
      * @return
      */
     private function insertRootAdmin($admin, $dbName) {
-        mysql_select_db($dbName, $this->conn);
+        $this->conn->select_db($dbName);
 
         $admin['password'] = $this->encrypt($admin['password']);
 
@@ -241,8 +240,8 @@ class InstallController extends CommonController {
 
         $raSql = "INSERT INTO `{$this->tablePrefix}role_admin` (`role_id`, `user_id`) VALUES(1, 1);";
 
-        mysql_query($sql);
-        mysql_query($raSql);
+        $this->conn->query($sql);
+        $this->conn->query($raSql);
     }
 
     /**
@@ -292,7 +291,7 @@ class InstallController extends CommonController {
      */
     private function closeDb() {
         if ($this->conn) {
-            mysql_close($this->conn);
+            $this->conn->close();
         }
     }
 
