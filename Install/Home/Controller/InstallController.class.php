@@ -248,7 +248,7 @@ class InstallController extends CommonController {
      */
     private function saveConfig(array $systemConfig) {
         // 数据库配置
-        $config['DB_TYPE'] = 'mysql';
+        $config['DB_TYPE'] = 'mysqli';
         $config['DB_HOST'] = $systemConfig['db']['host'];
         $config['DB_NAME'] = $systemConfig['db']['name'];
         $config['DB_USER'] = $systemConfig['db']['username'];
