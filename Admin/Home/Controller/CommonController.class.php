@@ -129,7 +129,7 @@ class CommonController extends Controller {
      * @param  array  $where     分页条件
      * @return array
      */
-    protected function getPagination($modelName, $where, $fields, $order) {
+    protected function getPagination($modelName, $where=[], $fields, $order) {
         $service = D($modelName, 'Service');
 
         // 总数据行数
