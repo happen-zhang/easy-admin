@@ -99,6 +99,36 @@ class ModelService extends CommonService {
 
     /**
      * 添加旧的数据表
+     *
+        COLUMNS
+        当前数据库中当前用户可以访问的每一个列在该视图中占一行。INFORMATION_SCHEMA.COLUMNS 视图以 sysobjects、spt_data type_info、systypes、syscolumns、syscomments、sysconfigures 以及 syscharsets 系统表为基础。
+
+        若要从这些视图中检索信息，请指定完全合格的 INFORMATION_SCHEMA view_name 名称。
+
+        列名	                 数据类型            	描述
+        TABLE_CATALOG	     nvarchar(128)	    表限定符。
+        TABLE_SCHEMA	     nvarchar(128)	    表所有者。
+        TABLE_NAME	        nvarchar(128)	    表名。
+        COLUMN_NAME	        nvarchar(128)	    列名。
+        ORDINAL_POSITION	smallint	        列标识号。
+        COLUMN_DEFAULT	    nvarchar(4000)	    列的默认值。
+        IS_NULLABLE	        varchar(3)	        列的为空性。如果列允许 NULL，那么该列返回 YES。否则，返回 NO。
+        DATA_TYPE	        nvarchar(128)	    系统提供的数据类型。
+        CHARACTER_MAXIMUM_LENGTH	smallint	以字符为单位的最大长度，适于二进制数据、字符数据，或者文本和图像数据。否则，返回 NULL。有关更多信息，请参见数据类型。
+        CHARACTER_OCTET_LENGTH	smallint	    以字节为单位的最大长度，适于二进制数据、字符数据，或者文本和图像数据。否则，返回 NULL。
+        NUMERIC_PRECISION	    tinyint	        近似数字数据、精确数字数据、整型数据或货币数据的精度。否则，返回 NULL。
+        NUMERIC_PRECISION_RADIX	smallint	    近似数字数据、精确数字数据、整型数据或货币数据的精度基数。否则，返回 NULL。
+        NUMERIC_SCALE	        tinyint	        近似数字数据、精确数字数据、整数数据或货币数据的小数位数。否则，返回 NULL。
+        DATETIME_PRECISION	    smallint	    datetime 及 SQL-92 interval 数据类型的子类型代码。对于其它数据类型，返回 NULL。
+        CHARACTER_SET_CATALOG	varchar(6)	    如果列是字符数据或 text 数据类型，那么返回 master，指明字符集所在的数据库。否则，返回 NULL。
+        CHARACTER_SET_SCHEMA	varchar(3)	    如果列是字符数据或 text 数据类型，那么返回 DBO，指明字符集的所有者名称。否则，返回 NULL。
+        CHARACTER_SET_NAME	    nvarchar(128)	如果该列是字符数据或 text 数据类型，那么为字符集返回唯一的名称。否则，返回 NULL。
+        COLLATION_CATALOG	    varchar(6)	    如果列是字符数据或 text 数据类型，那么返回 master，指明在其中定义排序次序的数据库。否则此列为 NULL。
+        COLLATION_SCHEMA	    varchar(3)	    返回 DBO，为字符数据或 text 数据类型指明排序次序的所有者。否则，返回 NULL。
+        COLLATION_NAME	        nvarchar(128)	如果列是字符数据或 text 数据类型，那么为排序次序返回唯一的名称。否则，返回 NULL。
+        DOMAIN_CATALOG	        nvarchar(128)	如果列是一种用户定义数据类型，那么该列是某个数据库名称，在该数据库名中创建了这种用户定义数据类型。否则，返回 NULL。
+        DOMAIN_SCHEMA	        nvarchar(128)	如果列是一种用户定义数据类型，那么该列是这种用户定义数据类型的创建者。否则，返回 NULL。
+        DOMAIN_NAME	            nvarchar(128)	如果列是一种用户定义数据类型，那么该列是这种用户定义数据类型的名称。否则，返回 NULL。
      * @param $model
      * @return array
      */
