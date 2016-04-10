@@ -159,11 +159,7 @@ class ModelService extends CommonService {
             $comment = $val ['COLUMN_COMMENT'];
             $model_name = $model ['tbl_name'];
             $length = "";
-            if($val['CHARACTER_MAXIMUM_LENGTH']) {
-                $length = $$val['CHARACTER_MAXIMUM_LENGTH'];
-            } elseif($val['NUMERIC_PRECISION_RADIX'] && $val['NUMERIC_SCALE']) {
-                $length = $val['NUMERIC_PRECISION_RADIX'].",".$val['NUMERIC_SCALE'];
-            }
+
 
             $field = array (
                 'model_id' => $modelId,
