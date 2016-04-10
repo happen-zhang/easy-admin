@@ -144,7 +144,7 @@ class ModelService extends CommonService {
         $model = $Model->create ( $model );
         $addStatus = $Model->add ( $model );
 
-        $sql = "SELECT `COLUMN_NAME`,DATA_TYPE,COLUMN_COMMENT,COLUMN_TYPE FROM information_schema.columns WHERE table_schema ='".$new_db."' AND table_name = '".$new_table."'";
+        $sql = "SELECT `COLUMN_NAME`,DATA_TYPE,COLUMN_COMMENT,COLUMN_TYPE,CHARACTER_MAXIMUM_LENGTH,NUMERIC_PRECISION,NUMERIC_PRECISION_RADIX,NUMERIC_SCALE FROM information_schema.columns WHERE table_schema ='".$new_db."' AND table_name = '".$new_table."'";
         $table_attribute = $Model->query ( $sql );
         $modelId = $Model->getLastInsID ();
 
@@ -159,8 +159,10 @@ class ModelService extends CommonService {
             $comment = $val ['COLUMN_COMMENT'];
             $model_name = $model ['tbl_name'];
             $length = "";
-            if(preg_match('/\d+/',$val['COLUMN_TYPE'], $arr)){
-                $length = $arr[0];
+            if($val['CHARACTER_MAXIMUM_LENGTH']) {
+                $length = $$val['CHARACTER_MAXIMUM_LENGTH'];
+            } elseif($val['NUMERIC_PRECISION_RADIX'] && $val['NUMERIC_SCALE']) {
+                $length = $val['NUMERIC_PRECISION_RADIX'].",".$val['NUMERIC_SCALE'];
             }
 
             $field = array (

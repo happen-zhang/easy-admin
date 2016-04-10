@@ -218,8 +218,8 @@ class FieldService extends CommonService {
     /**
      * 检查字段名称是否可用
      * @param  string     $name 字段名称
-     * @param     int $model_id 模型id
-     * @param     int       $id 需要更新字段的id
+     * @param  int $model_id 模型id
+     * @param  int $id 需要更新字段的id
      * @return  array
      */
     public function checkFieldName($name, $modelId, $id) {
