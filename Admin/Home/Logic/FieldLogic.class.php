@@ -12,7 +12,7 @@ class FieldLogic extends CommonLogic {
      * @return
      */
     public function resetLength(array &$field) {
-        switch ($field['type']) {
+        switch (strtoupper($field['type'])) {
             case 'TINYINT':
             case 'SMALLINT':
             case 'INT':

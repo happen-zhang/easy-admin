@@ -250,6 +250,28 @@ function is_valid_date($date, $formats = array("Y-m-d", "Y/m/d")) {
 }
 
 /**
+ * 检查日期时间
+ * @param $date
+ * @param array $formats
+ * @return bool
+ */
+function is_valid_datetime($date, $formats = array("Y-m-d H:m:s", "Y/m/d H:m:s", "Y-m-d h:m:s", "Y/m/d h:m:s")) {
+    $unixtime = strtotime($date);
+    if (!$unixtime) {
+        return false;
+    }
+
+    foreach ($formats as $format) {
+        if (date($format, $unixtime) == $date) {
+            return true;
+            break;
+        }
+    }
+
+    return false;
+}
+
+/**
  * 得到指定值在数组中的位置，未找到返回false
  * @param  array  $search 被查找的数组
  * @param  mixed  $target 目标值

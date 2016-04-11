@@ -52,6 +52,12 @@
                 <input type="text" class="input" size="20" name="field[value]" />
             </td>
         </tr>
+        <tr>
+            <th width="100">字段排序：</th>
+            <td>
+                <label><input type="radio" name="field[order_by]" value="0" /> 否</label>  <label><input type="radio" name="field[order_by]" value="1" /> 是      &nbsp;&nbsp;&nbsp;&nbsp;排序规则：<input type="radio" name="field[sort]" value="ASC" />小到大</label> &nbsp; <label><input type="radio" name="field[sort]" value="DESC" /> 大到小</label>
+            </td>
+        </tr>
      </table>
 
     <!-- 特殊属性 -->
@@ -128,16 +134,20 @@
             <th width="100">表单域类型：</th>
             <td>
                 <select name="input[type]" id="input_type">
-                  <option value="text" selected>单行文本框(text)</option>
-                  <option value="password">密码框(password)</option>
-                  <option value="select">下拉框(select)</option>
-                  <option value="radio">单选框(radio)</option>
-                  <option value="checkbox">复选框(checkbox)</option>
-                  <option value="textarea">多行文本框(textarea)</option>
-                  <option value="editor">编辑器(editor)</option>
-                  <option value="file">文件(file)</option>
-                  <option value="date">日期(date)</option>
-                  <option value="relation_select">下拉外表关联字段(relation_select)</option>
+                    <option value="text" selected>单行文本框(text)</option>
+                    <option value="password">密码框(password)</option>
+                    <option value="select">下拉框(select)</option>
+                    <option value="radio">单选框(radio)</option>
+                    <option value="checkbox">复选框(checkbox)</option>
+                    <option value="textarea">多行文本框(textarea)</option>
+                    <option value="editor">编辑器(editor)</option>
+                    <option value="file">文件(file)</option>
+                    <option value="date">日期(date)</option>
+                    <option value="date_time">日期+时分秒(date+time)</option>
+                    <option value="date_utime">日期+时分秒(时间戳)</option>
+                    <option value="date_microtime">日期+时分秒(时间戳-毫秒)</option>
+                    <option value="div">代码块</option>
+                    <option value="relation_select">下拉外表关联字段(relation_select)</option>
                 </select>
             </td>
         </tr>

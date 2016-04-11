@@ -99,6 +99,36 @@ class ModelService extends CommonService {
 
     /**
      * 添加旧的数据表
+     *
+        COLUMNS
+        当前数据库中当前用户可以访问的每一个列在该视图中占一行。INFORMATION_SCHEMA.COLUMNS 视图以 sysobjects、spt_data type_info、systypes、syscolumns、syscomments、sysconfigures 以及 syscharsets 系统表为基础。
+
+        若要从这些视图中检索信息，请指定完全合格的 INFORMATION_SCHEMA view_name 名称。
+
+        列名	                 数据类型            	描述
+        TABLE_CATALOG	     nvarchar(128)	    表限定符。
+        TABLE_SCHEMA	     nvarchar(128)	    表所有者。
+        TABLE_NAME	        nvarchar(128)	    表名。
+        COLUMN_NAME	        nvarchar(128)	    列名。
+        ORDINAL_POSITION	smallint	        列标识号。
+        COLUMN_DEFAULT	    nvarchar(4000)	    列的默认值。
+        IS_NULLABLE	        varchar(3)	        列的为空性。如果列允许 NULL，那么该列返回 YES。否则，返回 NO。
+        DATA_TYPE	        nvarchar(128)	    系统提供的数据类型。
+        CHARACTER_MAXIMUM_LENGTH	smallint	以字符为单位的最大长度，适于二进制数据、字符数据，或者文本和图像数据。否则，返回 NULL。有关更多信息，请参见数据类型。
+        CHARACTER_OCTET_LENGTH	smallint	    以字节为单位的最大长度，适于二进制数据、字符数据，或者文本和图像数据。否则，返回 NULL。
+        NUMERIC_PRECISION	    tinyint	        近似数字数据、精确数字数据、整型数据或货币数据的精度。否则，返回 NULL。
+        NUMERIC_PRECISION_RADIX	smallint	    近似数字数据、精确数字数据、整型数据或货币数据的精度基数。否则，返回 NULL。
+        NUMERIC_SCALE	        tinyint	        近似数字数据、精确数字数据、整数数据或货币数据的小数位数。否则，返回 NULL。
+        DATETIME_PRECISION	    smallint	    datetime 及 SQL-92 interval 数据类型的子类型代码。对于其它数据类型，返回 NULL。
+        CHARACTER_SET_CATALOG	varchar(6)	    如果列是字符数据或 text 数据类型，那么返回 master，指明字符集所在的数据库。否则，返回 NULL。
+        CHARACTER_SET_SCHEMA	varchar(3)	    如果列是字符数据或 text 数据类型，那么返回 DBO，指明字符集的所有者名称。否则，返回 NULL。
+        CHARACTER_SET_NAME	    nvarchar(128)	如果该列是字符数据或 text 数据类型，那么为字符集返回唯一的名称。否则，返回 NULL。
+        COLLATION_CATALOG	    varchar(6)	    如果列是字符数据或 text 数据类型，那么返回 master，指明在其中定义排序次序的数据库。否则此列为 NULL。
+        COLLATION_SCHEMA	    varchar(3)	    返回 DBO，为字符数据或 text 数据类型指明排序次序的所有者。否则，返回 NULL。
+        COLLATION_NAME	        nvarchar(128)	如果列是字符数据或 text 数据类型，那么为排序次序返回唯一的名称。否则，返回 NULL。
+        DOMAIN_CATALOG	        nvarchar(128)	如果列是一种用户定义数据类型，那么该列是某个数据库名称，在该数据库名中创建了这种用户定义数据类型。否则，返回 NULL。
+        DOMAIN_SCHEMA	        nvarchar(128)	如果列是一种用户定义数据类型，那么该列是这种用户定义数据类型的创建者。否则，返回 NULL。
+        DOMAIN_NAME	            nvarchar(128)	如果列是一种用户定义数据类型，那么该列是这种用户定义数据类型的名称。否则，返回 NULL。
      * @param $model
      * @return array
      */
@@ -516,5 +546,142 @@ class ModelService extends CommonService {
 
     protected function getModelName() {
         return 'Model';
+    }
+
+    public function diff_table($model_id, $tbl_name, $sync = false) {
+        $m = $this->getM();
+        $db_name = C("DB_NAME");
+        $tmp_name = $tbl_name;
+
+        if(strpos($tbl_name, ".") !== false) {
+            $tmp = explode(".", $tbl_name);
+            $db_name = $tmp[0];
+            $tbl_name = $tmp[1];
+        }
+
+        $model_field = $m->query("select name,type,length,value,comment,id from ea_field where model_id= $model_id");
+        $table_field = $m->query("SELECT `COLUMN_NAME`,DATA_TYPE,COLUMN_TYPE,COLUMN_COMMENT FROM information_schema.columns WHERE table_schema ='".$db_name."' AND table_name = '".$tbl_name."'" );
+
+        $result = [];
+        $field_names = [];
+        $diff_result = [];
+        if($table_field) {
+            foreach ( $table_field as $tk => $tv) {
+                $length = "";
+                if(preg_match('/\d+/',$tv['COLUMN_TYPE'], $arr)){
+                    $length = $arr[0];
+                }
+                $tmp = [
+                    'name'=>$tv['COLUMN_NAME'],
+                    'type'=>$tv['DATA_TYPE'],
+                    'length'=>$length,
+                    'comment'=>$tv['COLUMN_COMMENT']
+                ];
+
+                $field_names[] = $tmp['name'];
+                $result[$tmp['name']] = $tmp;
+            }
+        }
+
+        if($model_field) {
+            foreach ( $model_field as $mk => $mv ) {
+                if( !in_array($mv['name'], $field_names)) {
+
+                } else {
+                    $tmp = $result[$mv['name']];
+                    $tmp['id'] = $mv['id'];
+                    unset($result[$mv['name']]);
+                    foreach($tmp as $k=>$v) {
+                        if(strtolower($mv[$k]) != strtolower($v)) {
+                            unset($mv['value']);
+                            $diff_result['diff'][$mv['name']] = [$tmp, $mv];
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if($result) {
+            $diff_result['new'] = $result;
+        }
+
+        if($sync) {
+            foreach($diff_result['new'] as $dv) {
+                $r = $this->update_field(0, $model_id, $tmp_name, $dv['name'], $dv['comment'], $dv['type'], $dv['length']);
+            }
+
+            foreach($diff_result['diff'] as $dv) {
+                $dv = $dv[0];
+                $r = $this->update_field($dv['id'], $model_id, $tmp_name, $dv['name'], $dv['comment'], $dv['type'], $dv['length']);
+            }
+            return true;
+        }
+
+        return $diff_result;
+    }
+
+    protected function update_field($field_id, $model_id, $tablename, $name, $comment, $type, $len) {
+        //获取目标表字段到本库
+        $fieldService = D ( 'Field', 'Service' );
+        $inputService = D('input', 'Service');
+
+        $field = array (
+            'model_id' => $model_id,
+            'name' => $name,
+            'comment' => $comment,
+            'type' => $type,
+            'length'=> $len,
+            'is_requier' => 0,
+            'is_unique' => 0,
+            'is_index' => 0,
+            'is_system' => 0,
+            'created_at' => time(),
+            'updated_at' => time(),
+            'is_old' => 1
+        );
+
+        $is_update = false;
+
+        if($field_id) {
+            $is_update = true;
+            $field['id'] = $field_id;
+            $retField = $fieldService->update($field);
+        }else {
+            $retField = $fieldService->add($field);
+            $field_id = $retField['data'] ['id'];
+        }
+
+        //插入input
+        $input = array (
+            'field_id' => $field_id,
+            'is_show' => 1,
+            'label' => $comment,
+            'remark' => $comment,
+            'type' => 'text',
+            'width' => 20,
+            'height' => 0,
+            'opt_value' => '',
+            'value' => '',
+            'editor' => 'all',
+            'html' => "<input type='text' class='input' size='20' name=".$tablename."[{$name}]' value='' />",
+            'show_order' => 1,
+            'created_at' => time (),
+            'updated_at' => time ()
+        );
+
+        if($is_update) {
+            $id = M('Input')->where(['field_id' => $field_id])->getField('id');
+            $input['id'] = $id;
+            $retInput = $inputService->update($input);
+        } else {
+            $retInput = $inputService->add($input);
+        }
+
+        if($retField['status'] && $retInput['status']) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

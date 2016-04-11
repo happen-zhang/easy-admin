@@ -79,6 +79,16 @@ class DefaultService extends CommonService {
                 }
             }
 
+            //时间戳格式
+            if ('date_utime' == $field['input']['type'] && !empty($data[$fn])) {
+                $data[$fn] = strtotime($data[$fn]);
+            }
+
+            //时间戳格式
+            if ('date_microtime' == $field['input']['type'] && !empty($data[$fn])) {
+                $data[$fn] = strtotime($data[$fn]) * 1000;
+            }
+
             // 检查field[type]约束
             if (!empty($data[$fn])) {
                 $result = $this->checkTypeContraint($field['type'],$data[$fn]);
@@ -86,7 +96,7 @@ class DefaultService extends CommonService {
                     $msg = "{$fm}为{$field['type']}类型";
                     if ('int' == $result['data']) {
                         $msg .= "，值只能为整数！";
-                    } else if ('double' == $reuslt['data']) {
+                    } else if ('double' == $result['data']) {
                         $msg .= "，值只能为浮点数！";
                     }
 
@@ -273,6 +283,11 @@ class DefaultService extends CommonService {
 
             case 'date':
                 if (!is_valid_date($value)) {
+                    return $this->resultReturn(false, 'date');
+                }
+                break;
+            case 'date_time':
+                if (!is_valid_datetime($value)) {
                     return $this->resultReturn(false, 'date');
                 }
                 break;

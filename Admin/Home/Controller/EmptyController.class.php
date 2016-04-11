@@ -63,7 +63,7 @@ class EmptyController extends CommonController {
         }
 
         // 得到分页数据
-        $result = $this->getPagination('Default', null, null, $order_by_str);
+        $result = $this->getPagination('Default', [], null, $order_by_str);
 
         $rows = array_map("strip_sql_injection", $result['data']);
         unset($result['data']);
@@ -71,6 +71,20 @@ class EmptyController extends CommonController {
         // 处理需要替换的字段值
         foreach ($fields as $field) {
             $fn = $field['name'];
+
+            //时间戳转换
+            if ($field['input']['type']=='date_utime'){
+                foreach ($rows as $key => $row) {
+                    $rows[$key][$fn] = date('Y-m-d H:i:s', $row[$fn]);
+                }
+            }
+            //时间戳转换
+            if ($field['input']['type']=='date_microtime'){
+                foreach ($rows as $key => $row) {
+                    $row[$fn] = floor(($row[$fn]/1000));
+                    $rows[$key][$fn] = date('Y-m-d H:i:s', $row[$fn]);
+                }
+            }
 
             // created_at、updated_at换成日期格式
             if (($field['is_system'] && $field['is_list_show'])

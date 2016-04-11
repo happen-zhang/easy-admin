@@ -394,10 +394,10 @@ class FieldService extends CommonService {
      * @return boolean
      */
     public function existField($fieldId) {
-        if ($this->getM()->where("id = {$fieldId}")->count() > 0) {
+        $m = $this->getM();
+        if ($m->where("id = {$fieldId}")->count() > 0) {
             return true;
         }
-
         return false;
     }
 

@@ -6,9 +6,9 @@ namespace Home\Controller;
  * 字段管理
  */
 class FieldsController extends CommonController {
+
     /**
      * 字段列表
-     * @return
      */
     public function index(){
         $this->display();
@@ -16,15 +16,13 @@ class FieldsController extends CommonController {
 
     /**
      * 字段信息
-     * @return
      */
     public function show() {
         $this->display();
-    }    
+    }
 
     /**
      * 添加字段
-     * @return
      */
     public function add() {
         if (!isset($_GET['model_id'])) {
@@ -51,8 +49,8 @@ class FieldsController extends CommonController {
     }
 
     /**
+     *
      * 创建字段
-     * @return
      */
     public function create() {
         if (!IS_POST || !isset($_POST['field']) || !isset($_POST['input'])) {
@@ -148,12 +146,16 @@ class FieldsController extends CommonController {
 
         $model = M('Model')->getById($_GET['model_id']);
         $field = D('Field')->relation(true)->getById($_GET['field_id']);
+
         $input = $field['input'];
         $models = D('Model', 'Service')->getAll();
         $filters = get_registry_filter();
         $fills = get_registry_fill();
 
         D('Field', 'Logic')->resetLength($field);
+
+        if(!$field['length']['intchar'])
+            $field['length']['intchar'] = $field['length'];
 
         $this->assign('models', $models);
         $this->assign('model', $model);

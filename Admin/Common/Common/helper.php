@@ -195,13 +195,27 @@ function genFile($name, $class = '') {
  * @return string
  */
 function genDate($name, $value, $class = '') {
-    $src = __APP__ . '/../Public/javascripts/admin/datepicker/images2/cal.gif';
-    $id = rand_code(8);
+    return '<input value="'.$value.'" name="'.$name.'" class="'.$class.'"  onClick="laydate({istime: true, format: \'YYYY-MM-DD\'})">';
+}
 
-    return "<input type='text' id='{$id}' "
-           . "value='{$value}' class='{$class}' name='{$name}' />"
-           . "<img src='{$src}' style='cursor:pointer; margin-left:2px' "
-           . "onclick='javascript:NewCssCal(\"{$id}\", \"YYYYMMDD\")'/>";
+/**
+ * 生成datepicker2
+ * @param  string $name  表单域名称
+ * @param  string $class css类
+ * @return string
+ */
+function genDatetime($name, $value, $class = '') {
+    return '<input value="'.$value.'" name="'.$name.'" class="'.$class.'"  onClick="laydate({istime: true, format: \'YYYY-MM-DD hh:mm:ss\'})">';
+}
+
+/**
+ * 生成代码块
+ * @param  string $name  表单域名称
+ * @param  string $class css类
+ * @return string
+ */
+function genDiv($value) {
+    return $value;
 }
 
 /**
@@ -269,4 +283,26 @@ function indent($space = 4) {
     }
 
     return $indent;
+}
+
+/**
+ * 图片
+ * @param $name
+ * @param $value
+ * @return string
+ */
+function genImg($name,$value) {
+    $value = json_decode($value,true);
+    $html = '';
+
+    if($value){
+        $html .= '<input type="hidden" name="'.$name.'" value=\''.json_encode($value).'\'>';
+        foreach ($value['photo'] as $key=>$val){
+            $html.= "<img src=http://post.comicool.cn/data/upload/".$val['url']."><br/>";
+        }
+    }else{
+        $html = '<img src="">';
+    }
+    return $html;
+
 }
