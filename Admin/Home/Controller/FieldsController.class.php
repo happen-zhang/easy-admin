@@ -49,6 +49,7 @@ class FieldsController extends CommonController {
     }
 
     /**
+     *
      * 创建字段
      */
     public function create() {
@@ -152,6 +153,9 @@ class FieldsController extends CommonController {
         $fills = get_registry_fill();
 
         D('Field', 'Logic')->resetLength($field);
+
+        if(!$field['length']['intchar'])
+            $field['length']['intchar'] = $field['length'];
 
         $this->assign('models', $models);
         $this->assign('model', $model);
