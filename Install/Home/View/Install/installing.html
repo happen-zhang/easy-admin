@@ -23,7 +23,7 @@ $.ajaxSetup({ cache: false });
 
 function reloads(step) {
     // 提交数据
-    var url = "{:U('Install/create', array(), '')}" + "/step/" + step;
+    var url = "{:U('Install/create', array(), '')}" + "&step=" + step;
     $.ajax({
         type: "POST",
         url: url,
